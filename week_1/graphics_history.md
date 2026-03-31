@@ -24,11 +24,13 @@ Therefore, please induldge me as I chronocle some key milestones in the history 
 
 # Key Milestones
 ## 1950s
-Behold the Whirlwind!
+Behold the Whirlwind![^1]
 
-![Whirlwind display with lightgun selector Courtesy of MITRE Corp.](../images/week_1/whirlwind.jpg)  
+![Whirlwind computer Courtesy of MITRE Corp.](../images/week_1/whirlwind.jpg)  
 
-<figurecaption>Whirlwind display with lightgun selector (Courtesy of MITRE Corp.)</figurecaption>
+<figurecaption>Whirlwind (Courtesy of MITRE Corp.)</figurecaption>  
+
+This mighty beast had a price tag north of *$3 million* in 1951 dollars and occupied 2,500 sqft (more than the average single family home at the time). 
 
 
 # Key Paradigms
@@ -36,3 +38,5 @@ Behold the Whirlwind!
 ## Software Rendering Era
 ## Fixed-Pipeline Era
 ## Programmable-Pipeline Era
+
+[^1]:[The Whirlwind Computer at CHM](https://computerhistory.org/blog/the-whirlwind-computer-at-chm/)
