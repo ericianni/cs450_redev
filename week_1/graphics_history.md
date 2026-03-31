@@ -26,7 +26,8 @@ Therefore, please induldge me as I chronocle some key milestones in the history 
 ## 1950s
 Behold the Whirlwind!
 
-![Whirlwind display with lightgun selector Courtesy of MITRE Corp.](../images/week_1/whirlwind.jpg)
+![Whirlwind display with lightgun selector Courtesy of MITRE Corp.](../images/week_1/whirlwind.jpg)  
+
 <figurecaption>Whirlwind display with lightgun selector (Courtesy of MITRE Corp.)</figurecaption>
 
 
