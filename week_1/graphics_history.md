@@ -30,8 +30,11 @@ Behold the Whirlwind![^1]
 
 <figurecaption>Whirlwind (Courtesy of MITRE Corp.)</figurecaption>  
 
-This mighty beast had a price tag north of *$3 million* in 1951 dollars and occupied 2,500 sqft (more than the average single family home at the time). 
+This mighty beast had a price tag north of *$3 million* in 1951 dollars and occupied 2,500 sqft (more than the average single family home at the time). You see the woman (Ramona D. Ferenz) on the right? She is sitting in front of the very first real time Cathode Ray Tube (CRT) displays! 
 
+The man on the left (Stephen H. Dodd) would program the computer and the output would display on the CRT display as lines and dotes. Unlike what you are using to view this page, this display was a vector display (as opposed to a raster display). The operator of the display would use a light gun to select targets during the air defense simulations the computer was used for.
+
+## 1960s
 
 # Key Paradigms
 ## Hardware Era
