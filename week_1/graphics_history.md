@@ -25,10 +25,10 @@ Therefore, please induldge me as I chronocle some key milestones in the history 
 # Key Milestones
 ## 1950s
 Behold the Whirlwind!
-<figure>
+
 ![Whirlwind display with lightgun selector Courtesy of MITRE Corp.](../images/week_1/whirlwind.jpg)
 <figurecaption>Whirlwind display with lightgun selector (Courtesy of MITRE Corp.)</figurecaption>
-</figure>
+
 
 # Key Paradigms
 ## Hardware Era
