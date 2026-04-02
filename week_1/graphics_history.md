@@ -28,7 +28,7 @@ Behold the Whirlwind![^1]
 
 ![Whirlwind computer Courtesy of MITRE Corp.](../images/week_1/whirlwind.jpg)  
 
-<figurecaption>Whirlwind (Courtesy of MITRE Corp.)</figurecaption>  
+<figurecaption>Whirlwind</figurecaption>  
 
 This mighty beast had a price tag north of *$3 million* in 1951 dollars and occupied 2,500 sqft (more than the average single family home at the time). You see the woman (Ramona D. Ferenz) on the right? She is sitting in front of the very first real time Cathode Ray Tube (CRT) displays! 
 
@@ -45,12 +45,34 @@ Before we leave the 1950s, let's take a look at the first *real-time* computer g
 
 ## 1960s
 
-It is in 1960 that we first come across the phrase "Computer Graphics." William Fetter (a graphics at Boeing) is credited with the coining the phrase. Oddly enough, he himself attributes the origination to his coworker Verne Hudson.
+It is in 1960 that we first come across the phrase "Computer Graphics." William Fetter (a graphics designer at Boeing) is credited with the coining the phrase. Oddly enough, he himself attributes the origination to his coworker Verne Hudson.
 
 ![Spiderman pointing meme](../images/week_1/spiderman.jpg)
 
+In 1962, Steve Russell created *Spacewar!*, which is widely considered the very first "distributable" video game. The games discussed above were written for a particular computer and couldn't be installed on another. *Spacewar!* was designed for the PDP-1 minicomputer, which was designed for commercial sale.[^3] This meant that anyone with a PDP-1 could install the same software.
 
+**EMBED STEVE RUSSELL VIDEO: https://www.youtube.com/watch?v=PnJvZHegg8I**
 
+The next year, in 1963, computer graphics achieved a significant milestone: a graphical user interface (GUI). The program was called Sketchpad, and it was created by Ivan Sutherland as part of his PhD thesis.[^4] Not only was it a GUI first, Sketchpad also ushered in the era of Human Computer Interaction (HCI) and the program itself helped spawn the concept of Object Oriented Programming (OOP).
+
+![Sketchpad demonstration](../images/week_1/sketchpad.jpg)
+<figurecaption>Demonstration of using the light pen to draw on the display</figurecaption>
+
+That same year saw the first computer-animated film titled *Simulation of Two-Gyro Gravity-Gradient Attitude Control System* (by E.E. Zajac of Bell Labs). I know, a real attention grabber! Despite the relatively dry nature of the film, I can't help but be super impressed by how well this animation works considering it was written using *punch-cards*.[^5]
+
+**EMBED SIMULATION VIDEO: https://www.youtube.com/watch?v=GBlQb6Me_1k**
+
+The early 1960s was also the time Pierre Bézier published his work on Bézier curves (yes, he named them after himself). If these sound familiar, it is because they are still used today to mathmatically define smooth curves between defined "control points." He used them for designing cars, but we will use them for creating smooth surfaces in our 3D scenes.[^6]
+
+Remember Ivan Sutherland? He went onto found Evans & Southerland and developed the *Sword of Damocles*, the world's first head-mounted display. This would be one of many attempts to make real the dream of Virtual Reality (VR). While technologically impressive at the time, when you see it, you realize pretty quickly why it didn't gain mainstream adoption.
+
+![Sword of Damocles headset beign worn](../images/week_1/swordofdamocles.png)
+<figurecaption>Note the need to suspend the Sword of Damocles from the ceiling due to weight</figurecaption>
+
+Right before the 1960s closed out, Arthur Appel wrote a paper title "Some Techniques for Shading Machine Renderings of Solids."[^7] In this siminal paper, Mr. Appel introduced to the world the concept of **ray-casting**: better known today as **ray-tracing**. The idea was to cast out rays from the "eye" and the first object touched in the scene by each ray would become the pixel painted to the screen. We will cover **ray-tracing** in greater depth later in the course.
+
+![Figure from Arthur Appel's paper showing ray-casting](../images/week_1/raycasting.png)
+<figurecaption>Figure from Arthur Appel's paper showing ray-casting</figurecaption>
 
 
 # Key Paradigms
@@ -61,3 +83,8 @@ It is in 1960 that we first come across the phrase "Computer Graphics." William 
 
 [^1]:[The Whirlwind Computer at CHM](https://computerhistory.org/blog/the-whirlwind-computer-at-chm/)
 [^2]:[EDSAC - Electronic Delay Storage Automatic Calculator](https://www.tnmoc.org/edsac)
+[^3]:[PDP-1](https://www.computerhistory.org/pdp-1/)
+[^4]:[No-code History: Sketchpad](https://instadeq.com/blog/posts/no-code-history-sketchpad-a-man-machine-graphical-communication-system-1963/)
+[^5]:[Punched Cards](https://www.computerhistory.org/revolution/punched-cards/2)
+[^6]:[The birth of Bézier curves and how it shaped graphic design](https://www.linearity.io/blog/bezier-curves/)
+[^7]:[Some Techniques for Shading Machine Renderings of Solids](https://graphics.stanford.edu/courses/Appel.pdf)
