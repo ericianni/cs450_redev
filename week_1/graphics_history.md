@@ -155,22 +155,52 @@ Jurassic Park was released in 1993 and while it included only about six minutes 
 Nearly a decade after splitting from ILM, Pixar released their first feature length film: *Toy Story*. This was the very first time a movie contained zero real footage. One of the reasons that toys were picked as the subject was they could be convincingly portrayed with the fairly limited rendering capabilities available at the time. Even with these simple models, each individual frame of *Toy Story* took anywhere from 45 minutes to 30 *hours* to render at 1536x922 resolution (not even full HD)!
 
 ![Toy Story wireframe and test renders](../images/week_1/toystory.jpg)  
-<figcaption>*Toy Story* wireframe and test renders</figcaption>  
+<figcaption>Toy Story wireframe and test renders</figcaption>  
 
-After a rocky development cycle that saw many of the founders of id Software leave the company, Quake debuted to great fanfare. Unlike id Software's previous games, Quake was *true* 3D. In order to create a true 3D engine, John Carmack had to do a deep dive into linear algebra and vector math (you will see SO much of this in this course). At release, Quake only had a software-rendering mode, which meant it relied 100% on the CPU for all calculations and the render was optimized using x86 assembly code. By 1997, Carmack added hardware rendering with the release of GLQuake to run on 3dfx Voodoo cards running MiniGL.
+After a rocky development cycle that saw many of the founders of id Software leave the company, Quake debuted to great fanfare. Unlike id Software's previous games, Quake was *true* 3D. In order to create a true 3D engine, John Carmack had to do a deep dive into linear algebra and vector math (you will see SO much of this in this course). At release, Quake only had a software-rendering mode, which meant it relied 100% on the CPU for all calculations and the render was optimized using x86 assembly code. By 1997, Carmack added hardware rendering with the release of GLQuake to run on 3dfx Voodoo cards (GPU) running MiniGL.
 
 ![Quake in Software Render Mode](../images/week_1/quake.png)  
 <figcaption>Quake in Software Render Mode</figcaption>  
 
+ 
 1996 also saw the invention of *normal mapping*. This was an improvement over standard bump mapping. While bump maps contain grayscale textures that represent heights, normal maps containg RGB images that store per-pixel normal data. We will soon learn more about *normals*, but sufficite it to say, they are indepensible for how light interacts with objects in a scene. Like bump maps, normal maps allow for very computational efficient effects to add surface detail to flat objects.
 
+The main "competitor" to OpenGL on PCs was introduced by Microsoft in 1996, called Direct3D. Due to Microsoft's market dominance with Windows, Direct3D became nearly industry standard. Games that wished to be released cross-platform (e.g. on the Mac) had to also support OpenGL. The other competitor was Glide, which was proprietory to 3dfx cards, but without the market saturation enjoyed by Microsoft, the standard was doomed to failure.
 
+While 3dfx had first mover advantage when it came to dedicated GPUs, other players quickly entered the market. In 1996 ATI introduced their Rage series of cards, which were followed by their Radeon series in 1999. Also in 1999 NVIDIA released the GeForce 256 and quickly began to dominate the market. In 2000, 3dfx would be purchased by NVIDIA and in 2006 AMD aquired ATI to help in its fight with Intel.
 
-# Key Paradigms
-## Hardware Era
-## Software Rendering Era
-## Fixed-Pipeline Era
-## Programmable-Pipeline Era
+## 2000s-Present
+
+After the whirlwind of the past few decades, leaps in computer graphics has been fairly steady. Yes, they have continued to improve to the point of real time photorealism, even on consumer grade hardware.
+
+In 2000, DirectX 8.0 (successor to Direct3D) introduced the first programmable shaders: both vertex and pixel shaders. These had to be written in a language very similar to assembly. In 2002, Directx 9.0 made shader programming much easier by introducing High-Level Shader Language (HLSL). This revolution made writing a shader program as simple as writing any other C application. Two years later (2004) OpenGL 2.0 introduced their own shader language: OpenGL Shading Language (GLSL). OpenGL 2.0 also introduced the Vertex and Fragment Shaders, which remain to this day.
+
+This was the birth of the programable pipeline era of computer graphics. Whereas the fixed pipeline included API calls to manage simple objects and lighting, the programmable pipeline required the developer to handle *all* graphics calculations. While this required a lot more work on behalf of the developer, it opened up an infinite realm of possibilities with how they could design their own graphics techniques.
+
+To compliment the Vertex and Fragment Shaders, OpenGL 3.2 (2009) introduced Geometry Shaders. These shaders could take primitives (points, lines, or triangles) and computationally convert them into more primitives. This allowed for geometry to be procedurally generated, instead of relying solely on static meshes.
+
+In 2010, this concept would be expanded on with Tessellation Shaders in OpenGL 4.0. These shaders actually have two parts (Tessellation Control and Tessellation Evaluation). The value of tessellation is the ability to subdivide geometry in realtime to either reduce or increase object complexity on the fly. One important use case is dynamically reducing the number of vertices in objects that are far away from the viewer where the detail won't be missed, but the computation speed will be greatly improved.
+
+The final type of shader OpenGL has introduced is the Compute Shader with OpenGL 4.3 (2012). These are general-purpose shaders that run outside of the graphics pipeline. These are very useful for running calculations to help with particle simulation, phsyics systems, or any other application that can benefit from parallel processing (e.g. machine learning).
+
+Today, nearly all computer graphics uses Physcially Based Rendering (PBR). In the past, graphics programmers for both film and video games had to use tricks to render convincing scenes. With the massive processing available to a modern GPU, programmers can actually use real world physics to model how light behaves in a scene and with different materials. This allows for materials to *look* real. For example, a programmer can create semi-translucent materials such as jade that allow light to penetrate a short way below the surface of an object.
+
+Within the past decade, GPUs have begun to incorporate dedicated Ray Tracing (RT) components. This allows for light sources to send out rays and realistically have them bounce around a scene. This allows for photorealistic scenes as light can "pick up" colors from the objects it bounces off of one object on its way to the next. 
+
+To illustrate both PBR and RT, please look at the below example of a Cornell Box.[^19]
+
+![Cornell Box with spheres of different materials](../images/week_1/cornellbox.jpg)  
+<figcaption>Cornell Box with spheres of different materials</figcaption>  
+
+You can see how the different materials of the spheres react to the light differently. This is PBR in action. Now, look how the white floor has hints of red and green. This is because the light is ray traced and carries the color from the walls to the spheres, where it is then reflected yet again.
+
+This is the height of computer graphics as it stands today!
+
+# Conclusion
+
+Whew! That was *a lot*. I believe I got carried away. I would apologize, but it was just too much fun to research all these fascinating events. Remember, knowing where we started helps us see how far we have come. We can also see how many of these concepts existed for many years (sometimes decades) before the hardware caught up and was capable of making them a reality.
+
+What does the future hold? We won't know until it happens, but it is guaranteed to be exciting!
 
 [^1]:[The Whirlwind Computer at CHM](https://computerhistory.org/blog/the-whirlwind-computer-at-chm/)
 [^2]:[EDSAC - Electronic Delay Storage Automatic Calculator](https://www.tnmoc.org/edsac)
@@ -190,3 +220,4 @@ After a rocky development cycle that saw many of the founders of id Software lea
 [^16]:[Console Wars: Sega, Nintendo, and the Battle That Defined a Generation](https://archive.org/details/consolewarssegan0000harr)
 [^17]:[glman](https://web.engr.oregonstate.edu/~mjb/glman/)
 [^18]:[Lode's Computer Graphics Tutorial](https://lodev.org/cgtutor/raycasting.html)
+[^19]:[Cornell Box](https://en.wikipedia.org/wiki/Cornell_box)
