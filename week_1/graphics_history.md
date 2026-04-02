@@ -86,7 +86,30 @@ By this time, universities were getting into the game and were churning out rese
 * Phong reflection model (1975) - the standard method used today for lighting incorporating ambient, diffuse, and specular values.[^11]
 * Bump mapping (1976) - a remixed versiond of texture mapping where a 2D texture is used to store height values to give flat objects the apperience of additional vertices.[^12]
 
-* 
+Perhaps the most recongnizable thing to come out of Utah is a *teapot*. I know many of you are thinking, "What lunacy is this? What is so special about a *teapot*?" Well, I will accept your apologies once you cast your gaze below.
+
+![The Utah Teapot in four different renderings](../images/week_1/teapot.jpg)  
+<figcaption>The Utah Teapot (aka Newell's Pot) in four different renderings</figcaption>
+
+This is *the* reference model that all fledgling graphics programs use. Consider it the "Hello World" of graphics programs. It was designed by Martin Newell for his Phd thesis.[^13]
+
+Meanwhile, over the Rockies at Xerox PARC, they were busy inventing the **framebuffer** to use in SuperPaint (1973). That same year, our friends from Evans and Sutherland produced the Shaded Picture System, which was one of the first raster computer system to generate 3D renderings. Both these developments ushered in the age of raster displays, which focused on displaying pixels. 
+
+Up until this point, most of the displays we have been discussing were vector displays. Since raster displays use pixels, they can fall victim to "jagged" images whereas vector displays rely on mathmatical equations to create infantly scalable smooth images. The drawback to vector displays was that they were limited to lines and simple shapes, and couldn't diplay photorealistic colors.
+
+In 1975, George Lucas founds Industrial Light and Magic. While their fame steamed (rightly) from their work with practicle effects and sound editing, they also began work in computer graphics. In fact, they snuck in one of the first 3D animations in a feature length film during *Star Wars*. 
+
+![Magazine page showing the Deathstar wireframe and the creator Larry Cuba](../images/week_1/deathstar.jpg)  
+<figurecaption>Magazine page showing the Deathstar wireframe and the creator Larry Cuba[^14]</figcaption>  
+
+Let's wave goodbye to the '70s with *Space Invaders*. Created in 1978, this game was one of the first to use a microprocessor. This meant that the action on screen was dictated by coded software, not by physical logic gates like most arcade machines at the time. *Space Invaders* also ditched vector displays and popularized raster graphics: hence the blocky nature of the sprites.
+
+## 1980s
+
+The early 1980s saw the end of the first wave of home video game systems. Atari, riding high off it's success of the late '70s, like Yertle the Turtle, over extended itself and brought about a global recession in video games. Their sad tale ended with the burial of some 800k *E.T. the Extra-Terrestrial* cartridges in a landfill.[^15]
+
+
+
 # Key Paradigms
 ## Hardware Era
 ## Software Rendering Era
@@ -105,3 +128,6 @@ By this time, universities were getting into the game and were churning out rese
 [^10]:[A Subdivision Algorithm for Computer Display of Curved Surfaces](https://ohiostate.pressbooks.pub/app/uploads/sites/45/2017/09/catmull_thesis.pdf)
 [^11]:[Illuminatino for Computer Generated Pictures](https://users.cs.northwestern.edu/~ago820/cs395/Papers/Phong_1975.pdf)
 [^12]:[SImulation of Wrinkled Surfaces](https://www.microsoft.com/en-us/research/wp-content/uploads/1978/01/p286-blinn.pdf)
+[^13]:[The Most Important Object in Computer Graphics History Is This Teapot](https://nautil.us/the-most-important-object-in-computer-graphics-history-is-this-teapot-235818)
+[^14]:[Animating the Death Star Trench](https://ballyalley.com/articles_and_news/animating_the_death_star_trench.pdf)
+[^15]:[Atari: Game Over](https://www.youtube.com/watch?v=03oC6-zPZHQ)
