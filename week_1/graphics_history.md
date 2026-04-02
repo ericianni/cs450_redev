@@ -74,7 +74,19 @@ Right before the 1960s closed out, Arthur Appel wrote a paper title "Some Techni
 ![Figure from Arthur Appel's paper showing ray-casting](../images/week_1/raycasting.png)
 <figurecaption>Figure from Arthur Appel's paper showing ray-casting</figurecaption>
 
+## 1970s
 
+Now we are getting to the era of computer graphics that I remember learning about as a little kid. And what better way to kick off the decade than *Pong*? The iconic white dot ping-ponging (ugh, I hate puns) back and forth across a screen is perhaps the most identifiable video game image outside of Nintendo's Mario. Introduced in 1972, *Pong* took arcades by storm (and spawned a massive lawsuit from Magnavox).[^8]
+
+By this time, universities were getting into the game and were churning out research papers on 3D graphics techniques that are still used today. The University of Utah had established a computer graphics program back in 1965, and it was from here that we got the following topics:
+
+* Gouraud shading (1971) - a method for interpolating shading on triangle meshes to smooth the surfaces.[^9]
+* Z-buffer hidden-surface removal (1974) - a method to reduce the amount of rendering required for a scene by removing obscured pixels.[^10]
+* Texture mapping (1974) - a method of taking a 2D texture and "wrapping" it around a 3D object.[^10]
+* Phong reflection model (1975) - the standard method used today for lighting incorporating ambient, diffuse, and specular values.[^11]
+* Bump mapping (1976) - a remixed versiond of texture mapping where a 2D texture is used to store height values to give flat objects the apperience of additional vertices.[^12]
+
+* 
 # Key Paradigms
 ## Hardware Era
 ## Software Rendering Era
@@ -88,3 +100,8 @@ Right before the 1960s closed out, Arthur Appel wrote a paper title "Some Techni
 [^5]:[Punched Cards](https://www.computerhistory.org/revolution/punched-cards/2)
 [^6]:[The birth of Bézier curves and how it shaped graphic design](https://www.linearity.io/blog/bezier-curves/)
 [^7]:[Some Techniques for Shading Machine Renderings of Solids](https://graphics.stanford.edu/courses/Appel.pdf)
+[^8]:[The Case of the Video Game Lawsuit Racket](https://www.lexology.com/library/detail.aspx?g=97305af8-1f69-4f7f-a0cf-8e92dc05a0fb)
+[^9]:[Continuous Shading of Curved Surfaces](https://ohiostate.pressbooks.pub/app/uploads/sites/45/2017/09/gouraud1971.pdf)
+[^10]:[A Subdivision Algorithm for Computer Display of Curved Surfaces](https://ohiostate.pressbooks.pub/app/uploads/sites/45/2017/09/catmull_thesis.pdf)
+[^11]:[Illuminatino for Computer Generated Pictures](https://users.cs.northwestern.edu/~ago820/cs395/Papers/Phong_1975.pdf)
+[^12]:[SImulation of Wrinkled Surfaces](https://www.microsoft.com/en-us/research/wp-content/uploads/1978/01/p286-blinn.pdf)
