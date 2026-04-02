@@ -39,11 +39,19 @@ One of the universal truths of the human condition is that any computer will be 
 ![OXO on the EDSAC](../images/week_1/oxo.png)  
 <figurecaption>OXO running on the EDSAC computer at the University of Cambridge</figurecaption>  
 
+Before we leave the 1950s, let's take a look at the first *real-time* computer game created: Tennis for Two. The game was written by William Higinbotham in 1958. Mr. Higinbotham worked on the Manhattan Project and specialized in civilian atomic power applications. In an effort to excite visitors to the lab, Mr. Higinbotham wrote a tennis simulator that used real physics (including wind resistance!). This was super impressive; just look at it!
 
-
-
+**EMBED YouTube video: https://www.youtube.com/watch?v=6PG2mdU_i8k**
 
 ## 1960s
+
+It is in 1960 that we first come across the phrase "Computer Graphics." William Fetter (a graphics at Boeing) is credited with the coining the phrase. Oddly enough, he himself attributes the origination to his coworker Verne Hudson.
+
+![Spiderman pointing meme](../images/week_1/spiderman.jpg)
+
+
+
+
 
 # Key Paradigms
 ## Hardware Era
