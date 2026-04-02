@@ -4,7 +4,7 @@
 <p>You can't really know where you are going until you know where you have been.</p>
 </blockquote>
 <figcaption>- Maya Angelou</figcaption>
-</figure>
+</figure>  
 
 I will be honest, I have never had the pleasure of reading anything by Maya Angelou, but as a history major, I always loved this quote. Too often, we have our eyes set on the horizon that we forget what came before. We wouldn't be where we are today without those that paved the way. As Sir Isaac Newton stated,
 
@@ -34,6 +34,15 @@ This mighty beast had a price tag north of *$3 million* in 1951 dollars and occu
 
 The man on the left (Stephen H. Dodd) would program the computer and the output would display on the CRT display as lines and dotes. Unlike what you are using to view this page, this display was a vector display (as opposed to a raster display). The operator of the display would use a light gun to select targets during the air defense simulations the computer was used for.
 
+One of the universal truths of the human condition is that any computer will be almost immediately co-opted for playing games. In 1952, A. S. Douglas repurposed one of the three monitors of the EDSAC[^2] to play "noughts and crosses" (British for tic-tac-toe). It was one of the first known computer games ever written.
+
+![OXO on the EDSAC](../images/week_1/oxo.png)  
+<figurecaption>OXO running on the EDSAC computer at the University of Cambridge</figurecaption>  
+
+
+
+
+
 ## 1960s
 
 # Key Paradigms
@@ -43,3 +52,4 @@ The man on the left (Stephen H. Dodd) would program the computer and the output 
 ## Programmable-Pipeline Era
 
 [^1]:[The Whirlwind Computer at CHM](https://computerhistory.org/blog/the-whirlwind-computer-at-chm/)
+[^2]:[EDSAC - Electronic Delay Storage Automatic Calculator](https://www.tnmoc.org/edsac)
