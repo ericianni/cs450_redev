@@ -79,3 +79,81 @@ When you are able, open the "SOIL2.sln" file, which should open VS 2026. You wil
 
 On the right, you will see the Solution Explorer. Right-click on the "soil2-static-lib" project and select "Build." Go ahead and close VS 2026, we are done with this project.
 
+# Creating a VS Template
+
+We now have everything we need to set up Visual Studio for OpenGL development. Unfortunately, what we are about to do is complicated and fairly involved. Therefore, we want to set it up in such a way that we only have to do it once. In order for this to happen, we need to create a Visual Studio Template. Before we can do so, we have some files to move around.
+
+## Moving Files Around
+
+In the GL folder, create a new directory and call it "OpenGL_Template". In this new directory, create two more: "lib" and "include". We will be filling this with files from the downloaded frameworks. 
+
+Find the glew32.dll file located in GL>GLEW>bin>Release>x64 filder and copy it into our new template directory.
+
+In the "lib" folder we need to copy and paste the following files:
+* glew32.lib - found in GL>GLEW>lib>Release>x64
+* glfw3.lib - found in GL>GLFW>lib-vc2022
+* soil2-debug.lib - found in GL>SOIL2>lib>windows
+
+In the "include" folder we need to copy the following *directories* (not just the files). When we are done, we will have four directories in the "include" folder: "GL", "GLFW", "glm", and "SOIL2".
+* GL>GLEW>include>GL
+* GL>GLFW>include>GLFW
+* GL>GLM>glm
+* GL>SOIL2>src>SOIL2
+
+When you are done, you should have a file structure like this:
+
+GL/
+├── GLEW
+├── GLFW
+├── GLM
+├── SOIL2
+└── OpenGL_Template/
+    ├── glew32.dll
+    ├── lib/
+    │   ├── glew32.lib
+    │   ├── glfw3.lib
+    │   └── soil2-debug.lib
+    └── include/
+        ├── GL/
+        │   ├── eglew.h
+        │   ├── glew.h
+        │   ├── glxew.h
+        │   └── wglew.h
+        ├── GLFW/
+        │   ├── glfw3.h
+        │   └── glfw3native.h
+        ├── glm/
+        │   ├── glm.hpp
+        │   ├── geometric.hpp
+        │   └── etc...
+        └── SOIL2/
+            ├── SOIL2.c
+            ├── SOIL2.h
+            └── etc...
+## Setting up the Template
+
+Open up Visual Studio and create a new project. When prompted, select "Empty Project" and hit "Next." Name the project "OpenGL Template" and click "create."
+
+Toward the top middle (under the toolbar), you should see a pull down menu that *should* say 'x64'. If it says 'x86' switch it to 'x64'. Next to this pull down, you should see 'Debug'. We will need to change this later, but for now, keep it as is.
+
+On the menubar, select Project and then Properties. Find where it says "VC++ Directories" (it may say "C/C++ Directories"). Under the "General" option, you should see "Include Directories". If you click on it, you will now see a down arrow at the end of the row. Click it and select "<Edit...>".
+
+Click the "New Line" button (folder icon with a starburst). You will now see an ellipse ("...") at the end of the first row. Clicking this will bring up a File Explorer. Navigate to the "include" folder we created above and "select folder". Hit "OK".
+
+Now, click "Linker" on the left and then "General." Find the "Additional Library Directories" row and click on it. Using the same steps we just went through, add the "lib" folder we created above.
+
+Also under "Linker", click "Input" and then Additional Dependencies". Click through to edit the row. This time we are just going to type in the dependencies (one on each line) and hit "OK":
+* glfw3.lib
+* glew32.lib
+* soil2-debug.lib
+* opengl32.lib
+
+Now, we hit "apply" and do it all again in "Release" mode! Back up in the center where it says "Debug", which it to "Release" and then repeat the steps we just went through.
+
+We are now ready to create the template! Go to "Project" and select "Export Template". Make sure "Project Template" is selected and click through until "Finish".
+
+Now, when we create a new project in Visual Studio, we will see an option to select our own template, so we don't *ever* have to do all that nonsense again! That said, there is one thing we will still need to. We will have to copy the "glew32.dll" file into our new project directory; that is why we put it in our template directory for easy access.
+
+# Crossing our fingers that everything worked!
+
+I am just kidding, we are going to test to ensure everything is working correctly.

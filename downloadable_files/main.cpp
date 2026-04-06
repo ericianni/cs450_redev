@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>  // Basic include for GLM
-#include <SOIL2.h>  // For SOIL2
+#include <SOIL2/SOIL2.h>  // For SOIL2
 #include <iostream>
 
 int main() {
