@@ -69,9 +69,9 @@ We need to do a few more things to get SOIL 2 ready to use: download Premake.
 
 # Premake
 
-Premake is similar to *make* in that it is used to build source code. Go to the download page (https://premake.github.io/download/) and download the Windows Pre-Built Binary. It will download as a zip containing one file. Extract this file wherever you like and then copy it into the SOIL2 folder.
+Premake is similar to *make* in that it is used to build source code. Go to the download page (https://premake.github.io/download/) and download the Windows Pre-Built Binary. It will download as a zip containing one file. Extract this file wherever you like and then copy it into the SOIL2>SOIL2-master folder.
 
-Now it is time to dig out your favorite terminal application and navigate to the SOIL2 folder. Once there, you need to type the following `premake5.exe vs2022`. I hear you shouting, "But we downloaded VS 2026, not VS 2022!" and you would be correct. Unfortunately, `vs2026` is not an option at the time of this writing.
+Now it is time to dig out your favorite terminal application and navigate to the SOIL2>SOIL2-master folder. Once there, you need to type the following `premake5.exe vs2022`. I hear you shouting, "But we downloaded VS 2026, not VS 2022!" and you would be correct. Unfortunately, `vs2026` is not an option at the time of this writing.
 
 Once you have run this command, a new folder will appear in your SOIL2 directory: "make". Click through and then into the "windows" folder contained therein. Now, hopefully, VS 2026 has finished installing, but if it hasn't, we will need to wait. We need VS 2026 to open the "SOIL2.sln" project file. 
 
