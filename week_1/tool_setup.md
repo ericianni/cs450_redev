@@ -138,21 +138,29 @@ GL/
 
 Open up Visual Studio and create a new project. When prompted, select "Empty Project" and hit "Next." Name the project "OpenGL Template" and click "create."
 
-Toward the top middle (under the toolbar), you should see a pull down menu that *should* say 'x64'. If it says 'x86' switch it to 'x64'. Next to this pull down, you should see 'Debug'. We will need to change this later, but for now, keep it as is.
+Toward the top middle (under the toolbar), you should see a pull down menu that *should* say 'x64'. If it says 'x86' switch it to 'x64'. Next to this pull down, you should see 'Debug'.
 
-On the menubar, select Project and then Properties. Find where it says "VC++ Directories" (it may say "C/C++ Directories"). Under the "General" option, you should see "Include Directories". If you click on it, you will now see a down arrow at the end of the row. Click it and select "<Edit...>".
+On the menubar, select Project and then Properties. At the top of this new window, you should see "Configuration". Ensure that it says "All Configurations" so that we only have to do the following steps *once*.
+
+Find where it says "VC++ Directories" (it may say "C/C++ Directories"). Under the "General" option, you should see "Include Directories". If you click on it, you will now see a down arrow at the end of the row. Click it and select "<Edit...>".
 
 Click the "New Line" button (folder icon with a starburst). You will now see an ellipse ("...") at the end of the first row. Clicking this will bring up a File Explorer. Navigate to the "include" folder we created above and "select folder". Hit "OK".
 
 Now, click "Linker" on the left and then "General." Find the "Additional Library Directories" row and click on it. Using the same steps we just went through, add the "lib" folder we created above.
 
-Also under "Linker", click "Input" and then Additional Dependencies". Click through to edit the row. This time we are just going to type in the dependencies (one on each line) and hit "OK":
+Also under "Linker", click "Input" and then "Additional Dependencies". Click through to edit the row. This time we are just going to type in the dependencies (one on each line) and hit "OK":
 * glfw3.lib
 * glew32.lib
 * soil2-debug.lib
 * opengl32.lib
 
-Now, we hit "apply" and do it all again in "Release" mode! Back up in the center where it says "Debug", which it to "Release" and then repeat the steps we just went through.
+Now, we hit "apply".
+
+Now we need to add glew32.dll to the project. Right click on the "OpenGL Template" in the Solution Explorer and click "Add" and then "Existing Item..." Navigate to where we saved this file in the "OpenGL Template" folder (next to the "include" and "lib" folders) and add it.
+
+Now, right-click on the file in the Solution Explorer and select "Properties". Again, ensure that "All Configurations" is selected. We need to change the "Item Type" to "Copy File". Hit "Apply" and this should bring up "Copy File" under "Configuration Properties". Click this and ensure that "Destination Directories" reads "$(OutDir)". Now we can click "OK".
+
+Make sure to save all changes before moving on.
 
 We are now ready to create the template! Go to "Project" and select "Export Template". Make sure "Project Template" is selected and click through until "Finish".
 
@@ -161,3 +169,23 @@ Now, when we create a new project in Visual Studio, we will see an option to sel
 # Crossing our fingers that everything worked!
 
 I am just kidding, we are going to test to ensure everything is working correctly.
+
+Go ahead and open up Visual Studio and create a new project. When asked, select our brand new *OpenGL Template*. You can choose to name this whatever you like and save it whereever you like, but I went with "Test Project" and saved it into the directory I am using for the course work ("CS450/550").
+
+When the solution loads, we need to add something to build and run. We are going to use [test_install.cpp](../downloadable_files/test_install.cpp). We are providing this file simply as an easy way to verify all the files are where they should be and you have correctly set up your template. Download this file so you can add it to the project.
+
+To add it to the project, right click on "Source Files" in the right-hand *Solution Explorer*. Select "Add" and then "Existing Item". Navigate to where you downloaded the file, and click "Add". The file will now appear in the Solution Explorer. Go ahead and right click it so it opens up. You can look through the code, but honestly, we will be covering writing your own OpenGL file later.
+
+At the top of the screen, click "Build" and then "Build Solution" or simply hit "F7". This should pop up an "Output" window at the bottom of the screen. If everything was set up correctly, you should see something like "Build: 1 succeeded, 0 failed..." If you don't, try to noodle through any build failures or reach out for help.
+
+Once the solution is built, we want to run it. To do this we can hit "Ctrl-F5" or click "Debug" and then "Start Without Debugging". This should bring up two windows. The top window should be "OpenGL Test" and it should have a lovely shade of Beaver Orange. The other window should be a terminal and it should display:
+
+```
+GLM vector: 1
+SOIL2 image loaded: 512x512
+```
+If you see anything else, that means there is a problem. Any failures should have a message to highlight which part isn't working. Again, if you need help figuring it out, reach out and we would be happy to assist you.
+
+# Conclusion
+
+In this exploration, we have installed all the software and frameworks required to create an OpenGL program. We have also created a Visual Studio template that we can use for all our projects so we can streamline our process. Finally, we tested that all of this worked correctly. Now we are ready to learn actual Graphics *stuff*.
