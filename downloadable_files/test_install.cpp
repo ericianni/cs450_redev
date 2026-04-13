@@ -4,6 +4,13 @@
 #include <SOIL2/SOIL2.h>  // For SOIL2
 #include <iostream>
 
+void init(GLFWwindow* window) {}
+
+void display(GLFWwindow* window, double currentTime) {
+    glClearColor(0.84f, 0.25f, 0.03f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
 int main() {
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW" << std::endl;
@@ -13,16 +20,16 @@ int main() {
     GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Test", NULL, NULL);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
         return -1;
     }
 
     glfwMakeContextCurrent(window);
-    glewExperimental = GL_TRUE;
+    glewExperimental = GL_TRUE;  // Ensures all extensions are loaded including Core Profiles
     if (glewInit() != GLEW_OK) {
         std::cerr << "Failed to initialize GLEW" << std::endl;
         return -1;
     }
+    glfwSwapInterval(1);  // enables Vsync
 
     // Test GLM
     glm::vec3 vec(1.0f, 0.0f, 0.0f);
@@ -40,8 +47,7 @@ int main() {
     }
 
     while (!glfwWindowShouldClose(window)) {
-        glClearColor(0.84f, 0.25f, 0.03f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        display(window, glfwGetTime());
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

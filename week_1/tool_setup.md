@@ -53,7 +53,7 @@ You should now have a folder in your GL directory called something like "glfw-3.
 
 # GLEW
 
-I am pretty sure VS is still downloading, so let's grab some pieces we need. Now, we are going to aquire GLEW. This is a very technical library that basically preloads the function points from the graphics drivers so we can actually use them in our applications.
+I am pretty sure VS is still downloading, so let's grab some pieces we need. Now, we are going to aquire GLEW. This is a very technical library that basically preloads the function pointers from the graphics drivers so we can actually use them in our applications.
 
 Go to the GLEW website (https://glew.sourceforge.net/) and click the "Windows 32-bit and 64-bit" binaries link. Again, extract the contents into the GL folder. Rename this new folder to "GLEW".
 

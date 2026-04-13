@@ -16,6 +16,12 @@ In this course, we are using OpenGL with C++. This is the most common "flavor" o
 
 By using C++ we can enjoy the API calls matching the rest of our code. It also means that writing our shader code in GLSL will feel similar. If we were to use another language like Python for the application layer, that would create a weird disconnect to the shader code.
 
+# What About All That Other Stuff We Installed?
+
+Good question! Remember, OpenGL is a specification for a cross-platform API. This means it doesn't actually handle putting pixels directly to the scene. OpenGL prefers, and rightly so, to the actual individual target platforms. So, OpenGL will render our entire scene to a frame buffer, and then it is up to the specific platform to convert that to an actual image on the screen. Similarly, OpenGL doesn't concern itself with how an application gets input; it only cares about calls to the API.
+
+Therefore, we need to have libraries to do things like create windows, get keyboard and mouse input, and load our shader code into our applications. Over the course of this term, we will go over all these things, but for now, just know that they are separate from OpenGL.
+
 # Conclusion
 
 We aren't going harp on the distinction between OpenGL as a specification vs OpenGL as an API, we are going to be more result focused. That said, it is something you should keep in the back of your mind in case you ever want to develop using something other than C++. I will likely refer to the syntax of the function calls as the OpenGL API, as that is the term I was exposed when learning this material, so I will forgive you for being impercise with your language as well!
