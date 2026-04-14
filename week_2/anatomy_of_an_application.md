@@ -94,7 +94,40 @@ Notice that both of these start with `gl`. These are our first honest-to-goodnes
 
 The first specifies what color we want to use when we *clear* the screen. When it comes to clearning, imagine you are wiping everything off the screen, and it is replaced with the `glClearColor`. 
 
-Colors in OpenGL default to RGB (Red, Green, and Blue). RGB color is something called *Additive Color*.
+Colors in OpenGL default to RGB (Red, Green, and Blue). RGB color is something called *Additive Color*. Many of you likely know how to mix colors using the primary colors (Blue, Red, and Yellow). Well, that doesn't work with computer screens. The monitor will use RGB color.
+
+Don't believe me? Take your phone and zoom in on your screen to see that each pixel is made up of LEDs of red, green, and blue. Here is an example of me doing just that on this very document!
+
+![Close up of my computer screen showing red, green, and blue LEDs](../images/week_2/rgb_pixels.jpg)  
+<figcaption>Close of my computer screen showing red, green, and blue LEDs</figcaption>
+
+We won't go into detail on the science behind additive color, because we only need to know that we need to use RGB color for our work in this course.
+
+Now, some of you may already be familiar with RGB colors. You likely have seen RGB colors formatted as either a series of three numbers ranged from 0-255 (ordered Red, Green, and then Blue). For example, (215, 63, 9) represents Beaver Orange. We can also represent this as a HEX number: #D73F09. 
+
+In the code we have `glClearColor(0.84f, 0.25f, 0.03f, 1.0f)`, which represents Beaver Orange. But, wait! That doesn't look anything like either RGB or HEX color codes we just went over!
+
+Yeah, OpenGL likes to have many things range from 0-1.0 (normalized floats). So, if we want to convert an RGB representation into something OpenGL can use, we will need to divide each RGB value by 255.0. You can do this by hand, write a function to do the conversion for you, or use an online converter.
+
+But, wait! `glClearColor` had *four* parameters, not the expected three needed for RGB. You are right! What do you think that last float is going to be used for?
+
+**Hide Answer: It is the Alpha value! This controls the *opacity* of color. A value of '1.0' is 100% opaque. Typically, we will stick with '1.0' when specifying colors and just let our shaders handle any translucency needed.**
+
+Once we set our *clear color*, we want to actually clear out the frame buffer and replace all the pixels with our clear color. `GL_COLOR_BUFFER_BIT` represents the buffer that is currently targeted for color writing (see front and back buffer discussion below). When we use this built-in *enum* with `glClear()`, we wipe the buffer and replace it with beautiful Beaver Orange!
+
+One last thing about the `display()` function. We don't just send the current context (`window`), but we also pass in the current time (`glfwGetTime()`). We don't use this in our sample code, but later we will need to know how much time has passed between rendering passes. This will help us maintain consistent, and therefore smooth, framerates.
+
+We are almost done! We have just a few more elements to cover when it comes to creating an OpenGL app.
+
+Under the `display()` function call, we have `glfwSwapBuffers(window);`. OpenGL is uses two buffers to manage the images on the screen. There is a **front buffer** *and* a **back buffer**. OpenGL writes into the *back buffer* during our `display()` function, and then that buffer is swapped into the *front buffer*. Why do you think it works this way?
+
+**Hide Answer: What do you think would happen if OpenGL only used one buffer and wrote into it while also displaying it to the user? Well, we would end up with having some wild situations where part of the screen is being overwritten while part of the screen shows the last rendering pass. This would cause tearing and would make it very difficult for the viewer. So, the back buffer is only swapped once it is fully rendered and ready to be viewed.
+
+The last element in `main()` is `glfwPollEvents()`. This is how we are going to monitor input from the user. Astute students may realize that our `main()` loop executes once for each frame rendered. We want to collect and then process any input the user has made since the last frame was generated. GLFW maintains an *event queue* and `glfwPollEvents()` pulls all the events that haven't been processed for processing. 
+
+In our sample code, we don't do this manually, but GLFW has some default behavior built in, like closing the window if the "X" is clicked. This event would cause our `while` loop to terminate. We will be going into input processing more later in the course.
+
+Finally, just like I am always telling my children, we need to clean up after ourselves. We do this by telling our application to destory the window (`glfwDestroyWindow(window)`) and to shut down GLFW (`glfwTerminate()`). Failing to do these two things won't cause the world to end, but it is the right and proper way of going about business and we want to be right and proper!
 
 # Conclusion
 
