@@ -31,3 +31,6 @@
 * To Do
   * Add Primitive Assembly stage to pipeline diagram
   * Assign CLOs to each exploration/assignment
+
+* Quiz Questions
+  * Which stages are programmable?
