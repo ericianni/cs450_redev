@@ -75,7 +75,7 @@ When the GPU sets out to turn this scene into something that can fit into the fr
 
 Why do we want the fragments to have a depth value?
 
-**HIDE ANSWER: If you said, "Because we want to know which fragment to draw if there are more than one for a pixel," you would be correct! We don't want to waste time redrawing the same pixel over and over, so the GPU will use something called *Z-culling* where only the fragment closest to the camera is drawn**
+**HIDE ANSWER: If you said, "Because we want to know which fragment to draw if there are more than one for a pixel," you would be correct! We don't want to waste time redrawing the same pixel over and over, so the GPU will use something called *Z-culling* where only the fragment closest to the camera is drawn. OpenGL doesn't do this by default and instead has to be told using `glEnable(GL_DEPTH_TEST);` Furthermore, while some GPUs perform some culling in the rasterizer, the phase maily responsible is *Pixel Operations*.**
 
 ## Fragment Shader
 
@@ -89,10 +89,30 @@ Let's take a look at our example scene that we put the grid over. For each grid-
 
 The Fragment Shader is going to be responsible for calculating how the light affects each fragment. This shader will also handle any texture mapping needed. Taking all these elements into consideration, we will tell the Fragment Shader how to blend all these factors into a final color. 
 
-For our little example the lighting color has already been applied and there are no textures, so now we just need to fill each box with the appropriate color. We are going to keep it simple and just use the average color that shows up in each grid-square. But before we do, what do you think happens if there are two colors from two different objects?
+For our little example the lighting color has already been applied and there are no textures, so now we just need to fill each box with the appropriate color. We are going to keep it simple and just use the average color that shows up in each grid-square. Once the fragment shader determines the correct color it sets `gl_FragColor` and passes it on to *Pixel Operations*.
 
-**HIDE ANSWER: This is a bit of a trick question, because our z-culling will only leave fragment data for the primitive closest to the camera. Therefore, in our scene, if any grid-square has both red and blue, the color will always be red as it is closer to the camera.
+## Pixel Operations
+
+During this phase, OpenGL performs the final steps to push pixels to the screen. *Pixel Operations* does many things, but for now we want to focus on *Hidden Surface Removal* (HSR). This is where the fragment depth comes into play. 
+
+As pixel colors come out of the Fragment Shader, OpenGL attempts to place them in the corresponding slot in the Frame Buffer. As pixels are drawn into the *Frame Buffer*, a *depth* value for that pixel is loaded in to the *Depth Buffer*. If a new pixel is generated for the same slot, OpenGL will only keep the one closest to the camera (if z-culling is enabled). By comparing the new pixel's depth value to that in the *Depth Buffer*, OpenGL is able to determine which one is closer to the camera. If any changes must be made, then both the *Frame Buffer* and *Z-Buffer* are updated before the next fragment is processed. 
+
+As mentioned above, some GPUs perform z-culling *before* this stage and it is handled by the hardware itself to discard multiple fragments at once if they are completely obscured. This happens after rasterization before any fragments are sent to the Fragment Shaders. This "Early Depth Test" is an optimization as it reduces greatly the amount of cycles wasted runing shaders on fragments that will never be seen.
+
+So, why do we still need *Pixel Operations*? Well, the early z-culling only works under fairly limited conditions. For example, if a scene incorporates transparency, which requires blending, the fragments can't be culled early. Given how advanced modern computer generated scenes are, we absolutely cannot count on early z-culling exclusively, so *Pixel Operations* is still required in most instances. Luckily, this phase is non-programmable, so even if we don't optimize our shaders for early z-culling, it will still be done here if we have turned on HSR with `glEnable(GL_DEPTH_TEST);`.
+
+## Framebuffer
+
+This isn't part of our pipeline, but it is the ultimate result so I felt it appropriate to include here. After Pixel Operations, the Frame Buffer is full of color values ready to be sent to the screen.[^2] We do this by calling `glfwSwapBuffers(window);`. This moves the currently render buffer to the "back" and moves the just populated buffer to the "front." Now when we do our next rendering pass, we will clear the "back" buffer and start writing new data. 
+
+![A pixelated scene consisting of a small blue sphere behind and to the right of a large red sphere with a 20x20 pixel grid](../images/undesignated_images/spheres_20px_pixelated_grid.png)
+<figcaption>A pixelated scene consistiong of a small blue sphere behind and to the right of a large red sphere with a 20x20 pixel grid</figcaption>
 
 
+Quick Mental Model of the Pipeline:
+* Rasterization - "Which pixel does this polygon touch? Generate fragment for each.
+* Fragement Shader - "What color/effects need to be applied for this given pixel?"
+* Pixel Operations - "Which candidate pixel actually wins out?
 
-[^1]: Taking a single point and expanding it into a 2D object that is always facing the camera, thus giving the impression of it being 3D.
+[^1]: Taking a single point and expanding it into a 2D object that is always facing the camera, thus giving the impression of it being 3D.  
+[^2]: Technically, the Frame-Buffer can send the data anywhere, including a file. This allows for some cool effects using something called multi-pass rendering. This allows for things like shadow mapping, drawing outlines around objects, and things like light blooms and motion blurs.
