@@ -94,7 +94,7 @@ Notice that both of these start with `gl`. These are our first honest-to-goodnes
 
 The first specifies what color we want to use when we *clear* the screen. When it comes to clearning, imagine you are wiping everything off the screen, and it is replaced with the `glClearColor`. 
 
-Colors in OpenGL default to RGB (Red, Green, and Blue). RGB color is something called *Additive Color*. Many of you likely know how to mix colors using the primary colors (Blue, Red, and Yellow). Well, that doesn't work with computer screens. The monitor will use RGB color.
+Colors in OpenGL default to RGB (Red, Green, and Blue). RGB color is something called *Additive Color*.[^4] Many of you likely know how to mix colors using the primary colors (Blue, Red, and Yellow). Well, that doesn't work with computer screens. The monitor will use RGB color.
 
 Don't believe me? Take your phone and zoom in on your screen to see that each pixel is made up of LEDs of red, green, and blue. Here is an example of me doing just that on this very document!
 
@@ -131,6 +131,11 @@ Finally, just like I am always telling my children, we need to clean up after ou
 
 # Conclusion
 
+You may have noticed that we didn't actually *draw* anything in our window. I know you are all eager to get to the pixels, but I wanted to ensure we all had the same understanding of what goes into an OpenGL application. Going forward, feel free to use the code contained within `test_install.cpp` to quickly get your projects up and running.
+
+In order to start drawing pixels, we need to go over *shaders*, which is coming up next!
+
 [^1]: Nota Bene is Latin for "note well." In other words, "pay attention."
 [^2]: [GLFW Documentation](https://www.glfw.org/docs/latest/)
 [^3]: [Screen Tearing](https://www.reinterpretcast.com/screen-tearing)
+[^4]: [Additive & Subtractive Color Models(https://pavilion.dinfos.edu/Article/Article/2355687/additive-subtractive-color-models/)]
