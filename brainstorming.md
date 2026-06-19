@@ -1,13 +1,42 @@
 # Week 1
-* Ask students their *why* in an Ed post
+* Ask students their *why* in an Ed post - DONE
+* Graphics History - DONE
+* Tool Setup - DONE
+* What is OpenGL - DONE
 * Need to add a Kaltura module
 * Page on Pioneers and their careers
   * Or a page per module
 * Page on Paradigms - Hardware vs Software
 
+# Week 2
+* Anatomy of an App - DONE
+* Coordinate Systems - DONE
+
+# Pages that are needed
+* OpenGL Pipeline - DONE
+* Space
+  * Local
+  * World
+  * Eye
+* Projection Matrices (GLM?)
+  * Perspective
+  * Orthographic
+* Look-at-Matrix (GLM?)
+* VBOs
+* Transforms w/ Matrices (GLM?)
+  * Translation
+  * Scaling
+  * Rotation
+* Maths overview?
+* Anatomy of a Shader
+  * Vertex Shader
+  * Fragment Shader
+* GLSL Errors
+* Animation
+
 # Module Ideas
 * Coordinate Systems
-  * RH vs LH
+  * RH vs LH - DONE
   * Ortho vs Perspective
 * OpenGL Topologies
   * How to label points (ccw)
@@ -19,7 +48,7 @@
   * Scaling
   * How compound transforms work
 * Shader Types
-* Harware vs Software vs GPU Graphics
+* Hardware vs Software vs GPU Graphics
 * Parts of an OpenGL Program
   * Building Lists
   * Display loop

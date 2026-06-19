@@ -1,10 +1,11 @@
+# CLOs
+* Describe the names and functions of the elements of the graphics pipeline, as well as the input and output of each stage
+
 # Introduction
 
 I know, I know. I am throwing a lot of non-code stuff at you, and I am sorry, but it is important to have a mental model of how the *OpenGL Pipeline* is structured. This will help you better understand how your code will be processed by the GPU.
 
 # OpenGL Pipeline
-
-## Pipeline Overview
 
 Why is it called a "pipeline"? This is just the term we use when it comes to how the data is processed. To put it simply, data goes in one end, has things done to it, and something comes out the other end (pixels on the screen).
 
