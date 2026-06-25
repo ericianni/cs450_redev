@@ -11,6 +11,8 @@
 # Week 2
 * Anatomy of an App - DONE
 * Coordinate Systems - DONE
+* Let's Get to the Point!
+* Simple Animation
 
 # Pages that are needed
 * OpenGL Pipeline - DONE
@@ -33,6 +35,7 @@
   * Fragment Shader
 * GLSL Errors
 * Animation
+* Read source code from file
 
 # Module Ideas
 * Coordinate Systems

@@ -61,6 +61,11 @@ We will need to set both the *major version* (the number before the decimal) and
 * `glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);`
 * `glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);`
 
+We also need to specify that we are using the "core" profile of Version 4.1. This just means that we are only going to allow the fully programmable pipeline by removing all the fixed-function methods that are now deprecated. We also need to add a special line to make MacOS happy.
+
+* `glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);`
+* `glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //Needed for MacOS`
+
 If for some reason the system we are trying to run this code doesn't support OpenGL 4.1, our window creation will fail. We would then need to investigate which version of OpenGL currently was available and update if necessary/possible. 
 
 We now need to tell GLFW what our current *context* is. The context is just the current state of OpenGL we wish to use. To set the context, we will use our `window` pointer.
@@ -70,9 +75,9 @@ After this statement, you will see `glewExperimental = GL_TRUE;` This needs to b
 
 We now need to verify that GLEW is working by calling `glewInit() != GLEW_OK` in an if statement. If it isn't OK, we display an error message and exit.
 
-Now we need to enable *Vertical Sync* (VSync). We do this to help reduce *screen tearing*.[^3]
+Now we need to enable *Vertical Sync* (VSync). We do this to help reduce *screen tearing*.[^3] `glfwSwapInterval(1)` is how we enable *VSync*.
 
-Next, we want to send our currentl window context to our `init()` function. Considering that `init()` is currently *empty*, this doesn't do anything for us at this time, but soon we will be using `init()` to do a lot of setup for our application and it will need the window context.
+Next, we want to send our current window context to our `init()` function. Considering that `init()` is currently *empty*, this doesn't do anything for us at this time, but soon we will be using `init()` to do a lot of setup for our application and it will need the window context.
 
 For now, we are going to skip ahead past the testing file's code about glm and SOIL2. These lines of code were only for testing purposes, and we will discuss how to use them at a later point.
 

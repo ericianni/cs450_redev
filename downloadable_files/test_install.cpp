@@ -17,6 +17,10 @@ int main() {
         return -1;
     }
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //Needed for MacOS`
     GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Test", NULL, NULL);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
@@ -29,7 +33,7 @@ int main() {
         std::cerr << "Failed to initialize GLEW" << std::endl;
         return -1;
     }
-    glfwSwapInterval(1);  // enables Vsync
+    glfwSwapInterval(1);  // enables Vsync3
 
     // Test GLM
     glm::vec3 vec(1.0f, 0.0f, 0.0f);
