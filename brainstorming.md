@@ -11,10 +11,11 @@
 # Week 2
 * Anatomy of an App - DONE
 * Coordinate Systems - DONE
-* Let's Get to the Point!
+* Let's Get to the Point! - DONE
 * Simple Animation
 
 # Pages that are needed
+* OpenGL Topologies
 * OpenGL Pipeline - DONE
 * Space
   * Local

@@ -1,3 +1,6 @@
+# CLOs
+* CLO 5 - Explain the elements of a computer graphics framebuffer.
+
 # Introduction
 
 In order to write an OpenGL application, we need to use the OpenGL API. As mentioned, we will be using the C++ "flavor" of OpenGL's API. It will allow us to tell the computer what we want it to do on the way to displaying our 2D and 3D scenes. We will also need to utilize some of those frameworks we installed in Week 1. Remember, modern OpenGL has done away with much of the built-in functions and relies on developers specifying their own, or, more commonly, using 3rd party libraries.

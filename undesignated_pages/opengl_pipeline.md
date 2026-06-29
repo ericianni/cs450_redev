@@ -1,5 +1,5 @@
 # CLOs
-* Describe the names and functions of the elements of the graphics pipeline, as well as the input and output of each stage
+* CLO 2 - Describe the names and functions of the elements of the graphics pipeline, as well as the input and output of each stage.
 
 # Introduction
 

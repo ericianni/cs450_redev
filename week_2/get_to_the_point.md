@@ -1,5 +1,5 @@
 # CLOs
-* CLO10 - Create and use an OpenGL vertex and fragment shader
+* CLO10 - Create and use an OpenGL vertex and fragment shader.
 
 # Introduction
 
