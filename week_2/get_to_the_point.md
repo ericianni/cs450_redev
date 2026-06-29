@@ -25,7 +25,7 @@ Shader code can be directly written into the `.cpp` file, but that is a bad habi
 
 ## Anatomy of a Shader
 
-Shader source code uses GLSL (OpenGL Shader Language), which follows most of the same syntax requirements a C/C++. Let's look at a *generic* shader.
+Shader source code uses GLSL (OpenGL Shader Language), which follows most of the same syntax requirements as C/C++. Let's look at a *generic* shader.
 
 ```GLSL
 #version 410 core
@@ -66,7 +66,7 @@ void main() {
 
 As we mentioned above, every vertex shader needs to specify a `gl_Position` before calling it quits. In this example, we are specifying that our vertex is at the origin, where X, Y, and Z all equal 0.0. 
 
-If we can specify any point in a 3D world using only three values (X, Y, and Z), why do you we need a fourth value? That is a good question! It is for *convenience* (mostly). Later, we will see why having a `vec4` instead of a `vec3` is very helpful when it comes to matrix multiplication. For know, just trust the process.
+If we can specify any point in a 3D world using only three values (X, Y, and Z), why do you we need a fourth value? That is a good question! It is for *convenience* (mostly). Later, we will see why having a `vec4` instead of a `vec3` is very helpful when it comes to matrix multiplication. For now, just trust the process.
 
 That's it! That is the entire vertex shader! Easy, right!?
 
@@ -215,7 +215,7 @@ This is where we call `buildShaderProgram()` and finally set the value for our g
 
 We also need to tell OpenGL how many VAOs to generate, and we need to tell it where to store them once generated (hint: in `vao`). We do this with `glGenVertexArrays(numVAOs, vao)`.
 
-Then we need to tell OpenGL which VAO we want to have *active*. This basically tells OpenGL which vertex array we wish to use when we call `glUseProgram()`. We specify which VAO to use by *binding* it with `glBindVertexArray(vao[0])`. Note, even though we hardcoded our vertex into the shader code, we still need to go through these steps. Also note that `glBindVertexArray` may need to be called in other places other than `init()`, depending on how we are organizing our application. It is very likely we will want to do the binding closer to the actually drawing function calls, but for now this is fine.
+Then we need to tell OpenGL which VAO we want to have *active*. This basically tells OpenGL which vertex array we wish to use when we call `glDrawArrays()`. We specify which VAO to use by *binding* it with `glBindVertexArray(vao[0])`. Note, even though we hardcoded our vertex into the shader code, we still need to go through these steps. Also note that `glBindVertexArray` may need to be called in other places other than `init()`, depending on how we are organizing our application. It is very likely we will want to do the binding closer to the actually drawing function calls, but for now this is fine.
 
 ### display() Updates
 
@@ -240,6 +240,10 @@ Now rebuild (F7) and rerun (Ctrl-F5) to see what this small change does. It shou
 ![Window with blue square in the center](../images/week_2/blue_square.png)
 
 You may have guessed what `glPointSize()` does; it adjusts the size of any pixel drawn. This really isn't something we want to get in the habit of doing. We would much rather use multiple vertices to define our shapes, which we will learn shortly. For now, it is just useful to make our efforts easier to see!
+
+# Quick Recap
+
+We covered 
 
 # Looking Forward
 
