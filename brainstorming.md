@@ -36,6 +36,7 @@
 * GLSL Errors
 * Animation
 * Read source code from file
+* Go over Layouts
 
 # Module Ideas
 * Coordinate Systems
@@ -51,6 +52,9 @@
   * Scaling
   * How compound transforms work
 * Shader Types
+* glDrawArray Modes
+  * GL_POINTS
+  * etc.
 * Hardware vs Software vs GPU Graphics
 * Parts of an OpenGL Program
   * Building Lists

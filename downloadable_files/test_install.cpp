@@ -35,6 +35,8 @@ int main() {
     }
     glfwSwapInterval(1);  // enables Vsync3
 
+    init(window);
+
     // Test GLM
     glm::vec3 vec(1.0f, 0.0f, 0.0f);
     std::cout << "GLM vector: " << vec.x << std::endl;
