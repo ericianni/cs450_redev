@@ -219,7 +219,7 @@ Then we need to tell OpenGL which VAO we want to have *active*. This basically t
 
 ### display() Updates
 
-When we call `glUseProgram(renderingProgram)` we are telling OpenGL which program we want to use when we begin drawing. We initiate the drawing using `glDrawArrays()`. Let's take a moment to look at the parameters:
+When we call `Program(renderingProgram)` we are telling OpenGL which program we want to use when we begin drawing. We initiate the drawing using `glDrawArrays()`. Let's take a moment to look at the parameters:
 
 * *mode* - GL_POINTS - tells OpenGL to draw each vertex as a single point
 * *first* - 0 - specifies the index within the active VAO where we want to start drawing (often this will be 0)
@@ -233,7 +233,7 @@ The rest of `get_to_the_point.cpp` is the same as our initial setup code, but wi
 
 Go ahead and build the solution (F7) and then run it (Ctrl-F5). You should now see a window pop up displaying our single blue pixel! Depending on the resolution of your monitor, you may need to squint to see the tiny spec. 
 
-You know what? This miniscule dot doesn't do our efforts justice. Let's really make it stand out! Go back into our `display()` function and add the following code before `glDrawArrays(...)`: `glPointSize(30.0f);`.
+You know what? This minuscule dot doesn't do our efforts justice. Let's really make it stand out! Go back into our `display()` function and add the following code before `glDrawArrays(...)`: `glPointSize(30.0f);`.
 
 Now rebuild (F7) and rerun (Ctrl-F5) to see what this small change does. It should look like this:
 
@@ -243,7 +243,24 @@ You may have guessed what `glPointSize()` does; it adjusts the size of any pixel
 
 # Quick Recap
 
-We covered 
+We covered a lot of ground with this exploration. I wanted to take a moment to highlight some key steps that need to be done before we can draw anything shader related to the screen.
+
+* Build shader program (`buildShaderProgram`)
+  * Load shader code from a file (`loadShaderSource`)
+  * Create shader program and get its ID (`glCreateShader`)
+  * Load shader source into the shader program (`glShaderSource`)
+  * Compile the shader (`glCompileShader`)
+  * Create rendering program and get its ID (`glCreateProgram`)
+  * Attach shader to program (`glAttachShader`)
+  * Link compiled shaders within the program (`glLinkProgram`)
+* Set up data to draw
+  * Generate VAO array (`glGenVertexArrays`)
+  * Bind a VAO to draw (`glBindVertexArray`)
+* Drawing
+  * Specify which program of shaders to use (`glUseProgram`)
+  * Draw bound VAO (`glDrawArrays`)
+
+Feel free to use this as a very loose checklist when setting out to write your own applications.
 
 # Looking Forward
 
@@ -258,5 +275,3 @@ In the coming explorations, we will learn:
 * Lighting
 * Texture mapping
 * Camera movement
-
-
