@@ -209,11 +209,11 @@ The last thing we need to do is *link* all the compiled shader code together, wh
 The last thing our `buildShaderProgram()` function does is return the ID of our newly built program.
 
 ### init() Updates
-In our first program, we left init empty. We weren't drawing anything, so we didn't need to specify any rendering program. Now that we are drawing a vertex, we need to ensure everything is set up correctly.
+In our first program, we left `init()` empty. We weren't drawing anything, so we didn't need to specify any rendering program. Now that we are drawing a vertex, we need to ensure everything is set up correctly.
 
 This is where we call `buildShaderProgram()` and finally set the value for our global `renderingProgram` variable.
 
-We also need to tell OpenGL how many VAOs to generate and we need to tell it where to store them once generated (hint: in `vao`). We do this with `glGenVertexArrays(numVAOs, vao)`. 
+We also need to tell OpenGL how many VAOs to generate, and we need to tell it where to store them once generated (hint: in `vao`). We do this with `glGenVertexArrays(numVAOs, vao)`.
 
 Then we need to tell OpenGL which VAO we want to have *active*. This basically tells OpenGL which vertex array we wish to use when we call `glUseProgram()`. We specify which VAO to use by *binding* it with `glBindVertexArray(vao[0])`. Note, even though we hardcoded our vertex into the shader code, we still need to go through these steps. Also note that `glBindVertexArray` may need to be called in other places other than `init()`, depending on how we are organizing our application. It is very likely we will want to do the binding closer to the actually drawing function calls, but for now this is fine.
 
@@ -225,4 +225,34 @@ When we call `glUseProgram(renderingProgram)` we are telling OpenGL which progra
 * *first* - 0 - specifies the index within the active VAO where we want to start drawing (often this will be 0)
 * *count* - 1 - specifies the number of indices to draw (one for our program)
 
-The shaders will be run on each vertex in the array: one after another. First, they will pass through the vertex shader and then the fragment shader.
+The shaders will be run on each vertex in the array: one after another. First, they will pass through the vertex shader and then the fragment shader. Remember, one of the reasons GPUs are so efficient, is that they don't have to wait for a vertex to be fully processed before pushing the next one into the pipeline. Therefore, we will have multiple vertices all flowing through our GPU on the way to the framebuffer.
+
+# Let's DRAW!
+
+The rest of `get_to_the_point.cpp` is the same as our initial setup code, but with some of the checks used to verify things were installed correctly removed. So, if you have been following along, you should have a new project (I named mine "Get to the Point") with two shader files and our OpenGL application code we just went over.
+
+Go ahead and build the solution (F7) and then run it (Ctrl-F5). You should now see a window pop up displaying our single blue pixel! Depending on the resolution of your monitor, you may need to squint to see the tiny spec. 
+
+You know what? This miniscule dot doesn't do our efforts justice. Let's really make it stand out! Go back into our `display()` function and add the following code before `glDrawArrays(...)`: `glPointSize(30.0f);`.
+
+Now rebuild (F7) and rerun (Ctrl-F5) to see what this small change does. It should look like this:
+
+![Window with blue square in the center](../images/week_2/blue_square.png)
+
+You may have guessed what `glPointSize()` does; it adjusts the size of any pixel drawn. This really isn't something we want to get in the habit of doing. We would much rather use multiple vertices to define our shapes, which we will learn shortly. For now, it is just useful to make our efforts easier to see!
+
+# Looking Forward
+
+Believe it or not, we really have learned a lot. Yes, I know you are thinking, "It is just a pixel! I want to render complex scenes not just a single engorged pixel!", but it is very important to understand the nuts and bolts well before moving on. 
+
+In the coming explorations, we will learn:
+
+* Rendering more than just pixels
+* Transformations
+* Animation
+* Rendering objects
+* Lighting
+* Texture mapping
+* Camera movement
+
+
