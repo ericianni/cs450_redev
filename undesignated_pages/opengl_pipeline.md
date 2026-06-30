@@ -122,9 +122,9 @@ So, we just went over quiet a bit of information and much of it likely makes lit
 Quick Mental Model of the Pipeline:
 
 * Vertex Shader - Transform each and every vertex in the scene. This includes displacing vertices and assigning texture coordinates.
-* Primitive Assembly - Group up the vertices in "shapes" (points, lines, triangles).
 * Tessellation Shaders (optional) - Adds detail to objects by subdividing on the fly.
 * Geometry Shader (optional) - Add or remove vertices from primitives.
+* Primitive Assembly - Group up the vertices in "shapes" (points, lines, triangles).
 * Rasterization - Which pixel does this polygon touch? Generate fragment for each.
 * Fragment Shader - What color/effects need to be applied for this given pixel?
 * Pixel Operations - Which candidate pixel actually will be written to the frame buffer?

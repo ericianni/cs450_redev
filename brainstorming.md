@@ -66,7 +66,7 @@
 * Animations
 
 * To Do
-  * Add Primitive Assembly stage to pipeline diagram
+  * Add Primitive Assembly stage to pipeline diagram - DONE
   * Assign CLOs to each exploration/assignment
 
 * Quiz Questions

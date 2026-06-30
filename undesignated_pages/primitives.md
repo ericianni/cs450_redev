@@ -3,6 +3,7 @@
 
 # Introduction
 
-Think back to when we went over the [OpenGL Pipeline](../undesignated_pages/opengl_pipeline.md). What came after *Vertex Processing*?
+Think back to when we went over the [OpenGL Pipeline](../undesignated_pages/opengl_pipeline.md). What came right before *Rasterization*?
 
-**HIDE ANSWER** That's right! After the vertex shader is processed, the pipeline moves into *Primitive Processing*.
+**HIDE ANSWER** That's right! After all the shaders are processed (excluding the Fragment Shader), the pipeline moves into *Primitive Assembly*. But what is a *primitive*?
+
