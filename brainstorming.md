@@ -38,6 +38,8 @@
 * Animation
 * Read source code from file
 * Go over Layouts
+* Talk about wireframe rendering (glPolygonModel)
+* Camera Control
 
 # Module Ideas
 * Coordinate Systems
@@ -68,6 +70,14 @@
 * To Do
   * Add Primitive Assembly stage to pipeline diagram - DONE
   * Assign CLOs to each exploration/assignment
+  * Add tinyobjloader to the Setup (and test file?)
 
 * Quiz Questions
   * Which stages are programmable?
+
+* Possible ordering of topics
+  * Discuss Primitives
+  * Discuss VBOs
+  * Build vertices by hand and render (flat?)
+  * Demonstrate loading an object file
+  * Demonstrate animation with object file
