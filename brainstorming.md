@@ -11,8 +11,51 @@
 # Week 2
 * Anatomy of an App - DONE
 * Coordinate Systems - DONE
+* 3D Math overview
+  * Points 
+    * Homogenous notation
+    * vec4
+  * Matrices
+    * Identity
+    * Operations
+      * Transpose
+      * Addition
+      * Multiplication
+        * Concatenation
+      * Inverse
+  * Transforms
+    * Translation
+    * Scaling
+    * Rotation
+  * Vectors
+    * Operations
+      * Addition and subtraction
+      * Normalize
+      * Dot product
+        * finds the angle between two vectors
+          * Mention normalizing first theta = arcos (V * W)
+          * Perpendicular and parallel
+        * finds vector's magnitude
+      * Cross product
+        * can be used to find the surface normal
+  * Local and World Space
+    * local - object/model
+    * world - shared space
+  * Projection Matrices
+    * Perspective
+    * Orthographic
+  * Eye Space
+    * Go over camera
+  * Model-View-Projection
+    * pass in mv and then projection
+  
+
 * Let's Get to the Point! - DONE
 * Simple Animation
+
+# Week 3
+* Loading Data (VBOs and VAOs)
+* Provide "buildProgram" function that loads shaders
 
 # Pages that are needed
 * OpenGL Topologies
@@ -66,6 +109,7 @@
 * Rasterization
 * Detecting Errors
 * Animations
+* Write a Object loading function and provide students
 
 * To Do
   * Add Primitive Assembly stage to pipeline diagram - DONE

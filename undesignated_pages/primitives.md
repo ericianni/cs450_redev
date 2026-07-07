@@ -61,7 +61,7 @@ This primitive is very useful for creating polygonal shapes or outlines of objec
 
 ## Triangle Primitives
 
-In many ways, *triangles* are the workhorse of any graphics rendering system. While you may hear of some systems using "quads", remember, each quad can be broke up into two triangles. In fact, many 3D art tools will convert the quads used in the editors to triangles when exporting for use when rendering.
+In many ways, *triangles* are the workhorse of any graphics rendering system. While you may hear of some systems using "quads", remember, each quad can be broken up into two triangles. In fact, many 3D art tools will convert the quads used in the editors to triangles when exporting for use when rendering.
 
 One reason triangles are preferred for rendering, is that, by definition, they must be *planar*. This means that no matter where in 3D space the three vertices are, it is possible to draw a flat surface that all intersect with. This is not true with quads. Additionally, with triangle meshes[^4], we don't have to worry about the issue of having concave polygons, which cause issues with oh so many things: rendering, collision detection, and pathfinding (to name a few).
 
