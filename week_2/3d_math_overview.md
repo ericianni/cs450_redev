@@ -97,10 +97,7 @@ A_{00} & A_{10} & A_{20} & A_{30} \\
 A_{01} & A_{11} & A_{21} & A_{31} \\
 A_{02} & A_{12} & A_{22} & A_{32} \\
 A_{03} & A_{13} & A_{23} & A_{33}
-\end{bmatrix}=
-$$
-$$
-\begin{bmatrix}
+\end{bmatrix}=\begin{bmatrix}
 A_{00} & A_{01} & A_{02} & A_{03} \\
 A_{10} & A_{11} & A_{12} & A_{13} \\
 A_{20} & A_{21} & A_{22} & A_{23} \\
@@ -133,36 +130,7 @@ A+a & B+b & C+c & D+d \\
 E+e & F+f & G+g & H+h \\
 I+i & J+j & K+k & L+l \\
 M+m & N+n & O+o & P+p
-\end{bmatrix}
-$$
-
-=
-
-$$
-\begin{bmatrix}
-A & B & C & D \\
-E & F & G & H \\
-I & J & K & L \\
-M & N & O & P
-\end{bmatrix}
-$$
-
-\+
-
-$$
-\begin{bmatrix}
-a & b & c & d \\
-e & f & g & h \\
-i & j & k & l \\
-m & n & o & p
-\end{bmatrix}
-$$
-
-
-**Matrix Addition**
-
-$$
-\begin{bmatrix}
+\end{bmatrix}=\begin{bmatrix}
 A & B & C & D \\
 E & F & G & H \\
 I & J & K & L \\
@@ -172,11 +140,6 @@ a & b & c & d \\
 e & f & g & h \\
 i & j & k & l \\
 m & n & o & p
-\end{bmatrix}=\begin{bmatrix}
-A+a & B+b & C+c & D+d \\
-E+e & F+f & G+g & H+h \\
-I+i & J+j & K+k & L+l \\
-M+m & N+n & O+o & P+p
 \end{bmatrix}
 $$
 
