@@ -331,6 +331,7 @@ The math for rotations is a bit tricky. Luckily, a gentlman named Leonhard Euler
 To use Euler Angles, we just need to specify how much we want to rotate (in *radians*) and provide an axis to rotate around. By imagining our axis passing through the origin, we can use a simple vector to describe our axis: (x, y, z). Now we just do the math (shown) below to calculate how much to move each vertex in each dimension to produce the desired rotation.
 
 **Rotation around X by θ:**
+
 $$
 \begin{pmatrix}
 X' \\
@@ -351,6 +352,7 @@ Z \\
 $$
 
 **Rotation around Y by θ:**
+
 $$
 \begin{pmatrix}
 X' \\
@@ -371,6 +373,7 @@ Z \\
 $$
 
 **Rotation around Z by θ:**
+
 $$
 \begin{pmatrix}
 X' \\
