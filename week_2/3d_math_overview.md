@@ -85,7 +85,11 @@ My response to that would be, "Wow, you feel strongly about this, and rightfully
 
 ## Operations
 
+A matrix isn't much use unless we can *do* something with it. We are now going to cover how we can manipulate matrices to produce desired results. Please note, when we talk about matrix operations, we will typically place the "result" on the left-hand side of the `=`. This is because the order in which you do matrix math is important. In the context of 3D graphics, we will be going right-to-left when applying operations. Therefore, our result is placed on the left to mirror how we will assign the resultant value to variables in our code.
+
 ### Transpose
+
+When you *transpose* a matrix you "flip" the rows and columns. In other words, Row 1 is rotated to become Column 1, and so on. Below you will see the *T* in the corner of the matrix, which signals *transpose*.
 
 $$
 \begin{bmatrix}
@@ -94,17 +98,58 @@ A_{01} & A_{11} & A_{21} & A_{31} \\
 A_{02} & A_{12} & A_{22} & A_{32} \\
 A_{03} & A_{13} & A_{23} & A_{33}
 \end{bmatrix}=
-$$ 
+$$
 $$
 \begin{bmatrix}
 A_{00} & A_{01} & A_{02} & A_{03} \\
 A_{10} & A_{11} & A_{12} & A_{13} \\
 A_{20} & A_{21} & A_{22} & A_{23} \\
 A_{30} & A_{31} & A_{32} & A_{33}
-\end{bmatrix}^T 
+\end{bmatrix}^T
 $$
 
+So, what do we need to transpose a matrix? 
+
+When we move, rotate, or scale our models using a transformation matrix, it works great for vertices (points). However, it can distort our *normal vectors* — the arrows that point perpendicular to a surface and are critical for lighting.
+To correctly transform normals, we multiply them by the *inverse transpose* of the transformation matrix. This keeps them pointing in the right direction.
+
+We will learn about the *inverse* of a matrix shortly.
+
+Both GLM and GLSL have built-in functions to transpose a matrix.
+
+```c++
+glm::transpose(mat4); // GLM transpose function
+
+transpose(mat4); // GLSL transpose function
+```
+
 ### Addition
+
+Matrix *addition* is *very* simple, but it requires that the matrices being added are the same "shape" (i.e. same dimensions). We just need to add the elements from one matrix to the coorisponding elements in the other matrix (see below).
+
+$$
+\begin{bmatrix}
+A+a & B+b & C+c & D+d \\
+E+e & F+f & G+g & H+h \\
+I+i & J+j & K+k & L+l \\
+M+m & N+n & O+o & P+p
+\end{bmatrix} 
+=
+\begin{bmatrix}
+A & B & C & D \\
+E & F & G & H \\
+I & J & K & L \\
+M & N & O & P
+\end{bmatrix}
++
+\begin{bmatrix}
+a & b & c & d \\
+e & f & g & h \\
+i & j & k & l \\
+m & n & o & p
+\end{bmatrix}
+$$
+
 ### Multiplication
 * Concatenation
 ### Inverse
