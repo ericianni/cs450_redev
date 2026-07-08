@@ -143,7 +143,47 @@ m & n & o & p
 \end{bmatrix}
 $$
 
+Adding two matrices together in with GLM and in GLSL is trivial; we use the `+` operator.
+
+```C++
+glm::mat4 result = matA + matB; // GLM matrix addition
+
+mat4 result = matA + matB; // GLSL matrix addition
+```
+
+If I am being honest with you, we won't be doing much matrix addition, but we will be doing a lot of what comes next!
+
 ### Multiplication
+
+Matrix *multiplication* is going to be our mathematical workhorse when it comes to 3D graphics. While matrix *addition* required the matrices to have the same "shape," matrix *multiplication* requires that the number of *columns* in the first matrix equal the number of *rows* in the second matrix. 
+
+**Nota bene:** The number of rows in the resultant matrix will equal the number of rows in the first matrix. The number of columns in the resultant matrix will equal the number of columns in the second matrix.
+
+Let's take a look at two examples. First, we will look at multiplying two 4x4 matrices. 
+
+**Matrix Multiplication**
+
+$$
+\begin{bmatrix}
+A & B & C & D \\
+E & F & G & H \\
+I & J & K & L \\
+M & N & O & P
+\end{bmatrix}
+\times
+\begin{bmatrix}
+a & b & c & d \\
+e & f & g & h \\
+i & j & k & l \\
+m & n & o & p
+\end{bmatrix}=\begin{bmatrix}
+Aa+Be+Ci+Dm & Ab+Bf+Cj+Dn & Ac+Bg+Ck+Do & Ad+Bh+Cl+Dp \\
+Ea+Fe+Gi+Hm & Eb+Ff+Gj+Hn & Ec+Fg+Gk+Ho & Ed+Fh+Gl+Hp \\
+Ia+Je+Ki+Lm & Ib+Jf+Kj+Ln & Ic+Jg+Kk+Lo & Id+Jh+Kl+Lp \\
+Ma+Ne+Oi+Pm & Mb+Nf+Oj+Pn & Mc+Ng+Ok+Po & Md+Nh+Ol+Pp
+\end{bmatrix}
+$$
+
 * Concatenation
 ### Inverse
 
