@@ -13,7 +13,7 @@ So, everyone ready? We are about to take a shallow dive into **The Math of 3D Gr
 
 What you are about to see is basically *Linear Algebra*[^1] If you have taken a course in the subject, then YAY for you! If you haven't taken such a class, or are like me and took it *decades* ago, don't worry, things will be OK!
 
-## Points
+# Points
 
 This is likely the easiest concept to grasp, so it's a good place to start! A *point* is just that: *a point in space*. You have surely plotted countless points across your academic career. They show up when graphing equations on you calculator. They show up when plotting data on a graph for a presentation.
 
@@ -33,8 +33,79 @@ glm::vec4 point(0.0f, 0.0f, 0.0f, 1.0f);
 
 OK, so we now know how to create a `vec4` to hold our *homogenous coordinates*, but what math is made easier because of it? Well, *Matrix Math* of course! (editor's note: great segue!)
 
-## Matrices
+# Matrices
 
+Did you all see the seque? Masterful! Anyway, a *matrix* is basically a series of number organized into rows and columns. Behold! *A Matrix!*
+
+$$
+\begin{bmatrix}
+A_{00} & A_{01} & A_{02} & A_{03} \\
+A_{10} & A_{11} & A_{12} & A_{13} \\
+A_{20} & A_{21} & A_{22} & A_{23} \\
+A_{30} & A_{31} & A_{32} & A_{33} 
+\end{bmatrix}
+$$
+
+You have likely seen these before, so we won't need a ton of explaining. The only thing you really need to know about this notation, is that *rows* go left-to-right and *columns* go top-to-bottom. The subscript for each "cell" denotes the row first, and then the column.
+
+We are now going to examine a few *special* matrices that we will be using *a lot* in this course. Again, the goal isn't to make you understand the math, or even to remember the *content* of each matrix. GLM will handle all of that. What you need to know is what they are *for*.
+
+## The Identity Matrix
+
+We are going to be uncharitable and give this matrix another name: *The Do-Nothing Matrix*. Did I just hear you gasp: thinking I am being beyond rude? Why would I rename *The Identity Matrix* to *The Do-Nothing Matrix*?
+
+*Clearly*, I am doing it to be funny, but I am also trying to give you an easy way to remember what it is used for by knowing what it *does*. I mean, can you tell me what you think it does just by looking at it?
+
+$$
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
+If you can tell just by looking at it, bravo! For the rest of us (including myself), *The Do-Nothing Matrix* (aka *The Identity Matrix*) is the matrix that when multiplied by *any* other point or matrix[^2], that point or matrix remains unchanged: hence, *The Do-Nothing Matrix*.
+
+Why would this be helpful to us? That is a great question...for *you* to try to noodle up a theory. Please don't stress about this question, there are no wrong answers; I just want to have you start thinking about why these things exist. By the end of this exploration, you may be able to guess as to the use before I spell it out.
+
+**Hide Answer: We are going to use the *Identity Matrix* as the "base" for all of the *Transforms* we will be doing later in this exploration. Everything from *moving, scaling, and rotating* your scene will all start with *The Identity Matrix***
+
+GLM allows us to easily create the Identity Matrix with:
+
+```C++
+glm::mat4(1.0f);
+```
+
+I bet some of you are thinking of asking, 
+
+>"That is all very well and good, but why the dickens do we use a 4x4 matrix instead of a 3x3 matrix? You said we needed to make points `vec4`s to work with Matrix Math! An Identity Matrix can be 3x3, which would have played nicely with the logical `vec3` representation of a 3D point."
+
+My response to that would be, "Wow, you feel strongly about this, and rightfully so!" You must trust the process and wait.[^3]
+
+## Operations
+
+### Transpose
+
+$$
+\begin{bmatrix}
+A_{00} & A_{10} & A_{20} & A_{30} \\
+A_{01} & A_{11} & A_{21} & A_{31} \\
+A_{02} & A_{12} & A_{22} & A_{32} \\
+A_{03} & A_{13} & A_{23} & A_{33}
+\end{bmatrix}
+=
+\begin{bmatrix}
+A_{00} & A_{01} & A_{02} & A_{03} \\
+A_{10} & A_{11} & A_{12} & A_{13} \\
+A_{20} & A_{21} & A_{22} & A_{23} \\
+A_{30} & A_{31} & A_{32} & A_{33}
+\end{bmatrix}^T
+$$
+### Addition
+### Multiplication
+* Concatenation
+### Inverse
 
 ## Vectors
 ## Transforms
@@ -46,3 +117,5 @@ OK, so we now know how to create a `vec4` to hold our *homogenous coordinates*, 
 ## Useful GLM Operations
 
 [^1]: [Linear Algebra](https://www.merriam-webster.com/dictionary/linear%20algebra): a branch of mathematics that is concerned with mathematical structures closed under the operations of addition and scalar multiplication and that includes the theory of systems of linear equations, matrices, determinants, vector spaces, and linear transformations
+[^2]: Technically, it isn't any other point or matrix, but in our context the statement holds. To learn more about the *actual* operation of the Identiy Matrix see [here](https://www.khanacademy.org/math/algebra-home/alg-matrices/alg-properties-of-matrix-multiplication/a/intro-to-identity-matrices)
+[^3]: If you are more the "Screw Waiting" type, you can find the answer to why we need 4x4 matrices in the *Transforms* section under *Translation*.
