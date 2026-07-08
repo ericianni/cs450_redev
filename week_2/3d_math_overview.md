@@ -71,10 +71,12 @@ Why would this be helpful to us? That is a great question...for *you* to try to 
 
 **Hide Answer: We are going to use the *Identity Matrix* as the "base" for all of the *Transforms* we will be doing later in this exploration. Everything from *moving, scaling, and rotating* your scene will all start with *The Identity Matrix***
 
-GLM allows us to easily create the Identity Matrix with:
+GLM and GLSL both have built-ins to make generating an identity matrix easy.
 
 ```C++
-glm::mat4(1.0f);
+glm::mat4(1.0f);  // GLM Identity Matrix generation
+
+mat4(1.0f);  // GLSL Identy Matrix generation
 ```
 
 I bet some of you are thinking of asking, 
@@ -161,8 +163,6 @@ Matrix *multiplication* is going to be our mathematical workhorse when it comes 
 
 Let's take a look at two examples. First, we will look at multiplying two 4x4 matrices. 
 
-**Matrix Multiplication**
-
 $$
 \begin{bmatrix}
 Aa+Be+Ci+Dm & Ab+Bf+Cj+Dn & Ac+Bg+Ck+Do & Ad+Bh+Cl+Dp \\
@@ -174,9 +174,7 @@ A & B & C & D \\
 E & F & G & H \\
 I & J & K & L \\
 M & N & O & P
-\end{bmatrix}
-*
-\begin{bmatrix}
+\end{bmatrix}*\begin{bmatrix}
 a & b & c & d \\
 e & f & g & h \\
 i & j & k & l \\
@@ -184,8 +182,58 @@ m & n & o & p
 \end{bmatrix}
 $$
 
-* Concatenation
+Notice, we aren't explaining how any of these operations work, but you can noodle through by looking at the examples. You only need to have a rough idea of what is going on.
+
+Now, let's look at another common example we will see in this course.
+
+$$
+\begin{pmatrix}
+AX+BY+CZ+D \\
+EX+FY+GZ+H \\
+IX+JY+KZ+L \\
+MX+NY+OZ+P
+\end{pmatrix}=\begin{bmatrix}
+A & B & C & D \\
+E & F & G & H \\
+I & J & K & L \\
+M & N & O & P
+\end{bmatrix}*\begin{pmatrix}
+X \\
+Y \\
+Z \\
+1
+\end{pmatrix}
+$$
+
+Remember that the number of rows in the first matrix has to match the number of columns in the second matrix? Are you thinking, "But the first matrix has 4 rows and the second matrix has only one column?" Let me remind you that in our context, we are going to be performing these operations from *right-to-left*. Therefore, our single column matrix is the *first* matrix and the 4x4 matrix is the *second* matrix.
+
+Question Time: Did you notice that the second example uses `()` around the single column matrix and the resultant matrix? Why do you think that is?
+
+**HIDE ANSWER: We use the `()` to designate the matrix as a *point*, not a *transformation* matrix. In the second example, the resultant matrix is also a point, so is wrapped with `()`s.**
+
+Something to be aware of is that the *associative property*[^4] applies to matrix multiplication. This "feature" of matrix multiplication is often called *concatenation*. This is a very powerful aspect of matrix multiplication that we will use *a lot*. 
+
+We will find ourselves needing to apply the same sequence of transformations (represented by matrices) to all the vertices in a model. Instead of calculating it for each vertex, we can precalculate it once and save the *concatenation* matrix for future use.
+
+Both GLM and GLSL support matrix multiplication with the `*` operator.
+
+```C++
+glm::mat4 result = matA * matB; // GLM matrix multiplication
+
+mat4 result = matA * matB; //GLSL matrix multiplication
+```
+
 ### Inverse
+
+The last matrix operation we will cover is taking the *inverse* of a matrix. We are not going to show you how it is done; it is *very* complicated. Luckily, both GLM and GLSL offer built-in functions to handle this for us.
+
+```C++
+glm::inverse(matA); // GLM inverse generation
+
+inverse(matA); // GLSL inverse generation
+```
+
+We will not be needing the inverse to often, but, as mentioned above, we absolutely need it when we need the *inverse transpose* to help correct our *normals*. We will also need to use it to move between *World Space* and *Local Space* (more details coming shortly). It can also be used to "undo" a transform that we applied and restore the original state to a vertex.
 
 ## Vectors
 ## Transforms
@@ -199,3 +247,4 @@ $$
 [^1]: [Linear Algebra](https://www.merriam-webster.com/dictionary/linear%20algebra): a branch of mathematics that is concerned with mathematical structures closed under the operations of addition and scalar multiplication and that includes the theory of systems of linear equations, matrices, determinants, vector spaces, and linear transformations
 [^2]: Technically, it isn't any other point or matrix, but in our context the statement holds. To learn more about the *actual* operation of the Identiy Matrix see [here](https://www.khanacademy.org/math/algebra-home/alg-matrices/alg-properties-of-matrix-multiplication/a/intro-to-identity-matrices)
 [^3]: If you are more the "Screw Waiting" type, you can find the answer to why we need 4x4 matrices in the *Transforms* section under *Translation*.
+[^4]: The associative property basically means that grouping the factors dosn't change the result. For example: `5 * 4 * 2` results in the same thing as `5 * (4 * 2)` and `(5 * 4) * 2`.
