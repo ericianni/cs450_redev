@@ -235,8 +235,221 @@ inverse(matA); // GLSL inverse generation
 
 We will not be needing the inverse to often, but, as mentioned above, we absolutely need it when we need the *inverse transpose* to help correct our *normals*. We will also need to use it to move between *World Space* and *Local Space* (more details coming shortly). It can also be used to "undo" a transform that we applied and restore the original state to a vertex.
 
+
+## Transformations
+
+As we mentioned multiple times above, we will be using matrices to *transform* our vertices. A *Transformation* (*transform* for short) is simply doing math to manipulate where in our scene each vertex will be. For example, moving a point from one location to another (called *Translation*).
+
+### Translation
+
+BAM! *Another* seamless segue! Moving a vertex from one location to another is called a *Translation*. We will be using this *all* the time. We will need it to place our models/objects in the correct location in our 3D scene. Translations are also used to animate our scene and even move our camera around.
+
+In order to perform a *translation* we need to use a *Translation Matrix*. Let's look at an example before trying to explain what is happening.
+
+$$
+\begin{pmatrix}
+X + T_x \\
+Y + T_y \\
+Z + T_z \\
+1
+\end{pmatrix}=\begin{bmatrix}
+1 & 0 & 0 & T_x \\
+0 & 1 & 0 & T_y \\
+0 & 0 & 1 & T_z \\
+0 & 0 & 0 & 1
+\end{bmatrix}*\begin{pmatrix}
+X \\
+Y \\
+Z \\
+1
+\end{pmatrix}
+$$
+
+On the far right we have our *point* (i.e. vertex). Do you remember when I told you to wait to learn why we needed to add a *fourth* element to our point representation? Well, this is why. In order to apply a translation to a point, we have to use a 4x4 matrix. The other transforms that we will look at could be done with a 3x3, but not a *translation*. Therefore, we just store our points in `vec4`s to make everything consistent across transforms.
+
+Now, the *Translation Matrix* is the *Identity Matrix* with the first three elements in the last column replaced with the translations we wish to apply along each axis. For example, $T_x$ is the "distance" we wish to move the X value of the vertex.
+
+Don't let the matrix math worry you, GLM offers a built-in function to make translations easy.
+
+```C++
+// Generate Identity Matrix
+glm::mat4 model = glm::mat4(1.0f);  
+// Apply the (x, y, z) translation to the model matrix
+model = glm::translate(model, vec3(x, y, z));  
+```
+
+You have to pass in a `mat4` as the first parameter for all these translations. In this example, we use the name "model" for our matrix because we are going to be using a series of transforms to place our *model* into our scene. If it is the first transform we wish to apply, we have to start somewhere, so we use our *Do-Nothing Matrix*.
+
+You also need to pass in the `x, y, and z` values as a `vec3`. This will apply to all GLM transform functions.
+
+This resultant `model` matrix can then be used to transform our vertices with simple multiplication: `mat4 * vec4`, where `mat4` is our transform matrix and `vec4` is our vertex.
+
+### Scaling
+
+*Scaling* is used to change the size of a model/object. Given that models are made up of many vertices, when scaling, each vertex needs to be moved away from a central point or contracted toward it. Think of it as the vertices exploding outward for scaling up or being pulled back in by a black hole when scaling down.
+
+Let's take a look at what the *scaling matrix* looks like in action!
+
+$$
+\begin{pmatrix}
+X \cdot S_x \\
+Y \cdot S_y \\
+Z \cdot S_z \\
+1
+\end{pmatrix}=\begin{bmatrix}
+S_x & 0 & 0 & 0 \\
+0 & S_y & 0 & 0 \\
+0 & 0 & S_z & 0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}*\begin{pmatrix}
+X \\
+Y \\
+Z \\
+1
+\end{pmatrix}
+$$
+
+Again, we start with our point on the right. The *scaling matrix* is the *Identity Matrix* with the first three elements in the diagonal replaced with the factors by which we wish to scale our object. Notice that the resultant point *multiplies* the starting X, Y, and Z values instead of *adding* like we did with *translations*. So the values we put into the *scaling matrix* are *factors* of scaling. For example, an $S_x$ of `0.5` will *shrink* the object by half. Also, notice that we can scale the object along each axis *independently*. This means that we can have non-uniform scaling of our objects.
+
+Here is how easy it is to do using GLM.
+
+```C++
+// Generate Identity Matrix
+glm::mat4 model = glm::mat4(1.0f);  
+// Apply the (x, y, z) scale to the model matrix
+model = glm::scale(model, glm::vec3(x, y, z));  
+```
+
+Just as before with `glm::translate(...)`, we can use the resultant `model` matrix to scale our vertices: `mat4 * vec4`.
+
+### Rotation
+
+Now it is time for our final transform: *Rotation*. We will use this when we want to *rotate* an object around an specified axis
+
+The math for rotations is a bit tricky. Luckily, a gentlman named Leonhard Euler came up with a clever way of rotating around a specified axis in 3D dimensional space. He discovered that if you break up the rotation into three separate rotatiosn around the X, Y, and Z axis individually, you could combine them into a single matrix that contains all three! We call these *Euler Angles*.[^5]
+
+To use Euler Angles, we just need to specify how much we want to rotate (in *radians*) and provide an axis to rotate around. By imagining our axis passing through the origin, we can use a simple vector to describe our axis: (x, y, z). Now we just do the math (shown) below to calculate how much to move each vertex in each dimension to produce the desired rotation.
+
+**Rotation around X by θ:**
+$$
+\begin{pmatrix}
+X' \\
+Y' \\
+Z' \\
+1
+\end{pmatrix}=\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & \cos\theta & -\sin\theta & 0 \\
+0 & \sin\theta & \cos\theta & 0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}*\begin{pmatrix}
+X \\
+Y \\
+Z \\
+1
+\end{pmatrix}
+$$
+
+**Rotation around Y by θ:**
+$$
+\begin{pmatrix}
+X' \\
+Y' \\
+Z' \\
+1
+\end{pmatrix}=\begin{bmatrix}
+\cos\theta & 0 & \sin\theta & 0 \\
+0 & 1 & 0 & 0 \\
+-\sin\theta & 0 & \cos\theta & 0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}*\begin{pmatrix}
+X \\
+Y \\
+Z \\
+1
+\end{pmatrix}
+$$
+
+**Rotation around Z by θ:**
+$$
+\begin{pmatrix}
+X' \\
+Y' \\
+Z' \\
+1
+\end{pmatrix}=\begin{bmatrix}
+\cos\theta & -\sin\theta & 0 & 0 \\
+\sin\theta & \cos\theta & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}*\begin{pmatrix}
+X \\
+Y \\
+Z \\
+1
+\end{pmatrix}
+$$
+
+This seems complicated, and it is! Luckily, we don't have to do *any* of this ourselves. GLM provides!
+
+```C++
+// Generate Identity Matrix
+glm::mat4 model = glm::mat4(1.0f);  
+// Define desired angle in degrees
+float theta = 45.0f;
+// Apply rotation θ around axis (x, y, z)
+model = glm::rotate(model, glm::radians(theta), glm::vec3(x, y, z));
+```
+
+Just as before, we can use the resultant `model` matrix to scale our vertices: `mat4 * vec4`.
+
+WARNING: Euler Angles are *awesome*, but they are not perfect. There are some very specific conditions that can arise while using Euler Angles that result in something called *Gimbal Lock*.[^6] This is a very troubling issue that can be solved by using something called *Quaternions*, but for our purposes we can usually be safe using Euler Angles, so we aren't going to over complicate things.
+
+### Putting Them All Together
+
+As mentioned *way* up above, we can "chain" multiple transforms by concatenating their matrices (i.e., multiplying them together). This lets us pre-compute a single combined matrix and apply all the transformations to each vertex efficiently. We will be using this concept *a lot*.
+
+But, before we look at some examples, we need to understand a key limitation of matrix concatenation: matrix multiplication is *not* commutative. This means that it matters *greatly* in which order we apply the transforms. Remember, they will apply right-to-left, so the first transform you want to happen should be the rightmost matrix in the multiplication.
+
+So, let's look at a fairly standard transform concatenation. Remember how I said we were going to imagine that the axis of rotation passed through the origin when we call `glm::rotate(...)`? How often do you think that happens? 
+
+**HIDE ANSWER: ALMOST NEVER**
+
+So, what are we to do? Take a guess given *all the context clues* I have provided.
+
+**HIDE ANSWER: That's right! We need to:**
+* move our object to the be centered at the origin
+* apply our rotation
+* return the object back to it's original position
+
+**END HIDING**
+
+We can accomplish this by stringing together our transforms to produce a single matrix.
+
+```C++
+glm::vec3 pos = glm::vec3(5.0f, 0.0f, 10.0f);   // object's position
+
+glm::mat4 model = glm::mat4(1.0f);  // Identity Matrix
+
+// All three steps combined into one matrix
+model = glm::translate(model, pos);                    // move back
+model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0,1,0)); // rotate
+model = glm::translate(model, -pos);                   // move to origin first
+```
+
+Notice the order of operations! Even though our "move to origin" translation appears *last*, it will be applied *first* when we use `model` to transform our vertices. 
+
+So, working backwards:
+
+1. We translate the model to the origin by simply negating the position vector: `-pos`. Isn't that cool! We can move any object/point to the origin simply by negating its current position!
+2. Now that the object is centered on the origin it is safe to rotate around the axis we defined.
+3. Then, all we have to do is translate the object back to its original position: `pos`.
+
+After all of this, we are left with `model`, which contains not one, not two, but *three* transforms! We precompile this transform matrix once and then apply it over and over again to *all* the vertices in the object on the GPU. This is much more efficient than applying each transform to all the vertices before applying the next.
+
+You will come across some other fairly common transform "patterns," but the sky is the limit when it comes to how we decide to chain transforms together.
+
 ## Vectors
-## Transforms
 ## Local and World + Model Matrix
 ## Eye Space + View Matrix
 ## Projection Matrices
@@ -248,3 +461,5 @@ We will not be needing the inverse to often, but, as mentioned above, we absolut
 [^2]: Technically, it isn't any other point or matrix, but in our context the statement holds. To learn more about the *actual* operation of the Identiy Matrix see [here](https://www.khanacademy.org/math/algebra-home/alg-matrices/alg-properties-of-matrix-multiplication/a/intro-to-identity-matrices)
 [^3]: If you are more the "Screw Waiting" type, you can find the answer to why we need 4x4 matrices in the *Transforms* section under *Translation*.
 [^4]: The associative property basically means that grouping the factors dosn't change the result. For example: `5 * 4 * 2` results in the same thing as `5 * (4 * 2)` and `(5 * 4) * 2`.
+[^5]: Follow this [link](https://en.wikipedia.org/wiki/Euler_angles) for more information than you would ever need about Euler Angles.
+[^6]: [Gimbal Lock](https://www.youtube.com/watch?v=zc8b2Jo7mno) is a troublesome result of using Euler Rotation. This video demonstrates how it can happen.
