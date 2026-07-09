@@ -526,7 +526,11 @@ dot(vec3(u, v, w), vec3(x, y, z));  // GLSL Dot Product
 
 Again, we care less about how it is calculated and more about how it is *used*. Perhaps the most important use is finding the angle between two vectors.
 
+<center>
+
 ![Shows the angle (theta) between vectors V and W](../images/week_2/vector_angle.svg)
+
+</center>
 
 $$
 \begin{align*}
@@ -574,7 +578,11 @@ The number one thing we will be using the cross product for is to find the *norm
 
 In the diagram below, $\vec{V}$ and $\vec{W}$ form a plane. By taking the cross product ($\vec{V} \times \vec{W}$) we can generate a *normal* ($\vec{N}$). 
 
+<center>
+
 ![Shows a triangular prism with one end defined by points V1, V2, and V3. It shows a vector (V) defined by V1 and V3. Another vector (W) is defined by V1 and V2. The normal vector (N) is coming out perpendicular to the plane defined by vectors V and W](../images/week_2/cross_product_demo.svg)
+
+</center>
 
 Be warned, while this is called a *normal*, it is not *normalized*. It is best practice to always normalize these before using them for lighting.
 
