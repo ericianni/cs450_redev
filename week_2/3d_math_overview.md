@@ -526,11 +526,11 @@ dot(vec3(u, v, w), vec3(x, y, z));  // GLSL Dot Product
 
 Again, we care less about how it is calculated and more about how it is *used*. Perhaps the most important use is finding the angle between two vectors.
 
-<center>
+<div align="center" markdown="1">
 
 ![Shows the angle (theta) between vectors V and W](../images/week_2/vector_angle.svg)
 
-</center>
+</div>
 
 $$
 \begin{align*}
@@ -591,8 +591,80 @@ glm::vec3 normal = glm::cross(v, w);
 normal = glm::normalize(normal);   // or glm::normalize(glm::cross(u, v))
 ```
 
-# Local and World + Model Matrix
-# Eye Space + View Matrix
+# Space
+
+Whew! That was a lot of maths. Let us take a quick break and talk about *space*!
+
+<div align="center" markdown="1">
+
+![Image of Galaxy UGC 2885 provided by esahubble.org](../images/week_2/space.jpg)
+
+</div>
+
+No, not that kind of *space*! We need to talk about *Local, World, and Space*.
+
+## Local Space
+
+We have talked a lot about the OpenGL Pipeline and different mathmatical operations we will be using, but we haven't talked much about what we will use these things *for*. At the end of the day, we want to render a 3D scene.
+
+We have discussed that our program will convert the vertices into pixels on a screen. Those vertices will represent all sorts of things. Some of them will be part of the landscape/terrain and fairly static. Others will be part of objects or models that we will animate in order to have them move around the scene.
+
+Typically, each of these elements will be created using 3D modeling software (e.g. Blender or Maya). These models need to have a way to describe where each vertex is in relation to the others, and, typically, we do this by orienting all of them around the origin (0, 0, 0).
+
+This is called *Local Space*: somtimes called *Model Space*.[^7] Each model/object will have its own set of local coordinates. It is even possible to combine multiple objects/models into a larger unit. For example, we may wish to model a head separately from the body and then combine them by using transforms to translate, scale, rotate each element into the correct place. This combined model would also have its own *local space*.
+
+## World Space
+
+When placing objects into our 3D scene we can't use the models' vertices as-is. If we were to do so, then all the objects would be placed at the origin, which clearly is not what we are looking for.
+
+We will need to translate the model to where we want it. We will need to scale the model to ensure it is the correct size. We will need to rotate the model so it faces the direction we need. The combination of all these transforms is called the *Model Matrix*.
+
+By applying the *Model Matrix* to our objects, we move them from *Local Space* into *World Space*.
+
+## Eye Space
+
+Ok, so we have discussed how models have their own *local* space. We then went over how we convert that into *world* space. At this point, our models are nicely placed in our 3D world. Now, we need to figure out how we convert the 3D scene into a 2D image on our monitor.
+
+In order to do this, we need to simulate our eyes looking at the scene. I am going to throw a diagram at you. It is going to look complicated and confusing, but I promise it will all make sense in the end. Even if it doesn't, later we will learn about the GLM `lookAt(...)` function that makes all this simple.
+
+Let's start with a diagram.
+
+<div align="center" markdown="1">
+
+![Eye Space diagram](../images/week_2/eye_space.svg)
+
+</div>
+
+At the top right you will see the *eye* (sometimes called the *camera*). It has an *up* vector, indicating which direction is...uhh...up in relation to the eye. It also has a *look* vector, indicating in which direction the eye is...uhh...looking. In our example, the eye is looking directly at the red cube, which has been placed in our *world space*.
+
+Out of the eye we can see four lines labled the *view volume*. The edges of this volume create something called the *projection plan*. Think of the projection plan as a representation of our screen. This is why you can see a mini red cube on the plane. Notice, you cannot see the yellow triangular prism in the plane. This is because it is outside our viewing volume (aka outside our field of vision).
+
+So how do we simulate our eye in our 3D scene? Well, OpenGL has a built in camera, that is centered at the origin (0, 0, 0) and pointing along the negative Z-axis. Having the camera in a fixed location pointing in a fixed direction isn't really helpful. Therefore, we need to transform our objects from *World Space* into *Eye Space*. 
+
+There is *a lot* of math involved in transforming the camera position, where it is pointing, and then the objects themselves into *Eye Space*. I *could* bore you with all of that, but I am a nice guy so we are going to *cheat* and use a GLM function to help us out. Our goal is to create something called the *View Matrix*, which we can then concatenate with our *Model Matrix* to move our objects from *World Space* into *Eye Space*.
+
+In order to create this *View Matrix* we will need to define three values:
+
+* cameraPos - where the camera is located in our scene
+* target - where the camera is pointing
+* up - which direction is up in relation to the camera
+
+Once we have defined these values, we can just plug them into the GLM built-in `lookAt(...)` to generate our *View Matrix*. 
+
+```C++
+glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f, 8.0f);
+glm::vec3 target      = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 up          = glm::vec3(0.0f, 1.0f, 0.0f);
+
+glm::mat4 view = glm::lookAt(cameraPos, target, up);
+```
+
+In this example, we have moved the camera away from the origin along the Z-axis. The camera is set to look back at the origin. Finally, the camera is oriented so that *up* is along the Y-axis.
+
+`lookAt(...)` takes all three of these parameters as `vec3`s and returns a `mat4`. This is our *View Matrix*. Now, we can apply this transform to our *Model Matrix*. What do you think we are going to call this new combined matrix?
+
+**HIDE ANSWER: That's right! This new matrix is known as the *Model-View Matrix*. We will be using this *a lot*.**
+
 # Projection Matrices
 # Model-View-Projection
 # GLM 
@@ -604,3 +676,4 @@ normal = glm::normalize(normal);   // or glm::normalize(glm::cross(u, v))
 [^4]: The associative property basically means that grouping the factors dosn't change the result. For example: `5 * 4 * 2` results in the same thing as `5 * (4 * 2)` and `(5 * 4) * 2`.
 [^5]: Follow this [link](https://en.wikipedia.org/wiki/Euler_angles) for more information than you would ever need about Euler Angles.
 [^6]: [Gimbal Lock](https://www.youtube.com/watch?v=zc8b2Jo7mno) is a troublesome result of using Euler Rotation. This video demonstrates how it can happen.
+[^7]: OpenGL's documentation actually uses a third term *Object Space*, because clearly we need the added confusion!
