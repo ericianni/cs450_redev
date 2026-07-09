@@ -13,20 +13,20 @@
 * Coordinate Systems - DONE
 * 3D Math overview
   * Points 
-    * Homogenous notation
-    * vec4
-  * Matrices
-    * Identity
-    * Operations
-      * Transpose
-      * Addition
-      * Multiplication
-        * Concatenation
-      * Inverse
-  * Transforms
-    * Translation
-    * Scaling
-    * Rotation
+    * Homogenous notation - DONE
+    * vec4 - DONE
+  * Matrices - DONE
+    * Identity - DONE
+    * Operations - DONE
+      * Transpose - DONE
+      * Addition - DONE
+      * Multiplication - DONE
+        * Concatenation - DONE
+      * Inverse - DONE
+  * Transforms - DONE
+    * Translation - DONE
+    * Scaling - DONE
+    * Rotation - DONE
   * Vectors
     * Operations
       * Addition and subtraction
@@ -92,15 +92,9 @@
   * How to label points (ccw)
 * Color in OpenGL
   * Additive Color
-* Transforms
-  * Translation
-  * Rotation
-  * Scaling
-  * How compound transforms work
-* Shader Types
-* glDrawArray Modes
-  * GL_POINTS
-  * etc.
+* Transforms - DONE
+* Shader Types - DONE
+* glDrawArray Modes - DONE
 * Hardware vs Software vs GPU Graphics
 * Parts of an OpenGL Program
   * Building Lists
@@ -120,7 +114,7 @@
   * Which stages are programmable?
 
 * Possible ordering of topics
-  * Discuss Primitives
+  * Discuss Primitives - DONE
   * Discuss VBOs
   * Build vertices by hand and render (flat?)
   * Demonstrate loading an object file

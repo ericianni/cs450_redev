@@ -35,7 +35,7 @@ OK, so we now know how to create a `vec4` to hold our *homogenous coordinates*, 
 
 # Matrices
 
-Did you all see the seque? Masterful! Anyway, a *matrix* is basically a series of number organized into rows and columns. Behold! *A Matrix!*
+Did you all see the segue? Masterful! Anyway, a *matrix* is basically a series of number organized into rows and columns. Behold! *A Matrix!*
 
 $$
 \begin{bmatrix}
@@ -452,7 +452,102 @@ After all of this, we are left with `model`, which contains not one, not two, bu
 
 You will come across some other fairly common transform "patterns," but the sky is the limit when it comes to how we decide to chain transforms together.
 
-## Vectors
+# Vectors
+
+We are now going to be moving away from matrices and onto *vectors*. You have likely seen these in your academic career, but just in case, let's define the term. In mathematics, a *vector* is defined by both a *magnitude* (think length or distance) and *direction* (think orientation). They are often represented as an arrow.
+
+There are several notations used to represent vectors, but we are going to stick with representing them as a tuple (e.g. `(x, y, z)`). You may be thinking, "I don't see either a magnitude *or* a direction!" We can get away with this notation because we are imagining all our vectors as beginning at the origin. So, we can do some quick math to find the *magnitude*: $$|v| = \sqrt{x^2+y^2+z^2}$$. Another benefit of assuming all vectors start at the origin is that our *direction* is just the tuple itself!
+
+Throughout this course, you will see us representing both vectors and points using `vec3` and `vec4`. We will need to rely on context to know what we are trying to represent. One benefit of using the same structure for both points and vectors, is that we can use our matrix transforms interchangeably.
+
+If you think about it, we actually dealt with vectors during the matrix section. Do you have any guess as to where they showed up?
+
+**Hide answer: When we applied translations, we were really adding a displacement vector to a point. Translation is just vector addition, which we are going to cover first!**
+
+## Operations
+
+### Addition and Subtraction
+
+We are going to start with the easiest vector operations: addition and subtraction.
+
+Adding two vectors is done **component-wise**. If we have vectors $\mathbf{A}$ and $\mathbf{B}$, then:
+
+$$
+\mathbf{A} + \mathbf{B} = (A_x + B_x,\ A_y + B_y,\ A_z + B_z)
+$$
+
+Subtraction is likewise component-wise (editor's note: I couldn't resist!).
+
+$$
+\mathbf{A} - \mathbf{B} = (A_x - B_x,\ A_y - B_y,\ A_z - B_z)
+$$
+
+This is the same as adding the negative of $\mathbf{B}$:
+
+$$
+\mathbf{A} + (-\mathbf{B})
+$$
+
+**Nota bene**L  $\mathbf{A} - \mathbf{B}$ gives the vector that points **from $\mathbf{B}$ to $\mathbf{A}$**.
+
+Both GLM and GLSL have overloaded the `+` and `-` operators to make vector addition easy. This will work for both `vec3` and `vec4` types.
+
+### Normalize
+
+This is a term that we have touched on briefly, but we should really spell out clearly. When we *normalize* a vector, we are changing it so that the *magnitude* is exactly `1`, but the *direction* remains the same. Why is this helpful?
+
+You may have heard the term *surface normal*, which is used with our lighting algorithms. These normals tell us which direction a surface is facing. If a surface is pointing away from a light source, we don't want to illuminate it.
+
+We can *normalize* both `vec3` and `vec4` types using GLM and GLSL.
+
+```C++
+glm::normalize(glm::vec3(1, 2, 4));  // GLM Normalize function
+
+normalize(vec3(1, 2, 4));  // GLSL Normalize function
+```
+
+### Dot Product
+
+This next vector operation is going to be something we use frequently. Before we talk about its uses, let's discuss what it is.
+
+Given two vectors ($\mathbf{A}$ and $\mathbf{B}$), the *Dot Product* is calculated:
+
+$$
+\mathbf{A} \cdot \mathbf{B} = A_xB_x + A_yB_y + A_zB_z
+$$
+
+GLM and GLSL make this easy for us.
+
+```C++
+glm::dot(glm::vec3(x, y, z), glm::vec3(u, v, w));  // GLM Dot Product
+
+dot(vec3(x, y, z), vec3(u, v, w));  // GLSL Dot Product
+```
+
+Again, we care less about how it is calculated and more about how it is *used*. Perhaps the most important use is finding the angle between two vectors.
+
+![Shows the angle (theta) between vectors V and W](../images/week_2/vector_angle.svg)
+
+$$
+\begin{align*}
+\vec{V} \cdot \vec{W} &= |\vec{V}| \, |\vec{W}| \cdot \cos(\theta) \\
+\\
+\cos(\theta) &= \frac{\vec{V} \cdot \vec{W}}{|\vec{V}| \cdot |\vec{W}|}
+\end{align*}
+$$
+
+Notice, that the denominator on the right consists of $|\vec{V}| \cdot |\vec{W}|$, which are the two magnitudes of the vectors. If these vectors have been *normalized* ($\hat{V}$ and $\hat{W}$), then both magnitudes are `1` and we can simplify the equation:
+
+$$
+\begin{align*}
+cos(\theta) = \hat{V} \cdot \hat{W}
+\\
+\theta = arcos (\hat{V} \cdot \hat{W})
+\end{align*}
+$$
+### Cross Producct
+
+
 ## Local and World + Model Matrix
 ## Eye Space + View Matrix
 ## Projection Matrices
