@@ -572,12 +572,21 @@ cross(vec3(u, v, w), vec3(x, y, z));  // GLSL Cross Product
 
 The number one thing we will be using the cross product for is to find the *normal* to a surface defined by two vectors. These *normals* are *perpendicular* to the surface defined by the two vectors. Again, this is *super important* for lighting.
 
+In the diagram below, $\vec{V}$ and $\vec{W}$ form a plane. By taking the cross product ($\vec{V} \times \vec{W}$) we can generate a *normal* ($\vec{N}$). 
+
 ![Shows a triangular prism with one end defined by points V1, V2, and V3. It shows a vector (V) defined by V1 and V3. Another vector (W) is defined by V1 and V2. The normal vector (N) is coming out perpendicular to the plane defined by vectors V and W](../images/week_2/cross_product_demo.svg)
 
-## Local and World + Model Matrix
-## Eye Space + View Matrix
-## Projection Matrices
-## Model-View-Projection
+Be warned, while this is called a *normal*, it is not *normalized*. It is best practice to always normalize these before using them for lighting.
+
+```C++
+glm::vec3 normal = glm::cross(v, w);
+normal = glm::normalize(normal);   // or glm::normalize(glm::cross(u, v))
+```
+
+# Local and World + Model Matrix
+# Eye Space + View Matrix
+# Projection Matrices
+# Model-View-Projection
 # GLM 
 ## Useful GLM Operations
 
