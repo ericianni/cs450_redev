@@ -510,18 +510,18 @@ normalize(vec3(1, 2, 4));  // GLSL Normalize function
 
 This next vector operation is going to be something we use frequently. Before we talk about its uses, let's discuss what it is.
 
-Given two vectors ($\mathbf{A}$ and $\mathbf{B}$), the *Dot Product* is calculated:
+Given two vectors ($\mathbf{A}(u, v, w)$ and $\mathbf{B(x, y, z)}$), the *Dot Product* is calculated:
 
 $$
-\mathbf{A} \cdot \mathbf{B} = A_xB_x + A_yB_y + A_zB_z
+\mathbf{A} \cdot \mathbf{B} = ux + vy + wz
 $$
 
 GLM and GLSL make this easy for us.
 
 ```C++
-glm::dot(glm::vec3(x, y, z), glm::vec3(u, v, w));  // GLM Dot Product
+glm::dot(glm::vec3(u, v, w), glm::vec3(x, y, z));  // GLM Dot Product
 
-dot(vec3(x, y, z), vec3(u, v, w));  // GLSL Dot Product
+dot(vec3(u, v, w), vec3(x, y, z));  // GLSL Dot Product
 ```
 
 Again, we care less about how it is calculated and more about how it is *used*. Perhaps the most important use is finding the angle between two vectors.
@@ -545,8 +545,34 @@ cos(\theta) = \hat{V} \cdot \hat{W}
 \theta = arcos (\hat{V} \cdot \hat{W})
 \end{align*}
 $$
+
+The dot product can also be used for:
+
+* Finding a vector's magnitude: $\sqrt{\vec{V} \cdot \vec{W}}$
+* Determining if two vectors are perpendicular: $\vec{V} \cdot \vec{W} = 0$
+* Determing if two vectors are parallel: $\vec{V} \cdot \vec{W} = |\vec{V}| * |\vec{W}|$
+
 ### Cross Producct
 
+Another operation that we will use frequently is the *Cross Product*. 
+
+Given two vectors ($\mathbf{A}(u, v, w)$ and $\mathbf{B}(x, y, z$), the *Cross Product* is calculated:
+
+$$
+\mathbf{A} \times \mathbf{B} = (vz - wy, wx - uz, uy - vx)
+$$
+
+Again, GLM and GLSL make this easy for us.
+
+```C++
+glm::cross(glm::vec3(u, v, w), glm::vec3(x, y, z));  // GLM Cross Product
+
+cross(vec3(u, v, w), vec3(x, y, z));  // GLSL Cross Product
+```
+
+The number one thing we will be using the cross product for is to find the *normal* to a surface defined by two vectors. These *normals* are *perpendicular* to the surface defined by the two vectors. Again, this is *super important* for lighting.
+
+![Shows a triangular prism with one end defined by points V1, V2, and V3. It shows a vector (V) defined by V1 and V3. Another vector (W) is defined by V1 and V2. The normal vector (N) is coming out perpendicular to the plane defined by vectors V and W](../images/week_2/cross_product_demo.svg)
 
 ## Local and World + Model Matrix
 ## Eye Space + View Matrix

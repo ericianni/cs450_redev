@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 320" width="100%" height="100%">
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#3b5998" />
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#d9383a" />
+    </marker>
+    <marker id="arrow-black" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#000000" />
+    </marker>
+  </defs>
+
+  <style>
+    .label { font-family: 'Times New Roman', Times, serif; font-style: italic; font-size: 24px; fill: #000; }
+    .sub { font-size: 16px; font-style: normal; vertical-align: sub; }
+    .vector { font-family: 'Times New Roman', Times, serif; font-style: italic; font-size: 26px; }
+  </style>
+
+  <line x1="130" y1="70" x2="210" y2="180" stroke="#888888" stroke-width="1" stroke-dasharray="6,4" />
+  <line x1="210" y1="180" x2="430" y2="185" stroke="#888888" stroke-width="1" stroke-dasharray="6,4" />
+  <line x1="70" y1="215" x2="210" y2="180" stroke="#888888" stroke-width="1" stroke-dasharray="6,4" />
+
+  <line x1="70" y1="215" x2="130" y2="70" stroke="#000000" stroke-width="1.5" />
+  <line x1="130" y1="70" x2="320" y2="70" stroke="#000000" stroke-width="1.5" />
+  <line x1="70" y1="215" x2="260" y2="240" stroke="#000000" stroke-width="1.5" />
+  
+  <polygon points="260,240 430,185 320,70" fill="none" stroke="#000000" stroke-width="2.5" stroke-linejoin="round" />
+
+  <circle cx="260" cy="240" r="4" fill="#000000" />
+  <circle cx="430" cy="185" r="4" fill="#000000" />
+  <circle cx="320" cy="70" r="4" fill="#000000" />
+
+  <text x="250" y="285" class="label">V<tspan class="sub">1</tspan></text>
+  <text x="440" y="215" class="label">V<tspan class="sub">2</tspan></text>
+  <text x="335" y="80" class="label">V<tspan class="sub">3</tspan></text>
+
+  <line x1="242" y1="225" x2="299" y2="78" stroke="#3b5998" stroke-width="2.5" marker-end="url(#arrow-blue)" />
+  <g transform="translate(225, 125)">
+    <text x="0" y="0" fill="#000" class="vector">Q</text>
+    <line x1="-3" y1="-24" x2="15" y2="-24" stroke="#000" stroke-width="1.5" />
+    <path d="M 10 -27 L 16 -24 L 10 -21 Z" fill="#000" />
+  </g>
+
+  <line x1="275" y1="250" x2="415" y2="202" stroke="#d9383a" stroke-width="2.5" marker-end="url(#arrow-red)" />
+  <g transform="translate(345, 272)">
+    <text x="0" y="0" fill="#000" class="vector">P</text>
+    <line x1="-3" y1="-24" x2="14" y2="-24" stroke="#000" stroke-width="1.5" />
+    <path d="M 9 -27 L 15 -24 L 9 -21 Z" fill="#000" />
+  </g>
+
+  <path d="M 345,145 L 345,133 L 360,133" fill="none" stroke="#000000" stroke-width="1.5" />
+  <line x1="345" y1="145" x2="440" y2="145" stroke="#000000" stroke-width="2.5" marker-end="url(#arrow-black)" />
+  <g transform="translate(450, 115)">
+    <text x="0" y="0" fill="#000" class="vector">N</text>
+    <line x1="-2" y1="-24" x2="15" y2="-24" stroke="#000" stroke-width="1.5" />
+    <path d="M 10 -27 L 16 -24 L 10 -21 Z" fill="#000" />
+  </g>
+</svg>
