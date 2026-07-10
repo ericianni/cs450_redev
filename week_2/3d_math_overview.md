@@ -838,9 +838,9 @@ Hot darn! We covered a *ton* of ground in this exploration! Take a moment to pat
 
 Not only did we cover all the math behind *transformations*, but we also covered all the different *spaces*: *local*, *world*, and *eye*. We wrapped up going over two different types of *projections*. At the end of all of this we are left with:
 
-* *Model Matrix*
-* *View Matrix*
-* *Projection Matrix*
+* *Model Matrix* (M)
+* *View Matrix* (V)
+* *Projection Matrix* (P)
 
 The Model Matrix takes our vertices from local space to world space. By combining it with the View Matrix, we move vertices into Eye Space. With our Projection Matrix we move them into *Screen Space* (our *final* destination).
 
@@ -876,9 +876,31 @@ glm::mat4 projection = glm::perspective(
 );
 ```
 
-Now that we know *how* and *when* to create each matrix, what do we *do* with them? When we are ready to send them to our vertex shader, we need to combine the Model and View Matrix into the *Model-View Matrix* (*MV*). It is possible to send them off separately and combine them in the shader, but that risks wasting GPU cycles doing something for every vertex, where the CPU can do it once *per object*.
+Now that we know *how* and *when* to create each matrix, what do we *do* with them? When we are ready to call our shader, we have to make a decision on how to get the matrix data into the pipeline. Here are some options, with pros and cons for each:
 
-That said, we *do* want to send the *Projection Matrix* (*P*) in separately because if we are doing any lighting, we need to know where in the scene the object is in *World Space* because that is where the light source is. We will see later, that pre-combining *MV* ruins the surface normals. So we will also need to compute the *Normal Matrix* using the *Inverse Transpose* (discussed *much* earlier).
+* Send them all separately (M + V + P)
+  * Pro:
+    * Super easy to do, and requires no thinking!
+    * Provides us maximum flexibility in how we construct our shaders
+  * Con:
+    * GPUs are efficient, but this approach requires the GPU to do *all* the math for *every* vertex
+* Combine Model and View and send Projection separately (MV + P)
+  * Pro:
+    * The *Classic Approach* used by many legacy programs
+    * CPUs are better than GPUs for matrix math, and only need to do it once per object instead of per vertex (on the GPU)
+  * Con:
+    * Combining V with M for every object per every frame is unneeded. V can be calculated once per frame
+* Combine View and Projection and send Model separately (M + VP)
+  * Pro:
+    * The camera and perspective don't change every frame, so combining VP is efficient
+    * Many algorithms require *World Space*, which is contained in *M*
+    * Debugging scenes with *World Space* (*M*) is easier than with *Eyes Space* (*V*)
+  * Con:
+    * Requires passing in the camera's position in order to calculate lighting
+
+Decisions, decisions, decisions... I will be honest with you. I *agonized* over which approach to use in this course. We will be going with *M + VP*.
+
+In the end, I picked the method that is going to prepare you for *what's next* if you choose to continue in Computer Graphics. Many modern graphics approaches, such as *Physically Based Rendering* (PBR) requires *World Space* for the calculations. Other things, like *Cubemaps* and *Shadow Mapping* also require *M + VP*. Finally, using *M + VP* can improve efficiency as we learn more advanced techniques.
 
 [^1]: [Linear Algebra](https://www.merriam-webster.com/dictionary/linear%20algebra): a branch of mathematics that is concerned with mathematical structures closed under the operations of addition and scalar multiplication and that includes the theory of systems of linear equations, matrices, determinants, vector spaces, and linear transformations
 [^2]: Technically, it isn't any other point or matrix, but in our context the statement holds. To learn more about the *actual* operation of the Identiy Matrix see [here](https://www.khanacademy.org/math/algebra-home/alg-matrices/alg-properties-of-matrix-multiplication/a/intro-to-identity-matrices)
