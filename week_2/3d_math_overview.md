@@ -708,6 +708,7 @@ This is called *Perspective View Volume* or the *Perspective View Frustum*. Ther
 * **Aspect Ratio** - the ratio of the width (W) and height (H) of the clipping planes
 
 To build the *Perspective Matrix* we need to calculate the following and then plug them into the matrix below:
+
 $$
 q = \frac{1}{\tan\left(\frac{\text{fieldOfView}}{2}\right)}
 $$
@@ -817,13 +818,25 @@ $$
 \end{bmatrix}
 $$
 
-That's it! Now, *of course* we aren't going to do this by hand, we are going to lean on GLM.
+That's it! Now, *of course* we aren't going to do this by hand, we are going to lean on GLM. We will use `glm::ortho(left, right, bottom, top, near, far);
 
+Using the following code, we would create *Projection Matrix* that is 600x480 and centered on the origin. By now, you should be able to figure out how it is doing that.
 
+```C++
+float height = 480.0f;
+float width  = 600.0f;   
+
+glm::mat4 projection = glm::ortho(
+    -width/2.0f,   width/2.0f,
+    -height/2.0f,  height/2.0f,
+    -100.0f,       100.0f
+);
+```
 
 # Model-View-Projection
-# GLM 
-## Useful GLM Operations
+
+We *finally* have all the pieces we need to...
+
 
 [^1]: [Linear Algebra](https://www.merriam-webster.com/dictionary/linear%20algebra): a branch of mathematics that is concerned with mathematical structures closed under the operations of addition and scalar multiplication and that includes the theory of systems of linear equations, matrices, determinants, vector spaces, and linear transformations
 [^2]: Technically, it isn't any other point or matrix, but in our context the statement holds. To learn more about the *actual* operation of the Identiy Matrix see [here](https://www.khanacademy.org/math/algebra-home/alg-matrices/alg-properties-of-matrix-multiplication/a/intro-to-identity-matrices)
