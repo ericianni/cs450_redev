@@ -556,11 +556,11 @@ The dot product can also be used for:
 * Determining if two vectors are perpendicular: $\vec{V} \cdot \vec{W} = 0$
 * Determing if two vectors are parallel: $\vec{V} \cdot \vec{W} = |\vec{V}| * |\vec{W}|$
 
-### Cross Producct
+### Cross Product
 
 Another operation that we will use frequently is the *Cross Product*. 
 
-Given two vectors ($\mathbf{A}(u, v, w)$ and $\mathbf{B}(x, y, z$), the *Cross Product* is calculated:
+Given two vectors $\mathbf{A}(u, v, w)$ and $\mathbf{B}(x, y, z$), the *Cross Product* is calculated:
 
 $$
 \mathbf{A} \times \mathbf{B} = (vz - wy, wx - uz, uy - vx)
@@ -833,10 +833,53 @@ glm::mat4 projection = glm::ortho(
 );
 ```
 
-# Model-View-Projection
+# Bringing It All Together - Model-View-Projection
 
-We *finally* have all the pieces we need to...
+Hot darn! We covered a *ton* of ground in this exploration! Take a moment to pat yourself on the back. I mean it, you probably are sore from sitting still for so long reading: get that blood flowing again.
 
+Not only did we cover all the math behind *transformations*, but we also covered all the different *spaces*: *local*, *world*, and *eye*. We wrapped up going over two different types of *projections*. At the end of all of this we are left with:
+
+* *Model Matrix*
+* *View Matrix*
+* *Projection Matrix*
+
+The Model Matrix takes our vertices from local space to world space. By combining it with the View Matrix, we move vertices into Eye Space. With our Projection Matrix we move them into *Screen Space* (our *final* destination).
+
+
+Below you can see code examples of all three types of matrices being created. You may see in online people creating these matrices every frame. This is a *bad* idea. We want to not waste CPU time doing complicated math, so we want to get in the habit of creating them only when necessary.
+
+* A Model Matrix needs to be created for *every object* per frame
+* The View Matrix needs to be created *once* per frame (because the camera can move)
+* The Projection Matrix needs to be created *once* in `init()`, or after the user resizes the window.
+
+```C++
+float aspect = (float)windowWidth / windowHeight;
+
+// View Matrix - Camera
+glm::vec3 cameraPos(0.0f, 0.0f, 8.0f);
+glm::vec3 target(0.0f, 0.0f, 0.0f);
+glm::vec3 up(0.0f, 1.0f, 0.0f);
+
+glm::mat4 view = glm::lookAt(cameraPos, target, up);
+
+// Model Matrix
+glm::mat4 model = glm::mat4(1.0f);  // identity
+model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+model = glm::rotate(model, glm::radians(30.0f), glm::vec3(0,1,0));
+model = glm::scale(model, glm::vec3(1.0f));
+
+// Projection Matrix
+glm::mat4 projection = glm::perspective(
+    glm::radians(45.0f),  // vertical FOV
+    aspect,
+    0.1f,                 // near
+    100.0f                // far
+);
+```
+
+Now that we know *how* and *when* to create each matrix, what do we *do* with them? When we are ready to send them to our vertex shader, we need to combine the Model and View Matrix into the *Model-View Matrix* (*MV*). It is possible to send them off separately and combine them in the shader, but that risks wasting GPU cycles doing something for every vertex, where the CPU can do it once *per object*.
+
+That said, we *do* want to send the *Projection Matrix* (*P*) in separately because if we are doing any lighting, we need to know where in the scene the object is in *World Space* because that is where the light source is. We will see later, that pre-combining *MV* ruins the surface normals. So we will also need to compute the *Normal Matrix* using the *Inverse Transpose* (discussed *much* earlier).
 
 [^1]: [Linear Algebra](https://www.merriam-webster.com/dictionary/linear%20algebra): a branch of mathematics that is concerned with mathematical structures closed under the operations of addition and scalar multiplication and that includes the theory of systems of linear equations, matrices, determinants, vector spaces, and linear transformations
 [^2]: Technically, it isn't any other point or matrix, but in our context the statement holds. To learn more about the *actual* operation of the Identiy Matrix see [here](https://www.khanacademy.org/math/algebra-home/alg-matrices/alg-properties-of-matrix-multiplication/a/intro-to-identity-matrices)
