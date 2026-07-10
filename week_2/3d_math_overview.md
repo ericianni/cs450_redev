@@ -76,7 +76,7 @@ GLM and GLSL both have built-ins to make generating an identity matrix easy.
 ```C++
 glm::mat4(1.0f);  // GLM Identity Matrix generation
 
-mat4(1.0f);  // GLSL Identy Matrix generation
+mat4(1.0f);  // GLSL Identity Matrix generation
 ```
 
 I bet some of you are thinking of asking, 
@@ -124,7 +124,7 @@ transpose(mat4); // GLSL transpose function
 
 ### Addition
 
-Matrix *addition* is *very* simple, but it requires that the matrices being added are the same "shape" (i.e. same dimensions). We just need to add the elements from one matrix to the coorisponding elements in the other matrix (see below).
+Matrix *addition* is *very* simple, but it requires that the matrices being added are the same "shape" (i.e. same dimensions). We just need to add the elements from one matrix to the corresponding elements in the other matrix (see below).
 
 $$
 \begin{bmatrix}
@@ -324,9 +324,9 @@ Just as before with `glm::translate(...)`, we can use the resultant `model` matr
 
 ### Rotation
 
-Now it is time for our final transform: *Rotation*. We will use this when we want to *rotate* an object around an specified axis
+Now it is time for our final transform: *Rotation*. We will use this when we want to *rotate* an object around a specified axis
 
-The math for rotations is a bit tricky. Luckily, a gentlman named Leonhard Euler came up with a clever way of rotating around a specified axis in 3D dimensional space. He discovered that if you break up the rotation into three separate rotatiosn around the X, Y, and Z axis individually, you could combine them into a single matrix that contains all three! We call these *Euler Angles*.[^5]
+The math for rotations is a bit tricky. Luckily, a gentleman named Leonhard Euler came up with a clever way of rotating around a specified axis in 3D dimensional space. He discovered that if you break up the rotation into three separate rotation around the X, Y, and Z axis individually, you could combine them into a single matrix that contains all three! We call these *Euler Angles*.[^5]
 
 To use Euler Angles, we just need to specify how much we want to rotate (in *radians*) and provide an axis to rotate around. By imagining our axis passing through the origin, we can use a simple vector to describe our axis: (x, y, z). Now we just do the math (shown) below to calculate how much to move each vertex in each dimension to produce the desired rotation.
 
@@ -666,6 +666,161 @@ In this example, we have moved the camera away from the origin along the Z-axis.
 **HIDE ANSWER: That's right! This new matrix is known as the *Model-View Matrix*. We will be using this *a lot*.**
 
 # Projection Matrices
+
+We are *almost* done! I can taste it! We just finished talking about the camera, where we mentioned the *projection plane*. I told you to think about it as a representation of our screen. What I didn't tell you was *how* the scene is converted from a 3D world into a 2D image. In order to do that, we need to talk about *projections*.
+
+## Perspective
+
+The *Perspective Projection* attempts to create the illusion of a 3D image, but in 2D. Things that are closer to the camera appear bigger, while those further away appear smaller. Additionally, things seem to *vanish* at a certain point in the distance (the *Vanishing Point*). This is how our own eyes behave, so this is where most of our time with 3D Graphics will be spent.
+
+You may think that perspective is such a no-brainer, that it is always how humans represented scenes in art, but you would be wrong. Let's take a look at a late Medieval painting.
+
+![Paradiesgärtlein painted by Upper Rhenish Master between 1410-1420](../images/week_2/the_paradise_garden.png)
+
+Notice how everything seems *flat*, especially the table. Also, notice how the Virgin Mary (with the book) is shown to be further away from the viewer by making her appear higher on the canvas, but she is still roughly the same size as all the other figures? There is *some* attempt at perspective in the bottom left corner in the depiction of the well. Yet, even that attempt doesn't match the garden walls.
+
+Now, let us look at a painting drawn with an eye for *prospective*. This is one of my favorite paintings from the Renaissance and was painted roughly 100 years after the previous painting.
+
+![The School of Athens painted by Raphael between 1509-1511](../images/week_2/school_of_athens.jpg)
+
+Notice how the figures in the back are noticably smaller than those in the front. Additionally, there is a clear *vanishing point* in the center, directly behind the figures of Plato and Aristole. If you look at all the non-horizontal lines, you can trace them all back to this point. Can you see it? Hint: look at the architecture above them and the designs on the floor in front.
+
+Let me show you.
+
+![The School of Athens painting with perspective lines drawn](../images/week_2/school_of_athens_perspective.png)
+
+OK, I feel we have a solid grasp when it comes to *perspective*. Now, how do we make our computer mimic this? Buckle up, here comes some math!
+
+Let's start with a diagram. In this diagram, the eye is looking down the Z-axis and the Y-axis is the *up* direction (see *Eye Space* above).
+
+<div align="center" markdown="1">
+
+![Depiction of a Perspective Frustum](../images/week_2/pserspective_frustum.svg)
+
+</div>
+
+This is called *Perspective View Volume* or the *Perspective View Frustum*. There is a lot going on here, but I am going to break it down for you into the important parts.
+
+* **Clipping Planes**
+  * **Near Clipping Plane** - nothing closer to the eye will be visible, specified by $Z_{near}$. This is also going to be our *projection plane* as mentioned above
+  * **Far Clipping Plane** - nothing further from the eye will be visible, specified by $Z_{far}$
+* **Field of View (FOV)** - the angle along the Y-axis (up-and-down) that is visible
+* **Aspect Ratio** - the ratio of the width (W) and height (H) of the clipping planes
+
+To build the *Perspective Matrix* we need to calculate the following and then plug them into the matrix below:
+$$
+q = \frac{1}{\tan\left(\frac{\text{fieldOfView}}{2}\right)}
+$$
+
+$$
+A = \frac{q}{\text{aspectRatio}}
+$$
+
+$$
+B = \frac{Z_{near} + Z_{far}}{Z_{near} - Z_{far}}
+$$
+
+$$
+C = \frac{2 * (Z_{near} * Z_{far})}{Z_{near} - Z_{far}}
+$$
+
+$$
+\begin{bmatrix}
+A & 0 & 0 & 0 \\
+0 & q & 0 & 0 \\
+0 & 0 & B & C \\
+0 & 0 & -1 & 0
+\end{bmatrix}
+$$
+
+That sounds like a lot of work, and it is! Again, GLM comes to our aid with `glm::perspective(fov, aspect, near, far)`. We only need to provide these four values and GLM will do all the heavy lifting for us. Not sure what to put in for each? Let's look at some good "default" values.
+
+* **FOV** - This will greatly depend on the type of experience you want for your users.Typically, we want to use something around $45\degree$. If you make the FOV larger, you start moving into the *fisheye* or *wide-angle* effects. **Caution:** Don't forget to convert the degrees to radians.
+* **Aspect** - If you are doing fullscreen rendering, you want the aspect ratio to match the monitors aspect ratio. If you are rendering in a window, you want to match the aspect ratio of the window.
+* **Near** - You can monkey around with this to give different sensations to the camera movement, but typically we should stick with `0.1f`.
+* **Far** - You want to set this far enough away from the camera that you can see your scene, but not so far as to be rendering things that aren't actually visible to the viewer (e.g. things are so far away they are just a few pixels on the screen). For our purposes, we likely want to set it to be larger than the largest dimension of our scene (and then some).
+
+```C++
+glm::mat4 projection = glm::perspective(
+    glm::radians(45.0f), 
+    (float)windowWidth / windowHeight, 
+    0.1f, 
+    200.0f
+);
+```
+
+## Orthographic
+
+Whereas the *Perspective Projection* attempts to mimic a 3D scene, the *Orthographic Projection* displays the objects in the scene as they are. Objects with parallel lines are displayed with those lines still parallel; there is no *vanishing point*. This means that if your scene has two objects of the same size, but one is much closer than the other, both will appear the same size on the screen.
+
+It's a bit tricky to visualize how this works, so let's look at a diagram.
+
+<div align="center" markdown="1>
+
+![Orthographic Projection Diagram](../images/week_2/ortho_projection.svg)
+
+Some things look the same and some things look *way* different. Shall we focus on the familiar first?
+</div>
+
+* **Clipping Planes**
+  * **Near Clipping Plane** - nothing closer to the eye will be visible, specified by $Z_{near}$. This is also going to be our *projection plane* as mentioned above
+  * **Far Clipping Plane** - nothing further from the eye will be visible, specified by $Z_{far}$
+
+*Yes*, I copied-and-pasted. In my defense, they literally are the same in both projections!
+
+ Now, what's *different*?
+
+* **L and R** - These stand for *Left* and *Right*
+* **T and B** - These stand for *Top* and *Bottom*
+
+When using the orthographic projection, it is common practice to have the camera aimed directly perpendicularly to the center of the projection plane. In this scenario, when you want to change what is on the screen, you move the projection plane to somewhere else in the world (without rotating it), while keeping the camera centered on the new location. We specify where each corner of the projection plane is using Y-coordinates stored in *T* and *B*, and the X-coordinates stored in *L* and *R*.
+
+Another odd quirk of using this approach is that, since you can't move the camera, you "zoom" in and out by shrinking or increasing the size of the clipping plane. You aren't actually bringing the objects closer when you "zoom", you are just narrowing the part of the scene that is visible.
+
+What else do you notice that is different about the diagram?
+
+**Hide Answer: The near and far object are the same size on the screen! Yes, as mentioned above, there is *no* vanishing point in orthographic projection. This also means that if the top and bottom of the cylinders are on the same plane as the top (or bottom - they are parallel) of the view volume, then they will show up as rectangles as shown.**
+
+This is likely still confusing, so let's look at the same scene rendered in *Orthographic Projection* and with *Perspective Projection*. Both of these show a 3D model my daughter made for a school project. The first image will use the *perspective projection*.
+
+<div align="center" markdown="1>
+
+![Orthographic projection of a CAD model of a school](../images/week_2/perspective_building.png)
+
+</div>
+
+Nothing out of the ordinary here. The walls of the building appear to converge toward a point in the far distance. Things closer to the viewer appear larger. You get the gist! Now, let's look at the same model, but with the *orthographic projection*.
+
+<div align="center" markdown="1>
+
+![Orthographic projection of a CAD model of a school](../images/week_2/ortho_building.png)
+
+</div>
+
+This seems like a silly thing to do and not *realistic*, but there are some solid use cases. The most common would be architecture drawings and CAD (Computer-Aided Design) software. In both instances we want distances and proportions to remain constant.
+
+There is another "common" use case for a view similar to the image above. I will give you a hint. Gamers of a certain type are likely very familiar with this "view."
+
+**Hide answer: If you are a Real-Time Strategy (RTS) or enjoy games like Diablo/Baldur's Gate you have probably heard of the term *Isometric View*. This is a special flavor of orthographic projection that angles the camera at the projection plane instead of being perpendicular.**
+
+That was fun, but now we have to look at the *math*. I am so sorry, but it will be quick! If you need to be reminded of what each variable is in the matrix below, just scroll up a bit.
+
+$$
+\begin{bmatrix}
+\frac{2}{R - L} & 0 & 0 & -\frac{R + L}{R - L} \\
+\\
+0 & \frac{2}{T - B} & 0 & -\frac{T + B}{T - B} \\
+\\
+0 & 0 & -\frac{2}{Z_{far} - Z_{near}} & -\frac{Z_{far} + Z_{near}}{Z_{far} - Z_{near}} \\
+\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
+That's it! Now, *of course* we aren't going to do this by hand, we are going to lean on GLM.
+
+
+
 # Model-View-Projection
 # GLM 
 ## Useful GLM Operations
