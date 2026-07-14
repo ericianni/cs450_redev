@@ -1,4 +1,5 @@
 # CLOs
+* CLO2 - Describe the names and functinos of the elements of the graphics pipeline, as well as the input and output of each stage.
 * CLO10 - Create and use an OpenGL vertex and fragment shader.
 
 # Introduction

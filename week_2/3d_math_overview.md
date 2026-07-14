@@ -842,8 +842,7 @@ Not only did we cover all the math behind *transformations*, but we also covered
 * *View Matrix* (V)
 * *Projection Matrix* (P)
 
-The Model Matrix takes our vertices from local space to world space. By combining it with the View Matrix, we move vertices into Eye Space. With our Projection Matrix we move them into *Screen Space* (our *final* destination).
-
+The Model Matrix takes our vertices from local space to world space. By combining it with the View Matrix, we move vertices into Eye Space. With our Projection Matrix we move them into *Clip Space* (our *final* destination).
 
 Below you can see code examples of all three types of matrices being created. You may see in online people creating these matrices every frame. This is a *bad* idea. We want to not waste CPU time doing complicated math, so we want to get in the habit of creating them only when necessary.
 
