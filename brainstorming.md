@@ -100,6 +100,10 @@
   * Building Lists
   * Display loop
 * Pipeline Structure
+* Lighting/Shading
+  * Flat
+  * Gouraud (per vertex)
+  * Phong (per fragment)
 * Rasterization
 * Detecting Errors
 * Animations
@@ -119,3 +123,7 @@
   * Build vertices by hand and render (flat?)
   * Demonstrate loading an object file
   * Demonstrate animation with object file
+
+
+**FINAL DECISIO**
+* Using MV+P
