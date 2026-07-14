@@ -27,27 +27,27 @@
     * Translation - DONE
     * Scaling - DONE
     * Rotation - DONE
-  * Vectors
-    * Operations
-      * Addition and subtraction
-      * Normalize
-      * Dot product
-        * finds the angle between two vectors
-          * Mention normalizing first theta = arcos (V * W)
-          * Perpendicular and parallel
-        * finds vector's magnitude
-      * Cross product
-        * can be used to find the surface normal
-  * Local and World Space
-    * local - object/model
-    * world - shared space
-  * Projection Matrices
-    * Perspective
-    * Orthographic
-  * Eye Space
-    * Go over camera
-  * Model-View-Projection
-    * pass in mv and then projection
+  * Vectors - DONE
+    * Operations - DONE
+      * Addition and subtraction - DONE
+      * Normalize - DONE
+      * Dot product - DONE
+        * finds the angle between two vectors - DONE
+          * Mention normalizing first theta = arcos (V * W) - DONE
+          * Perpendicular and parallel - DONE
+        * finds vector's magnitude - DONE
+      * Cross product - DONE
+        * can be used to find the surface normal - DONE
+  * Local and World Space - DONE
+    * local - object/model - DONE
+    * world - shared space - DONE
+  * Projection Matrices - DONE
+    * Perspective - DONE
+    * Orthographic - DONE
+  * Eye Space - DONE
+    * Go over camera - DONE
+  * Model-View-Projection - DONE
+    * go over different ways to precombine matrices - DONE
   
 
 * Let's Get to the Point! - DONE
@@ -58,28 +58,28 @@
 * Provide "buildProgram" function that loads shaders
 
 # Pages that are needed
-* OpenGL Topologies
+* OpenGL Topologies - DONE
 * OpenGL Pipeline - DONE
-* Space
+* Space - DONE
   * Local
   * World
   * Eye
-* Projection Matrices (GLM?)
+* Projection Matrices (GLM?) - DONE
   * Perspective
   * Orthographic
-* Look-at-Matrix (GLM?)
+* Look-at-Matrix (GLM?) - DONE
 * VBOs
-* Transforms w/ Matrices (GLM?)
+* Transforms w/ Matrices (GLM?) - DONE
   * Translation
   * Scaling
   * Rotation
-* Maths overview?
-* Anatomy of a Shader
+* Maths overview? - DONE
+* Anatomy of a Shader - DONE
   * Vertex Shader
   * Fragment Shader
 * GLSL Errors
 * Animation
-* Read source code from file
+* Read source code from file - DONE
 * Go over Layouts
 * Talk about wireframe rendering (glPolygonModel)
 * Camera Control
