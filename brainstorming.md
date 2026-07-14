@@ -117,12 +117,11 @@
 * Quiz Questions
   * Which stages are programmable?
 
-* Possible ordering of topics
-  * Discuss Primitives - DONE
-  * Discuss VBOs
-  * Build vertices by hand and render (flat?)
-  * Demonstrate loading an object file
-  * Demonstrate animation with object file
+* Possible Advanced topics
+  * UBOs
+  * EBOs
+  * Instancing
+  * M+VP
 
 
 **FINAL DECISIO**
