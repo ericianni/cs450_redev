@@ -1,4 +1,5 @@
 # Introduction
+
 Over my many years of teaching, I have taught a wide array of subjects. I cut my teeth by teaching high school Latin. When Latin enrollment dropped, I taught Classical Studies and SAT Prep. In the Marines, I mentored junior Marines in everything from how to set up and fire a mortar to running a drug screening program. At OSU I have taught Web Dev, Cloud Computing, Software Engineering, and now Graphics. At GaTech I host seminars on Future Educators, Futurism, and Engineering in Popular Culture. No matter what I am teaching, one thing I always keep in mind is *the why*. 
 
 By this time, I am sure you are all intimately familiar with [*stakeholder analysis*](https://en.wikipedia.org/wiki/Stakeholder_analysis). When crafting software we want to know what the stakeholders' requirements are and often focus narrowly on features. I contend that this is a mistake, and that we need to also examine the *motivations* of the stakeholders. It is our motivations that hold our *true* requirements.
@@ -8,6 +9,7 @@ Why would creating a course be anything different? OSU dictates the Course Learn
 This will be the first offering of the completely redeveloped CS450/550 so I am only able to guess at your reasons for being here (it is an elective after all). My hope is to update the course dynamically to address the various motivations of *you* the students. With this in mind, please take time to explain your *why* on Ed ([INSERT ED LINK](www.addlink.com)).
 
 # My Why
+
 It would unfair (and ungentlemanly) to ask you to share your *why* and not to reciprocate. Additionally, I believe students benefit greatly from knowing the motivations of their instructors. Knowing my journey to this place positions you all to better understand my design choices and, honestly, makes me more *human*.
 
 I am a child of the 90s. I grew up playing video games: both console and PC. My mind has always been geared toward tinkering and I wanted to understand the nuts and bolts of things. Watching 1s and 0s being turned into interactive worlds seemed like pure wizardry.

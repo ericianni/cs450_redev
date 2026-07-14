@@ -129,7 +129,7 @@ We are almost done! We have just a few more elements to cover when it comes to c
 
 Under the `display()` function call, we have `glfwSwapBuffers(window);`. OpenGL is uses two buffers to manage the images on the screen. There is a **front buffer** *and* a **back buffer**. OpenGL writes into the *back buffer* during our `display()` function, and then that buffer is swapped into the *front buffer*. Why do you think it works this way?
 
-**Hide Answer: What do you think would happen if OpenGL only used one buffer and wrote into it while also displaying it to the user? Well, we would end up with having some wild situations where part of the screen is being overwritten while part of the screen shows the last rendering pass. This would cause tearing and would make it very difficult for the viewer. So, the back buffer is only swapped once it is fully rendered and ready to be viewed.
+**Hide Answer: What do you think would happen if OpenGL only used one buffer and wrote into it while also displaying it to the user? Well, we would end up with having some wild situations where part of the screen is being overwritten while part of the screen shows the last rendering pass. This would cause tearing and would make it very difficult for the viewer. So, the back buffer is only swapped once it is fully rendered and ready to be viewed.**
 
 The last element in `main()` is `glfwPollEvents()`. This is how we are going to monitor input from the user. Astute students may realize that our `main()` loop executes once for each frame rendered. We want to collect and then process any input the user has made since the last frame was generated. GLFW maintains an *event queue* and `glfwPollEvents()` pulls all the events that haven't been processed for processing. 
 

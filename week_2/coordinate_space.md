@@ -67,9 +67,14 @@ At the top right you will see the *eye* (sometimes called the *camera*). It has 
 
 Out of the eye we can see four lines labled the *view volume*. The edges of this volume create something called the *projection plan*. You can see a mini red cube on the plane, but you cannot see the yellow triangular prism in the plane. This is because it is outside our viewing volume (aka outside our field of vision).
 
-We only want to send to the GPU vertices that appear within the view volume *and* appear on our *projection plane*. Another name for the *projection plane* is the *Clipping Plane*. We will need to calculate something called the *Projection Matrix* (covered later in the course) and apply it to the combined *Model* and *View* matrices. This operation will result in our vertices being moved into *Clip Space*.
+We will need to calculate something called the *Projection Matrix* (covered later in the course) and apply it to the combined *Model* and *View* matrices. This operation will result in our vertices being moved into *Clip Space* (another name for the *project plane* is the *clipping plane*).
 
-At this stage, our vertices are ready to be sent off to the rasterizer, which will handle *clipping* our scenes to the view volume (cutting out the rest).
+At this stage, our vertices are ready to be sent off to the rasterizer, which will handle *clipping* our scenes to the vertices within the view volume (cutting out the rest). Not only does this determine the exact vertices that are visible, it also limits waste GPU cycles.
+
+# Coming back to Earth[^3]
+
+This information was originally presented with a *ton* of math in a later week, but decided that it was more important to present the key concepts early in the term. We will be fleshing out each of these matrices and how to use them in the coming weeks. For now, just try to visualize the differences between all these *spaces*. Having a solid mental model as we write our first programs will be a great boon to you.
 
 [^1]: This is the "royal" we, so no grammar issue here!
 [^2]: I just realized, after writing that analogy, I could have just said the last line and left out my reference to *Top Gun*, but what's the fun in that?
+[^3]: Would you believe that I actually dislike puns? I have no idea why I am constantly using them in my courses.
