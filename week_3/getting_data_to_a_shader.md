@@ -33,8 +33,23 @@ THe most common types would include:
 * Camera Position (`vec3`)
 * Texture Data (`sampler2D`)
 
+Soon, we will be using *a lot* of matrices in our shaders as we transform our objects and light them. Later, we will be covering lighting, camera movment, and appyling textures to objects.
 
 # Application Side
+
+Just as there are two ways for shaders to receive input data (`in` and `uniform`), there are two ways to send that data to the shader from our OpenGL application:
+
+* Using a buffer
+* Sending it directly
+
+## Buffers
+
+Let's get ready to Rumble![^1] It's time![^2]...to talk about *buffers*. When a buffer is not doing ring announceing[^3], they are a way of storing data 
+
+## Setting a Uniform
+
+[^1]: This is a [Michael Buffer](https://en.wikipedia.org/wiki/Michael_Buffer) reference. If you don't get it, it means I am finally beyond old and should stop trying to make references. HA! Fat chance I will do that!
+[^2]: This was a [*Bruce Buffer*](https://en.wikipedia.org/wiki/Bruce_Buffer) reference; I couldn't mention one half-brother without mentioning the other!
 
 # IDEAS
 * SHow how to bind colors so we can alternate the point colors
