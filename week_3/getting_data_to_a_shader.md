@@ -230,7 +230,7 @@ Next, we need to get the location on the GPU of the uniform variable. Since thes
 
 **HIDE ANSWER: That's right! Things that only need to be set once per program, should be set in `init()`**
 
-We use `glGetUniformLocation(renderingProgram, "mvp")` to gather this information. If the uniform is *not* found, this function will return `-1`. Later, when we try to set the uniform in the shader, if we try to use a location value that isn't on the GPU, the program will crash, unless that value is `-1`. In that situation, OpenGL will just skip trying to set the uniform and not crash. 
+We use `glGetUniformLocation(renderingProgram, "mvp")` to gather this information. If the uniform is *not* found, this function will return `-1`. Later, when we try to set the uniform in the shader, if we try to use a location value that isn't on the GPU, the program will crash, unless that value is `-1`. In that situation, OpenGL will just skip trying to set the uniform and not crash. This also allows us to "forget" to set a uniform (or decide not to use it), OpenGL will just "optimizes it out" by not even loading that part of the shader code to the GPU (super smart!).
 
 This is why we set `mvpLoc` (and other uniform locations) to `-1` by default. Not only does this align with the OpenGL standard, but it also means that if we end up making a change to the shader code and rename or remove the uniform variable, our program won't automatically fail.
 
@@ -349,7 +349,7 @@ Above, is all the code we have examined during this exploration, but interwoven.
    5. Bind VBO - `glBindBuffer(...)`
    6. Fill VBO with data - `glBufferData(...)`
    7. Set vertex attribute - `glVertexAttribPointer(...)`
-   8. Store vertex attribute - ``glEnableVertexAttribArray(...)`
+   8. Store vertex attribute - `glEnableVertexAttribArray(...)`
    9. Unbind VAO - `glBindVertexArray(0)`
    10. Unbind VBO - `glBindBuffer(..., 0)`
 3. display()
