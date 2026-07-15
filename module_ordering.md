@@ -15,7 +15,7 @@
 
 # Week 3
 
-*
+* Getting Data to a Shader
 
 # Week 4
 # Week 5
