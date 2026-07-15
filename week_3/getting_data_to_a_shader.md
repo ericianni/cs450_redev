@@ -113,7 +113,7 @@ layout(location = 0) in vec3 pos;
 uniform mat4 mvp;
 
 void main() {
-    gl_Position = mvp * vec4(pos, 1.0;
+    gl_Position = mvp * vec4(pos, 1.0f);
 }
 ```
 
@@ -195,7 +195,7 @@ layout(location = 0) in vec3 pos;
 uniform mat4 mvp;
 
 void main() {
-    gl_Position = mvp * vec4(pos, 1.0;
+    gl_Position = mvp * vec4(pos, 1.0f);
 }
 ```
 
@@ -252,8 +252,112 @@ That's it when it comes to setting uniforms. The only last piece is knowing how 
 
 # Putting it all together
 
+Vertex Shader:
 
+```GLSL
+#version 410 core
 
+// Vertex Attribute (from VBO)
+layout(location = 0) in vec3 pos;
+
+// Uniform
+uniform mat4 mvp;
+
+void main() {
+    gl_Position = mvp * vec4(pos, 1.0f);
+}
+```
+
+Define globals:
+
+```C++
+// Vertex data for a simple triangle
+float vertices[] = {
+      -2.0f, -2.0f, 0.0f,
+       2.0f, -2.0f, 0.0f,
+       0.0f,  2.0f, 0.0f
+};
+
+#define numVAOs 1
+#define numVBOs 1
+
+GLuint vao[numVAOs];
+GLuint vbo[numVBOs];
+
+GLint mvpLoc = -1;
+```
+
+Inside `init()`:
+
+```C++
+//You must have linked your shader program before proceeding
+
+// Get uniform Location
+mvpLoc = glGetUniformLocation(renderingProgram, "mvp");
+
+// Generate VAOs and VBOs
+glGenVertexArrays(numVAOs, vao);
+glGenBuffers(numVBOs, vbo);
+
+// Bind VAOs and VBOs
+glBindVertexArray(vao[0]);
+glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+
+// Fill VBO with vertex data
+glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+// Set position attribute
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+glEnableVertexAttribArray(0);
+
+// unbind VAO and VBO
+glBindVertexArray(0);
+glBindBuffer(GL_ARRAY_BUFFER, 0);
+```
+
+In `display()`:
+
+```C++
+glUSeProgram(renderingProgram);  // must call this first
+
+glm::mat4 mvp = project * view * model;  // transforms matrices calculated elsewhere
+
+// Set Uniforms
+glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));  // set uniform
+
+// Bind VAO
+glBindVertexArray(vao[0]);
+
+// Draw
+glDrawArrays(GL_TRIANGLES, 0, 3);
+
+// Unbind VAO
+glBindVertexArray(0);
+```
+
+Above, is all the code we have examined during this exploration, but interwoven. Make sure you internalize the order in which these things are done. Below, you will find a "cheat sheet" to help you remember.
+
+1. Define Globals
+  1. #define numVAOs and numVBOs
+  2. GLuint VAO and VBO arrays
+  3. GLint uniform location variables
+2. init() after linking shader program
+  1. Get uniform locations - `glGetUniformLocation(...)`
+  2. Generate VAOs - `glGenVertexArrays(...)`
+  3. Generate VBOs - `glGenBuffers(...)`
+  4. Bind VAO - `glBindVertexArray(...)`
+  5. Bind VBO - `glBindBuffer(...)`
+  6. Fill VBO with data - `glBufferData(...)`
+  7. Set vertex attribute - `glVertexAttribPointer(...)`
+  8. Store vertex attribute - ``glEnableVertexAttribArray(...)`
+  9. Unbind VAO - `glBindVertexArray(0)`
+  10. Unbind VBO - `glBindBuffer(..., 0)`
+3. display()
+  1. Load shader program - `glUseProgram(...)`
+  2. Set uniforms - `glUniformMatrix4fv(...)` among others
+  3. Bind VAO - `glBindVertexArray(...)`
+  4. Draw call - `glDrawArrays(...)`
+  5. Unbind VAO - `glBindVertexArray(0)`
 
 [^1]: This is a [Michael Buffer](https://en.wikipedia.org/wiki/Michael_Buffer) reference. If you don't get it, it means I am finally beyond old and should stop trying to make references. HA! Fat chance I will do that!
 [^2]: This was a [*Bruce Buffer*](https://en.wikipedia.org/wiki/Bruce_Buffer) reference; I couldn't mention one half-brother without mentioning the other!
@@ -262,7 +366,3 @@ That's it when it comes to setting uniforms. The only last piece is knowing how 
 [^5]: Techincally, with tightly packed data, you can just use `0` instead of using `X * sizeof(type)` and OpenGL will automatically calculate the stride, but I prefer to be explicit in all things.
 [^6]: This isn't entirely true, if the window is resized you will need to update the project matrix, but we can write separate code to handle that.
 [^7]: As we progress through the course, we will be explaining these function calls less and less. Our expectation is that you will start using the documentation to fill in any gaps.
-
-
-# IDEAS
-* SHow how to bind colors so we can alternate the point colors
