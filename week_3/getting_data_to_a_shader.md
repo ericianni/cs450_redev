@@ -361,7 +361,9 @@ Above, is all the code we have examined during this exploration, but interwoven.
 
 # Sending Data to Non-Vertex Shaders
 
-All the examples above only showed how we send data to *Vertex Shaders*. How do we get data to the other stages of the pipeline? The first thing you need to know is that we can *only* send *vertex attributes* to *Vertex Shaders*. Second, we can send *uniforms* to *any* type of shader using the same method shown above.
+All the examples above only showed how we send data to *Vertex Shaders*. How do we get data to the other stages of the pipeline? The first thing you need to know is that we can *only* send *vertex attributes* to *Vertex Shaders*. Second, we can send *uniforms* to *any* type of shader using the same method shown above. 
+
+**Warning**: uniform variables exist across all shaders. If you declare `uniform mat4 mvp` in the vertex shader, you can't then declare `uniform vec3 mvp` in another shader, because they have the same name, but different types.
 
 Then how does something like a *Fragment Shader* get input using the `in` keyword? Simple, those *inputs* are the *outputs* of the previous shader! There are two ways of doing this, both are fine for this class, but one is "best practices."
 
