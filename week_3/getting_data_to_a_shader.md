@@ -397,7 +397,6 @@ layout(location = 0) in vec4 color;
 
 This is the *modern* way, and how you should learn if you want to continue into more advanced graphics materials. It uses the same `layout` keyword to specify the location as we did when passing in our VBO data. Notice that using this method allows us to "change" the name of the variable between shaders. This allows us to mix and match shaders without worrying about keeping the output/input names aligned, as long as they target the same location.
 
-
 [^1]: This is a [Michael Buffer](https://en.wikipedia.org/wiki/Michael_Buffer) reference. If you don't get it, it means I am finally beyond old and should stop trying to make references. HA! Fat chance I will do that!
 [^2]: This was a [*Bruce Buffer*](https://en.wikipedia.org/wiki/Bruce_Buffer) reference; I couldn't mention one half-brother without mentioning the other!
 [^3]: Now I am just seeing how many times I can beat this dead horse. If yo don't know what I mean, see footnotes 1 and 2. If you manged to read footnote 3 without reading those two first, this joke makes no sense, but neither does your clicking on this footnote and not the others!
