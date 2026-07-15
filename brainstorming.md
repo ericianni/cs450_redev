@@ -58,48 +58,18 @@
 * Provide "buildProgram" function that loads shaders
 
 # Pages that are needed
-* OpenGL Topologies - DONE
-* OpenGL Pipeline - DONE
-* Space - DONE
-  * Local
-  * World
-  * Eye
-* Projection Matrices (GLM?) - DONE
-  * Perspective
-  * Orthographic
-* Look-at-Matrix (GLM?) - DONE
-* VBOs
-* Transforms w/ Matrices (GLM?) - DONE
-  * Translation
-  * Scaling
-  * Rotation
-* Maths overview? - DONE
-* Anatomy of a Shader - DONE
-  * Vertex Shader
-  * Fragment Shader
 * GLSL Errors
 * Animation
-* Read source code from file - DONE
 * Go over Layouts
 * Talk about wireframe rendering (glPolygonModel)
 * Camera Control
+* Interpolation
 
 # Module Ideas
-* Coordinate Systems
-  * RH vs LH - DONE
-  * Ortho vs Perspective
-* OpenGL Topologies
-  * How to label points (ccw)
+* How to label points (ccw)
 * Color in OpenGL
   * Additive Color
-* Transforms - DONE
-* Shader Types - DONE
-* glDrawArray Modes - DONE
 * Hardware vs Software vs GPU Graphics
-* Parts of an OpenGL Program
-  * Building Lists
-  * Display loop
-* Pipeline Structure
 * Lighting/Shading
   * Flat
   * Gouraud (per vertex)
@@ -110,7 +80,6 @@
 * Write a Object loading function and provide students
 
 * To Do
-  * Add Primitive Assembly stage to pipeline diagram - DONE
   * Assign CLOs to each exploration/assignment
   * Add tinyobjloader to the Setup (and test file?)
 
