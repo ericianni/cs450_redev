@@ -338,26 +338,26 @@ glBindVertexArray(0);
 Above, is all the code we have examined during this exploration, but interwoven. Make sure you internalize the order in which these things are done. Below, you will find a "cheat sheet" to help you remember.
 
 1. Define Globals
-  1. #define numVAOs and numVBOs
-  2. GLuint VAO and VBO arrays
-  3. GLint uniform location variables
+   1. #define numVAOs and numVBOs
+   2. GLuint VAO and VBO arrays
+   3. GLint uniform location variables
 2. init() after linking shader program
-  1. Get uniform locations - `glGetUniformLocation(...)`
-  2. Generate VAOs - `glGenVertexArrays(...)`
-  3. Generate VBOs - `glGenBuffers(...)`
-  4. Bind VAO - `glBindVertexArray(...)`
-  5. Bind VBO - `glBindBuffer(...)`
-  6. Fill VBO with data - `glBufferData(...)`
-  7. Set vertex attribute - `glVertexAttribPointer(...)`
-  8. Store vertex attribute - ``glEnableVertexAttribArray(...)`
-  9. Unbind VAO - `glBindVertexArray(0)`
-  10. Unbind VBO - `glBindBuffer(..., 0)`
+   1. Get uniform locations - `glGetUniformLocation(...)`
+   2. Generate VAOs - `glGenVertexArrays(...)`
+   3. Generate VBOs - `glGenBuffers(...)`
+   4. Bind VAO - `glBindVertexArray(...)`
+   5. Bind VBO - `glBindBuffer(...)`
+   6. Fill VBO with data - `glBufferData(...)`
+   7. Set vertex attribute - `glVertexAttribPointer(...)`
+   8. Store vertex attribute - ``glEnableVertexAttribArray(...)`
+   9. Unbind VAO - `glBindVertexArray(0)`
+   10. Unbind VBO - `glBindBuffer(..., 0)`
 3. display()
-  1. Load shader program - `glUseProgram(...)`
-  2. Set uniforms - `glUniformMatrix4fv(...)` among others
-  3. Bind VAO - `glBindVertexArray(...)`
-  4. Draw call - `glDrawArrays(...)`
-  5. Unbind VAO - `glBindVertexArray(0)`
+   1. Load shader program - `glUseProgram(...)`
+   2. Set uniforms - `glUniformMatrix4fv(...)` among others
+   3. Bind VAO - `glBindVertexArray(...)`
+   4. Draw call - `glDrawArrays(...)`
+   5. Unbind VAO - `glBindVertexArray(0)`
 
 [^1]: This is a [Michael Buffer](https://en.wikipedia.org/wiki/Michael_Buffer) reference. If you don't get it, it means I am finally beyond old and should stop trying to make references. HA! Fat chance I will do that!
 [^2]: This was a [*Bruce Buffer*](https://en.wikipedia.org/wiki/Bruce_Buffer) reference; I couldn't mention one half-brother without mentioning the other!
