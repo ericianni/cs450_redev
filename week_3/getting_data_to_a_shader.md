@@ -3,7 +3,7 @@
 
 # Introduction
 
-As we saw in our [Get_to_the_Point](../week_2/get_to_the_point.md.md) exploration, we *briefly* took a look at the *Anatomy of a Shader*. We discussed that you can send data *into* a shader (as well as out). In that program, we didn't actually do that as we hardcoded our vertex position directly into the shader code. Let us know, fill in those blanks on sending data to a shader.
+As we saw in our [Get_to_the_Point](../week_2/get_to_the_point.md) exploration, we *briefly* took a look at the *Anatomy of a Shader*. We discussed that you can send data *into* a shader (as well as out). In that program, we didn't actually do that as we hardcoded our vertex position directly into the shader code. Let us know, fill in those blanks on sending data to a shader.
 
 # Shader Side
 
