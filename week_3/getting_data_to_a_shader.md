@@ -215,7 +215,7 @@ mvpLoc = glGetUniformLocation(renderingProgram, "mvp");
 Then in `display()`:
 
 ```C++
-glUSeProgram(renderingProgram);  // must call this first
+glUseProgram(renderingProgram);  // must call this first
 glm::mat4 mvp = project * view * model;  // transforms matrices calculated elsewhere
 glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));  // set uniform
 ```
