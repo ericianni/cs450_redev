@@ -115,7 +115,7 @@ We then use these two macros to declare an array to hold our soon-to-be created 
 
 Now we move onto the code in `init()`. We only need to generate our arrays and buffers *once*, so doing it in `init()` makes perfect sense. We need to allocate the memory for our VAOs and VBOs.
 
-We start by calling `glGenVertexArarys(numVAOs, vao)`. We pass in the number of VAOs we want to create (`numVAOs`) and the array we wish to fill with the VAO ID numbers (`vao`).
+We start by calling `glGenVertexArrarys(numVAOs, vao)`. We pass in the number of VAOs we want to create (`numVAOs`) and the array we wish to fill with the VAO ID numbers (`vao`).
 
 We do something similar to allocate the memory needed for our VBOs using `glGenBuffers(numVBOs, vbo)`. Again, this creates the buffers and fills `vbo` with the ID numbers associated with each newly created buffer.
 
@@ -123,23 +123,23 @@ We do something similar to allocate the memory needed for our VBOs using `glGenB
 
 Next, we need to tell OpenGL *which* VAO we wish to modify by *binding* it (`glBindVertexArray(vao[0])`). It is absolutely critical that we call this before we bind our VBOs. If we do it in the other order, OpenGL will not associate the changes to the VBO with the desired VAO. 
 
-Once that is done, we can call `glBindBuffer(GL_ARRAY_BUFFER, vbo[0])`, which informs OpenGL which VBO we will be modifying. During the binding, we have to tell OpenGL the type of array we wish to use. This is important, becaus when we generate the buffers, they are simple "blobs" of memory, with no real structure. `GL_ARRAY_BUFFER` tells OpenGL to treat the data as an array (almost always consisting of vertex data).
+Once that is done, we can call `glBindBuffer(GL_ARRAY_BUFFER, vbo[0])`, which informs OpenGL which VBO we will be modifying. During the binding, we have to tell OpenGL the type of array we wish to use. This is important, because when we generate the buffers, they are simple "blobs" of memory, with no real structure. `GL_ARRAY_BUFFER` tells OpenGL to treat the data as an array (almost always consisting of vertex data).
 
 Quick recap, we first generated our VAOs/VBOs. We then *bound* both of them (first the VAO, then the VBO). Now, it is time to *fill* the VBO. We do this using `glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW)`. Let's break down each of these parameters.
 
-* `GL_ARRAY_BUFFER` - tells OpenGL that we are filling this is sequenctial indexed data
+* `GL_ARRAY_BUFFER` - tells OpenGL that we are filling this is sequential indexed data
 * `sizeof(vertices)` - tells OpenGL that the amount of memory we need is enough to hold all our vertex data
 * `vertices` - tells OpenGL where to find the data to load into the buffer
 * `GL_STATIC_DRAW` - tells OpenGL how often you plan on updating this buffer and how often you plan on accessing it.[^4] This helps the GPU to know where in memory to most effeciently store the buffer data. `STATIC` means it will be written once and accessed many times. `DRAW` means the CPU will write the data and the GPU will read it.
 
 Now that we have loaded our buffer, we need to inform OpenGL how we intend to get that data into our vertex shader. Since this data will change for every vertex, we must use *Vertex Attributes* (not *Uniforms*). We do this using `glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0)`. Let's break down each parameter.
 
-* `0` - tells OpenGL which *position* within the VAO we want to store the buffer. As mentioned earlier, the first positino (`0`) is typically associated with the position data for the vertices
+* `0` - tells OpenGL which *position* within the VAO we want to store the buffer. As mentioned earlier, the first position (`0`) is typically associated with the position data for the vertices
 * `3` - tells OpenGL how many elements of the buffer we want to send to the shader at a time. Since we are dealing with position coordinates (x, y, and z), we want to send three
 * `GL_FLOAT` - tells OpenGL the type of data each element is; vertices are stored as floats
 * `GL_FALSE` - tells OpenGL that we don't want the data normalized (i.e. converted to [-1.0, 1.0]) during the transfer
-* `3 * sizeof(float)` - tells OpenGL how much "space" or *stride* there is between the beginning of each element. Here, we are telling OpenGL that a new vertex starts after every three floats. In our example, our vertex data is *tightly packed*, meaning that each vertex consists only of the three position elements. Many times you will see *interleaved* data where each vertex has not only position store, but also color, texture coordinates, and normals. In those instances, you have to change the multiplication factor so OpenGL knows where the next vertex starts in the buffer.[^5] In this course, we will only be using tightly packed buffers to keep things easier to read.
-* `0` - tells OpenGL which index in the array is the start of the data we want to use. In this course, our buffers will only ever hold one object at a time, so we will only ever starting at `0`
+* `3 * sizeof(float)` - tells OpenGL how much "space" or *stride* there is between the beginning of each element. Here, we are telling OpenGL that a new vertex starts after every three floats. In our example, our vertex data is *tightly packed*, meaning that each vertex consists only of the three position elements. Many times you will see *interleaved* data where each vertex has not only position stored, but also color, texture coordinates, and normals. In those instances, you have to change the multiplication factor so OpenGL knows where the next vertex starts in the buffer.[^5] In this course, we will only be using tightly packed buffers to keep things easier to read.
+* `0` - tells OpenGL which index in the array is the start of the data we want to use. In this course, our buffers will only ever hold one object at a time, so we will only ever start at `0`
 
 That's it! Now our VAO contains a *vertex attribute* at position 0 that contains our vertex data. We will now be able to quickly load this VAO and restore all these "settings" whenever we want to draw our stored object. 
 
@@ -157,7 +157,7 @@ Now we can load our desired VAO to pass to the shader(s): `glBindVertexArray(vao
 
 Now that our buffer data has been sent off to the vertex shader, we must once again clean up after ourselves by calling `glBindVertexArray(0)`.
 
-Congratulations, you have just learned how to pass *vertex attributes* to a vertex shader! As mentioned above, this is just one way of getting data into a shader. The other way requires using *uniforms*, which we are goign to cover next.
+Congratulations, you have just learned how to pass *vertex attributes* to a vertex shader! As mentioned above, this is just one way of getting data into a shader. The other way requires using *uniforms*, which we are going to cover next.
 
 ## Setting a Uniform
 
