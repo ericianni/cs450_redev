@@ -101,6 +101,22 @@ glDrawArrays(GL_TRIANGLES, 0, 3);
 glBindVertexArray(0);
 ```
 
+Vertex Shader Code:
+
+```GLSL
+#version 410 core
+
+// Vertex Attribute (from VBO)
+layout(location = 0) in vec3 pos;
+
+// Uniform
+uniform mat4 mvp;
+
+void main() {
+    gl_Position = mvp * vec4(pos, 1.0;
+}
+```
+
 Let's take this piece by piece. The first thing we do is declare our "globals." For this example, we are declaring our vertices in our code, but soon we will learn how to store this information in `.obj` files. In the `vertices` array we have nine `floats`. Each set of three numbers represents a vertex.
 
 Next, we `#define` two *macros*, which can be thought of in the same way as any other constant variable. This isn't a C++ course, so we will skip the explanation as to *why* this is required. The two macros we define will represent the number of `Vertex Array Objects` and `Vertex Buffer Objects` we want to create.
@@ -157,17 +173,96 @@ Now we can load our desired VAO to pass to the shader(s): `glBindVertexArray(vao
 
 Now that our buffer data has been sent off to the vertex shader, we must once again clean up after ourselves by calling `glBindVertexArray(0)`.
 
-Congratulations, you have just learned how to pass *vertex attributes* to a vertex shader! As mentioned above, this is just one way of getting data into a shader. The other way requires using *uniforms*, which we are going to cover next.
+OK, the buffer data has been passed to the shader, but how does the shader "catch" that data? This is handled in our vertex shader using `layout(location = 0 in vec3 pos;`. Recall, that traditionally postion data is passed in as the first element of the VAO, which corresponds to `location = 0`. The keyword `layout` tells the shader where to look for the data. The keyword `in` (as seen before) indicates the variable ins an *input*. Since we set our vertex attribute to consist of three floats, we need to store them in a `vec3`, called `pos`. Simple, right? For now, we can ignore what the shader actually does (it's irrelevant to this discussion).
+
+Congratulations, you have just learned how to pass and recieve *vertex attributes* with a vertex shader! As mentioned above, this is just one way of getting data into a shader. The other way requires using *uniforms*, which we are going to cover next.
 
 ## Setting a Uniform
 
-CONTENT YET TO BE WRITTEN
+So, we just covered setting *vertex attributes*, which we use for values that need to be updated for every vertex. For data that we only update once per model, frame, or even application, it makes a lot more sense to send the data to the GPU as few times as possible and to just reuse the same values again and again. For this, we need to use `uniforms`.
+
+Like we did above, let's start with all the needed code at once, and then we will disect it piece by piece.
+
+Vertex Shader Code:
+
+```GLSL
+#version 410 core
+
+// Vertex Attribute (from VBO)
+layout(location = 0) in vec3 pos;
+
+// Uniform
+uniform mat4 mvp;
+
+void main() {
+    gl_Position = mvp * vec4(pos, 1.0;
+}
+```
+
+Define global variable:
+
+```C++
+GLint mvpLoc = -1; // Note, this an GLint, not GLuint
+```
+
+Then in `init()` after linking the shader program:
+
+```C++
+// Get uniform Location
+mvpLoc = glGetUniformLocation(renderingProgram, "mvp");
+```
+
+Then in `display()`:
+
+```C++
+glUSeProgram(renderingProgram);  // must call this first
+glm::mat4 mvp = project * view * model;  // transforms matrices calculated elsewhere
+glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));  // set uniform
+```
+
+Compared to the work required for setting vertex attributes, setting *uniforms* is *easy*. We start with the shader this time, becasue we need to know the name of the uniform variable to write the rest. In the shader code, we define our uniform with `uniform mat4 mvp`. It is easy to guess that the keyword `uniform` just tells the shader how to store the variable. The type here is `mat4`, but it really can be *anything*. Finally, the name is `mvp`, which is important to know, because we need to use it to look up where on the GPU it is stored, so we can set it.
+
+In our application, we want to create a variable to store the uniform's location: `GLint mvpLoc = -1;`. We will use this variable to store the location of `mvp` on the GPU. Please pay close attention to two things here.
+
+First, this variable needs to be a `GLint`, which is different than the `GLuint` we have been using to store our ID numbers. This is important because `glGetUniformLocation()` returns a `GLint`. Additionally, `GLuint` are unsigned, so they can't hold negative numbers, which would prevent us defaulting the variable to `-1` (the second thing you must note). The reason for this will be made clear momentarily.
+
+Next, we need to get the location on the GPU of the uniform variable. Since these locations don't change from frame to frame, it is best to set this information just once. Want to take a guess where that should be?
+
+**HIDE ANSWER: That's right! Things that only need to be set once per program, should be set in `init()`**
+
+We use `glGetUniformLocation(renderingProgram, "mvp")` to gather this information. If the uniform is *not* found, this function will return `-1`. Later, when we try to set the uniform in the shader, if we try to use a location value that isn't on the GPU, the program will crash, unless that value is `-1`. In that situation, OpenGL will just skip trying to set the uniform and not crash. 
+
+This is why we set `mvpLoc` (and other uniform locations) to `-1` by default. Not only does this align with the OpenGL standard, but it also means that if we end up making a change to the shader code and rename or remove the uniform variable, our program won't automatically fail.
+
+So where do we actually *set* the uniform variables? That honestly depends on what our uniform is. Let's write down some easy to remember rules of thumb for where it makes sense to set different types of uniforms.
+
+* `init()` - for values that don't change at all during the running of the program (e.g. the project matrix)[^6]
+* `display()` - for values that need to be updated per-model or per-frame (e.g. the model and view matrices)
+
+In our example, we are mimicing combining all three matrices (Model, View, and Projection) into one called `mvp`, so we need to do this in `display()`. Before we can set our uniforms, we need to ensure we have loaded our shader program (`renderingProgram`). 
+
+Then it is just the matter of calling `glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp))`. There are a lot of different function names to set uniforms of different types laid out in the [OpenGL Documentation](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glUniform.xhtml).[^7] For now, we will focus on setting our `mat4`.
+
+* `mvpLoc` - the location on the GPU of the uniform variable we want to set
+* `1` - the number of matrices to be uploaded to the GPU
+* `GL_FALSE` - tells OpenGL *not* to switch the rows and columns. We will always be using this because we will construct our matrices with GLM, which mirrors the OpenGL expecations for matrix formatting
+* `glm::value_ptr(mvp)` - We can't pass the entire object, so we pass a pointer to it
+
+That's it when it comes to setting uniforms. The only last piece is knowing how to set both `vertex attributes` and `uniforms`. 
+
+# Putting it all together
+
+
+
 
 [^1]: This is a [Michael Buffer](https://en.wikipedia.org/wiki/Michael_Buffer) reference. If you don't get it, it means I am finally beyond old and should stop trying to make references. HA! Fat chance I will do that!
 [^2]: This was a [*Bruce Buffer*](https://en.wikipedia.org/wiki/Bruce_Buffer) reference; I couldn't mention one half-brother without mentioning the other!
 [^3]: Now I am just seeing how many times I can beat this dead horse. If yo don't know what I mean, see footnotes 1 and 2. If you manged to read footnote 3 without reading those two first, this joke makes no sense, but neither does your clicking on this footnote and not the others!
 [^4]: [Full breakdown of `glBUfferData` usage types](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glBufferData.xhtml)
 [^5]: Techincally, with tightly packed data, you can just use `0` instead of using `X * sizeof(type)` and OpenGL will automatically calculate the stride, but I prefer to be explicit in all things.
+[^6]: This isn't entirely true, if the window is resized you will need to update the project matrix, but we can write separate code to handle that.
+[^7]: As we progress through the course, we will be explaining these function calls less and less. Our expectation is that you will start using the documentation to fill in any gaps.
+
 
 # IDEAS
 * SHow how to bind colors so we can alternate the point colors
