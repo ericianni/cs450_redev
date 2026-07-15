@@ -216,11 +216,11 @@ Then in `display()`:
 
 ```C++
 glUseProgram(renderingProgram);  // must call this first
-glm::mat4 mvp = project * view * model;  // transforms matrices calculated elsewhere
+glm::mat4 mvp = projection * view * model;  // transforms matrices calculated elsewhere
 glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));  // set uniform
 ```
 
-Compared to the work required for setting vertex attributes, setting *uniforms* is *easy*. We start with the shader this time, becasue we need to know the name of the uniform variable to write the rest. In the shader code, we define our uniform with `uniform mat4 mvp`. It is easy to guess that the keyword `uniform` just tells the shader how to store the variable. The type here is `mat4`, but it really can be *anything*. Finally, the name is `mvp`, which is important to know, because we need to use it to look up where on the GPU it is stored, so we can set it.
+Compared to the work required for setting vertex attributes, setting *uniforms* is *easy*. We start with the shader this time, because we need to know the name of the uniform variable to write the rest. In the shader code, we define our uniform with `uniform mat4 mvp`. It is easy to guess that the keyword `uniform` just tells the shader how to store the variable. The type here is `mat4`, but it really can be *anything*. Finally, the name is `mvp`, which is important to know, because we need to use it to look up where on the GPU it is stored, so we can set it.
 
 In our application, we want to create a variable to store the uniform's location: `GLint mvpLoc = -1;`. We will use this variable to store the location of `mvp` on the GPU. Please pay close attention to two things here.
 
@@ -236,10 +236,10 @@ This is why we set `mvpLoc` (and other uniform locations) to `-1` by default. No
 
 So where do we actually *set* the uniform variables? That honestly depends on what our uniform is. Let's write down some easy to remember rules of thumb for where it makes sense to set different types of uniforms.
 
-* `init()` - for values that don't change at all during the running of the program (e.g. the project matrix)[^6]
+* `init()` - for values that don't change at all during the running of the program (e.g. the projection matrix)[^6]
 * `display()` - for values that need to be updated per-model or per-frame (e.g. the model and view matrices)
 
-In our example, we are mimicing combining all three matrices (Model, View, and Projection) into one called `mvp`, so we need to do this in `display()`. Before we can set our uniforms, we need to ensure we have loaded our shader program (`renderingProgram`). 
+In our example, we are mimicking combining all three matrices (Model, View, and Projection) into one called `mvp`, so we need to do this in `display()`. Before we can set our uniforms, we need to ensure we have loaded our shader program (`renderingProgram`). 
 
 Then it is just the matter of calling `glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp))`. There are a lot of different function names to set uniforms of different types laid out in the [OpenGL Documentation](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glUniform.xhtml).[^7] For now, we will focus on setting our `mat4`.
 
@@ -318,9 +318,9 @@ glBindBuffer(GL_ARRAY_BUFFER, 0);
 In `display()`:
 
 ```C++
-glUSeProgram(renderingProgram);  // must call this first
+glUseProgram(renderingProgram);  // must call this first
 
-glm::mat4 mvp = project * view * model;  // transforms matrices calculated elsewhere
+glm::mat4 mvp = projection * view * model;  // transforms matrices calculated elsewhere
 
 // Set Uniforms
 glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));  // set uniform
@@ -364,5 +364,5 @@ Above, is all the code we have examined during this exploration, but interwoven.
 [^3]: Now I am just seeing how many times I can beat this dead horse. If yo don't know what I mean, see footnotes 1 and 2. If you manged to read footnote 3 without reading those two first, this joke makes no sense, but neither does your clicking on this footnote and not the others!
 [^4]: [Full breakdown of `glBUfferData` usage types](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glBufferData.xhtml)
 [^5]: Techincally, with tightly packed data, you can just use `0` instead of using `X * sizeof(type)` and OpenGL will automatically calculate the stride, but I prefer to be explicit in all things.
-[^6]: This isn't entirely true, if the window is resized you will need to update the project matrix, but we can write separate code to handle that.
-[^7]: As we progress through the course, we will be explaining these function calls less and less. Our expectation is that you will start using the documentation to fill in any gaps.
+[^6]: This isn't entirely true, if the window is resized you will need to update the projection matrix, but we can write separate code to handle that.
+[^7]: As we progress through the course, we will be explaining these function calls less and less. Our expectations is that you will start using the documentation to fill in any gaps.
