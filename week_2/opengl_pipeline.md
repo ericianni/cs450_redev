@@ -20,7 +20,6 @@ You may be curious how we can process so many vertices at once. Well, modern GPU
 Here is a diagram showing the major parts of the OpenGL Pipeline:
 
 ![OpenGL Pipeline Overview](../images/undesignated_images/opengl_pipeline.png)  
-<figcaption>OpenGL Pipeline Overview</figcaption>  
 
 The stages of the pipeline that are in Beaver Orange are *programmable*. This means, we, as the developers, must tell the GPU what to do using GLSL (the OpenGL Shading Language). The stages that are in white are (on the whole) handled automatically by the GPU.
 
@@ -63,16 +62,14 @@ We can simulate part of this process using an image and overlaying a grid over i
 Here are some 3D spheres:
 
 ![A small blue sphere behind and to the right of a large red sphere](../images/undesignated_images/spheres.png)
-<figcaption>A small blue sphere behind and to the right of a large red sphere</figcaption>  
 
 The rasterizer takes the screen resolution and divides up the frame buffer to match. Let's look at how this scene would *look* to the rasterizer with a grid where each grid-square represents one pixel.
 
 ![A small blue sphere behind and to the right of a large red sphere with a 20x20 pixel grid](../images/undesignated_images/spheres_20px.png)
-<figcaption>A small blue sphere behind and to the right of a large red sphere with a 20x20 pixel grid</figcaption>  
 
 Yes, they are massive (20x20 pixels each), but this is just for demonstration purposes.
 
-When the GPU sets out to turn this scene into something that can fit into the frame buffer, it needs to identify all the parts of the scene that *could* possibly show up for each pixel. For each of these *potential pixels*, the rasterizer creates a *fragment*. Fragments represent all the data that a single pixel needs to be drawn. This includes the x and y positions on the screen and depth, but also a color, surface normals texture coordinates, etc.
+When the GPU sets out to turn this scene into something that can fit into the frame buffer, it needs to identify all the parts of the scene that *could* possibly show up for each pixel. For each of these *potential pixels*, the rasterizer creates a *fragment*. Fragments represent all the data that a single pixel needs to be drawn. This includes the x and y positions on the screen and depth, but also *interpolated attributes* such as color, surface normals texture coordinates, etc.
 
 Why do we want the fragments to have a depth value?
 
@@ -111,7 +108,6 @@ This isn't part of our pipeline, but it is the ultimate result so I felt it appr
 Now that we have swapped the frame buffers we can now display our scene! Behold our spheres!
 
 ![A pixelated scene consisting of a small blue sphere behind and to the right of a large red sphere](../images/undesignated_images/spheres_20px_pixelated.png)
-<figcaption>A pixelated scene consistiong of a small blue sphere behind and to the right of a large red sphere</figcaption>
 
 Isn't it *lovely*!? Wait, you aren't impressed? Sure, it is rather blocky, but that is because each "pixel" in our example is actually 20x20 pixels each. This was for illustrative purposes only, jeepers! The higher the number of pixels the frame buffer can hold, the more detailed the scene will appear. 
 

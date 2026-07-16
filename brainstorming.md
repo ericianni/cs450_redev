@@ -91,6 +91,7 @@
   * EBOs
   * Instancing
   * M+VP
+  * Interleaving vertex data
 
 
 **FINAL DECISIO**

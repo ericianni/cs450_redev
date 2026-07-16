@@ -61,7 +61,7 @@ First, create a new file in your project and call it "shader.vert" In that file,
 ```GLSL
 #version 410 core
 void main() {
-    gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+    gl_Position = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 }
 ```
 
@@ -79,7 +79,7 @@ Again, we are going to keep things simple for now. Create a new file and name it
 #version 410 core
 out vec4 color;
 void main() {
-    color = vec4(0.0, 0.0, 1.0, 1.0);
+    color = vec4(0.0f, 0.0f, 1.0f, 1.0f);
 }
 ```
 
@@ -232,7 +232,9 @@ The shaders will be run on each vertex in the array: one after another. First, t
 
 The rest of `get_to_the_point.cpp` is the same as our initial setup code, but with some of the checks used to verify things were installed correctly removed. So, if you have been following along, you should have a new project (I named mine "Get to the Point") with two shader files and our OpenGL application code we just went over.
 
-Go ahead and build the solution (F7) and then run it (Ctrl-F5). You should now see a window pop up displaying our single blue pixel! Depending on the resolution of your monitor, you may need to squint to see the tiny spec. 
+Go ahead and build the solution (F7) and then run it (Ctrl-F5). You should now see a window pop up displaying our single blue pixel! Depending on the resolution of your monitor, you may need to squint to see the tiny spec.
+
+![Window with a single blue pixel](../images/week_2/tiny_spec.png)
 
 You know what? This minuscule dot doesn't do our efforts justice. Let's really make it stand out! Go back into our `display()` function and add the following code before `glDrawArrays(...)`: `glPointSize(30.0f);`.
 

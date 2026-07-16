@@ -1,5 +1,6 @@
 # CLOs
 * CLO9 - Explain the ways Vertex Buffer Objects can improve your display performance
+* CLO10 - Create and use an OpenGL vertex and fragment shader
 
 # Introduction
 

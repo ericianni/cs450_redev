@@ -21,6 +21,8 @@
   * up-down
   * left-right
   * sin fun
+  * show how you can use position to set color
+  * push back the z-coords to show the need for the perspective matrix to set up week 4
 
 
 # Week 4

@@ -71,7 +71,7 @@ void init(GLFWwindow* window) {
 void display(GLFWwindow* window, double currentTime) {
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(renderingProgram);
-    glPointSize(30.0f);
+    //glPointSize(30.0f);
     glDrawArrays(GL_POINTS, 0, 1);
 }
 
@@ -84,7 +84,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //Needed for MacOS`
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //Needed for MacOS
     GLFWwindow* window = glfwCreateWindow(800, 600, "Get to the Point", NULL, NULL);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
