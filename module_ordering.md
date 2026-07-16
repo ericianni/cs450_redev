@@ -26,6 +26,7 @@
 
 
 # Week 4
+Working with GLSL Types
 # Week 5
 # Week 6
 # Week 7

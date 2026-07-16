@@ -9,7 +9,7 @@ In our last exploration ([Getting Data to a Shader](getting_data_to_a_shader.md)
 
 We accomplished this feat by sending only *three* vertices. In our [Get to the Point](../week_2/get_to_the_point.md) exploration, we sent our vertex as a single point. This resulted in a *single* pixel being drawn (before we added `glPointSize(30.0f.)`). So, how did our three vertices result in *hundreds* of pixels being drawn?
 
-The answer is *Interpolation*
+The answer is *Interpolation*.
 
 # Interpoloation
 
@@ -94,5 +94,14 @@ Again, if you aren't getting the expected output, reach out on the discussion bo
 # Wrapping Up
 
 How cool is that!? We didn't have to do *anything* other than specify the color of each vertex and OpenGL did the rest. In later explorations, we will see how interpolation can be used on other things like textures and surface normals, which will really help our scenes look sharp!
+
+I highly encourage you to play around with the code we have created here to see how things work. Remember, the best way of learning is breaking things and figuring how to put them back together! Some suggestions of things to try:
+
+* Tie the color to the XY position of each vertex (hint: take into consideration screen aspect ratio)
+* Apply a sin() operation to the color, based on the x position: `color = sin(fragColor * gl_FragCoord.x);`
+* *Discard* pixels if the red value is too high: `if(fragColor.r > 0.5f) { discard;}` - using `discard` prevents the pixel from being rendered (think `break`)
+* Combine all of them!
+
+Next, we are going to learn how to get some movement into our scenes with simple animation.
 
 [^1]: I wonder how many of you go back and change the window name in the code to match the project name.
