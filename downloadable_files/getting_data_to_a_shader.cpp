@@ -1,15 +1,27 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>  // Basic include for GLM
+#include <glm/gtc/type_ptr.hpp>
 #include <SOIL2/SOIL2.h>  // For SOIL2
 #include <iostream>
 #include <string>
 #include <fstream>
 
 #define numVAOs 1
+#define numVBOs 2
+
+float vertices[] = {
+      -0.5f, -0.5f, 0.0f,
+       0.5f, -0.5f, 0.0f,
+       0.0f,  0.5f, 0.0f
+};
 
 GLuint renderingProgram;
+
 GLuint vao[numVAOs];
+GLuint vbo[numVBOs];
+
+GLint mvpLoc = -1;
 
 std::string loadShaderSource(const char *filePath) {
     std::string source;
@@ -64,15 +76,50 @@ GLuint buildShaderProgram() {
 
 void init(GLFWwindow* window) {
     renderingProgram = buildShaderProgram();
+
+    //Get uniform location
+    mvpLoc = glGetUniformLocation(renderingProgram, "mvp");
+
+    // Generate VAOs and VBOs
     glGenVertexArrays(numVAOs, vao);
+    glGenBuffers(numVBOs, vbo);
+
+    // Bind VAOs and VBOs
     glBindVertexArray(vao[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+
+    // Fill VBO with vertex data
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // Set position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+    glEnableVertexAttribArray(0);
+
+    // Unbind VAO and VBO
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void display(GLFWwindow* window, double currentTime) {
     glClear(GL_COLOR_BUFFER_BIT);
+
     glUseProgram(renderingProgram);
-    glPointSize(30.0f);
-    glDrawArrays(GL_POINTS, 0, 1);
+
+    // This is not a true mvp matrix,
+    // we will learn how to do it correctly soon
+    glm::mat4 mvp = glm::mat4(1.0f); 
+
+    // Set Uniforms
+    glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));
+    
+    // Bind VAO
+    glBindVertexArray(vao[0]);
+
+    // Draw triangle
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    // Unbind VAO
+    glBindVertexArray(0);
 }
 
 int main() {
@@ -85,7 +132,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //Needed for MacOS`
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Get to the Point", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Getting Data to a Shader", NULL, NULL);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         return -1;

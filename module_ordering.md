@@ -16,6 +16,12 @@
 # Week 3
 
 * Getting Data to a Shader
+* Interpolation
+* Simple Animation
+  * up-down
+  * left-right
+  * sin fun
+
 
 # Week 4
 # Week 5

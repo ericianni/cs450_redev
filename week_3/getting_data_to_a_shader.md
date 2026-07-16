@@ -87,7 +87,7 @@ glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 glEnableVertexAttribArray(0);
 
-// unbind VAO and VBO
+// Unbind VAO and VBO
 glBindVertexArray(0);
 glBindBuffer(GL_ARRAY_BUFFER, 0);
 ```
@@ -246,7 +246,7 @@ Then it is just the matter of calling `glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, g
 * `mvpLoc` - the location on the GPU of the uniform variable we want to set
 * `1` - the number of matrices to be uploaded to the GPU
 * `GL_FALSE` - tells OpenGL *not* to switch the rows and columns. We will always be using this because we will construct our matrices with GLM, which mirrors the OpenGL expecations for matrix formatting
-* `glm::value_ptr(mvp)` - We can't pass the entire object, so we pass a pointer to it
+* `glm::value_ptr(mvp)` - We can't pass the entire object, so we pass a pointer to it. Please note, this function requires we add `#include<glm/gtc/type_ptr.hpp>` to our application
 
 That's it when it comes to setting uniforms. The only last piece is knowing how to set both `vertex attributes` and `uniforms`. 
 
@@ -292,7 +292,7 @@ Inside `init()`:
 ```C++
 //You must have linked your shader program before proceeding
 
-// Get uniform Location
+// Get uniform location
 mvpLoc = glGetUniformLocation(renderingProgram, "mvp");
 
 // Generate VAOs and VBOs
@@ -323,7 +323,7 @@ glUseProgram(renderingProgram);  // must call this first
 glm::mat4 mvp = projection * view * model;  // transforms matrices calculated elsewhere
 
 // Set Uniforms
-glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));  // set uniform
+glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));
 
 // Bind VAO
 glBindVertexArray(vao[0]);
@@ -398,6 +398,27 @@ layout(location = 0) in vec4 color;
 ```
 
 This is the *modern* way, and how you should learn if you want to continue into more advanced graphics materials. It uses the same `layout` keyword to specify the location as we did when passing in our VBO data. Notice that using this method allows us to "change" the name of the variable between shaders. This allows us to mix and match shaders without worrying about keeping the output/input names aligned, as long as they target the same location.
+
+# Your Turn!
+
+Now, it is your turn to take what we have gone over here and apply it yourself. The code above isn't complete. You will need to write the shader files, load the shader code, build the rendering program, build your display loop, and all the rest. A good starting point is [get_to_the_point.cpp](../downloadable_files/get_to_the_point.cpp), which we built last week. 
+
+Start a *new* Visual Studio project using the template we set up in Week 1 (please don't reuse older projects). Add the linked `.cpp` and create your shader files. The code for the vertex shader is provided above. I will be nice and give you the code for the fragment shader.
+
+```GLSL
+#version 410 core
+out vec4 color;
+
+void main() {
+    color = vec4(0.0f, 0.0f, 1.0f, 1.0f);
+}
+```
+
+Finally, go ahead and delete the `glPointSize()` call in `display()`. Keeping it in won't affect the output, but it is no longer needed. Build and run your program. If you have done everything correctly, you should see the following:
+
+![Window displaying a blue triangle on a black backgroun](../images/week_3/getting_data_to_a_shader_output.png)
+
+If you are not seeing this output, go back and review where everything goes in this exploration (I like to do it split screen). If you are still stuck, please reach out on the discussion board for help troubleshooting.
 
 [^1]: This is a [Michael Buffer](https://en.wikipedia.org/wiki/Michael_Buffer) reference. If you don't get it, it means I am finally beyond old and should stop trying to make references. HA! Fat chance I will do that!
 [^2]: This was a [*Bruce Buffer*](https://en.wikipedia.org/wiki/Bruce_Buffer) reference; I couldn't mention one half-brother without mentioning the other!
