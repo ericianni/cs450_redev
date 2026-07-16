@@ -100,7 +100,8 @@ I highly encourage you to play around with the code we have created here to see 
 * Tie the color to the XY position of each vertex (hint: take into consideration screen aspect ratio)
 * Apply a sin() operation to the color, based on the x position: `color = sin(fragColor * gl_FragCoord.x);`
 * *Discard* pixels if the red value is too high: `if(fragColor.r > 0.5f) { discard;}` - using `discard` prevents the pixel from being rendered (think `break`)
-* Combine all of them!
+* Mix and match!
+* Please share your results on the discussion board!
 
 Next, we are going to learn how to get some movement into our scenes with simple animation.
 
