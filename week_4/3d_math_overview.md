@@ -527,7 +527,7 @@ Again, we care less about how it is calculated and more about how it is *used*. 
 
 <div align="center" markdown="1">
 
-![Shows the angle (theta) between vectors V and W](../images/week_2/vector_angle.svg)
+![Shows the angle (theta) between vectors V and W](../images/week_4/vector_angle.svg)
 
 </div>
 
@@ -579,7 +579,7 @@ In the diagram below, $\vec{V}$ and $\vec{W}$ form a plane. By taking the cross 
 
 <div align="center" markdown="1">
 
-![Shows a triangular prism with one end defined by points V1, V2, and V3. It shows a vector (V) defined by V1 and V3. Another vector (W) is defined by V1 and V2. The normal vector (N) is coming out perpendicular to the plane defined by vectors V and W](../images/week_2/cross_product_demo.svg)
+![Shows a triangular prism with one end defined by points V1, V2, and V3. It shows a vector (V) defined by V1 and V3. Another vector (W) is defined by V1 and V2. The normal vector (N) is coming out perpendicular to the plane defined by vectors V and W](../images/week_4/cross_product_demo.svg)
 
 </div>
 
@@ -590,55 +590,22 @@ glm::vec3 normal = glm::cross(v, w);
 normal = glm::normalize(normal);   // or glm::normalize(glm::cross(u, v))
 ```
 
-# Space
+# Space Review
 
-Whew! That was a lot of maths. Let us take a quick break and talk about *space*!
+Last week, we were introduced to the concept of *Space*. We defined the following:
 
-<div align="center" markdown="1">
+* Local/Model Space - coordinates of an object relative to its own origin
+* World Space - shared coordinate system of an entire scene. Each object is placed into this space before rendering
+* View Space - coordinates relative to the camera
+* Clip Space - coordinate system after the projection matrix has prepared the view volume for clipping
 
-![Image of Galaxy UGC 2885 provided by esahubble.org](../images/week_2/space.jpg)
+Try to keep these concepts in mind as we move forward.
 
-</div>
+## Movement in Space
 
-No, not that kind of *space*! We need to talk about *Local, World, and Space*.
+As discussed, we will use *transforms* to move our model's local coordinates into *World Space*. We can *translate*, *rotate*, and *scale* as much as we want in order to position all our models where we want them to appear in the world.
 
-## Local Space
-
-We have talked a lot about the OpenGL Pipeline and different mathmatical operations we will be using, but we haven't talked much about what we will use these things *for*. At the end of the day, we want to render a 3D scene.
-
-We have discussed that our program will convert the vertices into pixels on a screen. Those vertices will represent all sorts of things. Some of them will be part of the landscape/terrain and fairly static. Others will be part of objects or models that we will animate in order to have them move around the scene.
-
-Typically, each of these elements will be created using 3D modeling software (e.g. Blender or Maya). These models need to have a way to describe where each vertex is in relation to the others, and, typically, we do this by orienting all of them around the origin (0, 0, 0).
-
-This is called *Local Space*: somtimes called *Model Space*.[^7] Each model/object will have its own set of local coordinates. It is even possible to combine multiple objects/models into a larger unit. For example, we may wish to model a head separately from the body and then combine them by using transforms to translate, scale, rotate each element into the correct place. This combined model would also have its own *local space*.
-
-## World Space
-
-When placing objects into our 3D scene we can't use the models' vertices as-is. If we were to do so, then all the objects would be placed at the origin, which clearly is not what we are looking for.
-
-We will need to translate the model to where we want it. We will need to scale the model to ensure it is the correct size. We will need to rotate the model so it faces the direction we need. The combination of all these transforms is called the *Model Matrix*.
-
-By applying the *Model Matrix* to our objects, we move them from *Local Space* into *World Space*.
-
-## Eye Space
-
-Ok, so we have discussed how models have their own *local* space. We then went over how we convert that into *world* space. At this point, our models are nicely placed in our 3D world. Now, we need to figure out how we convert the 3D scene into a 2D image on our monitor.
-
-In order to do this, we need to simulate our eyes looking at the scene. I am going to throw a diagram at you. It is going to look complicated and confusing, but I promise it will all make sense in the end. Even if it doesn't, later we will learn about the GLM `lookAt(...)` function that makes all this simple.
-
-Let's start with a diagram.
-
-<div align="center" markdown="1">
-
-![Eye Space diagram](../images/week_2/eye_space.svg)
-
-</div>
-
-At the top right you will see the *eye* (sometimes called the *camera*). It has an *up* vector, indicating which direction is...uhh...up in relation to the eye. It also has a *look* vector, indicating in which direction the eye is...uhh...looking. In our example, the eye is looking directly at the red cube, which has been placed in our *world space*.
-
-Out of the eye we can see four lines labled the *view volume*. The edges of this volume create something called the *projection plan*. Think of the projection plan as a representation of our screen. This is why you can see a mini red cube on the plane. Notice, you cannot see the yellow triangular prism in the plane. This is because it is outside our viewing volume (aka outside our field of vision).
-
-So how do we simulate our eye in our 3D scene? Well, OpenGL has a built in camera, that is centered at the origin (0, 0, 0) and pointing along the negative Z-axis. Having the camera in a fixed location pointing in a fixed direction isn't really helpful. Therefore, we need to transform our objects from *World Space* into *Eye Space*. 
+But how do we simulate our eye in our 3D scene? Well, OpenGL has a built in camera, that is centered at the origin (0, 0, 0) and pointing along the negative Z-axis. Having the camera in a fixed location pointing in a fixed direction isn't really helpful. Therefore, we need to transform our objects from *World Space* into *View Space*. 
 
 There is *a lot* of math involved in transforming the camera position, where it is pointing, and then the objects themselves into *Eye Space*. I *could* bore you with all of that, but I am a nice guy so we are going to *cheat* and use a GLM function to help us out. Our goal is to create something called the *View Matrix*, which we can then concatenate with our *Model Matrix* to move our objects from *World Space* into *Eye Space*.
 
@@ -663,6 +630,8 @@ In this example, we have moved the camera away from the origin along the Z-axis.
 `lookAt(...)` takes all three of these parameters as `vec3`s and returns a `mat4`. This is our *View Matrix*. Now, we can apply this transform to our *Model Matrix*. What do you think we are going to call this new combined matrix?
 
 **HIDE ANSWER: That's right! This new matrix is known as the *Model-View Matrix*. We will be using this *a lot*.**
+ 
+In order to move our coordinates into *Clip Space*, we need to define one more matrix: the *Projection Matrix*.
 
 # Projection Matrices
 
@@ -674,19 +643,19 @@ The *Perspective Projection* attempts to create the illusion of a 3D image, but 
 
 You may think that perspective is such a no-brainer, that it is always how humans represented scenes in art, but you would be wrong. Let's take a look at a late Medieval painting.
 
-![Paradiesgärtlein painted by Upper Rhenish Master between 1410-1420](../images/week_2/the_paradise_garden.png)
+![Paradiesgärtlein painted by Upper Rhenish Master between 1410-1420](../images/week_4/the_paradise_garden.png)
 
 Notice how everything seems *flat*, especially the table. Also, notice how the Virgin Mary (with the book) is shown to be further away from the viewer by making her appear higher on the canvas, but she is still roughly the same size as all the other figures? There is *some* attempt at perspective in the bottom left corner in the depiction of the well. Yet, even that attempt doesn't match the garden walls.
 
 Now, let us look at a painting drawn with an eye for *prospective*. This is one of my favorite paintings from the Renaissance and was painted roughly 100 years after the previous painting.
 
-![The School of Athens painted by Raphael between 1509-1511](../images/week_2/school_of_athens.jpg)
+![The School of Athens painted by Raphael between 1509-1511](../images/week_4/school_of_athens.jpg)
 
 Notice how the figures in the back are noticably smaller than those in the front. Additionally, there is a clear *vanishing point* in the center, directly behind the figures of Plato and Aristole. If you look at all the non-horizontal lines, you can trace them all back to this point. Can you see it? Hint: look at the architecture above them and the designs on the floor in front.
 
 Let me show you.
 
-![The School of Athens painting with perspective lines drawn](../images/week_2/school_of_athens_perspective.png)
+![The School of Athens painting with perspective lines drawn](../images/week_4/school_of_athens_perspective.png)
 
 OK, I feel we have a solid grasp when it comes to *perspective*. Now, how do we make our computer mimic this? Buckle up, here comes some math!
 
@@ -694,7 +663,7 @@ Let's start with a diagram. In this diagram, the eye is looking down the Z-axis 
 
 <div align="center" markdown="1">
 
-![Depiction of a Perspective Frustum](../images/week_2/pserspective_frustum.svg)
+![Depiction of a Perspective Frustum](../images/week_4/pserspective_frustum.svg)
 
 </div>
 
@@ -757,7 +726,7 @@ It's a bit tricky to visualize how this works, so let's look at a diagram.
 
 <div align="center" markdown="1>
 
-![Orthographic Projection Diagram](../images/week_2/ortho_projection.svg)
+![Orthographic Projection Diagram](../images/week_4/ortho_projection.svg)
 
 Some things look the same and some things look *way* different. Shall we focus on the familiar first?
 </div>
@@ -785,7 +754,7 @@ This is likely still confusing, so let's look at the same scene rendered in *Ort
 
 <div align="center" markdown="1>
 
-![Orthographic projection of a CAD model of a school](../images/week_2/perspective_building.png)
+![Orthographic projection of a CAD model of a school](../images/week_4/perspective_building.png)
 
 </div>
 
@@ -793,7 +762,7 @@ Nothing out of the ordinary here. The walls of the building appear to converge t
 
 <div align="center" markdown="1>
 
-![Orthographic projection of a CAD model of a school](../images/week_2/ortho_building.png)
+![Orthographic projection of a CAD model of a school](../images/week_4/ortho_building.png)
 
 </div>
 
@@ -842,12 +811,12 @@ Not only did we cover all the math behind *transformations*, but we also covered
 * *View Matrix* (V)
 * *Projection Matrix* (P)
 
-The Model Matrix takes our vertices from local space to world space. By combining it with the View Matrix, we move vertices into Eye Space. With our Projection Matrix we move them into *Clip Space* (our *final* destination).
+The Model Matrix takes our vertices from local space to world space. By combining it with the View Matrix, we move vertices into View Space. With our Projection Matrix we move them into *Clip Space* (our *final* destination).
 
-Below you can see code examples of all three types of matrices being created. You may see in online people creating these matrices every frame. This is a *bad* idea. We want to not waste CPU time doing complicated math, so we want to get in the habit of creating them only when necessary.
+Below you can see code examples of all three types of matrices being created. You may see online people creating all these matrices every frame. This is a *bad* idea. We want to not waste CPU time doing complicated math, so we want to get in the habit of creating them only when necessary.
 
 * A Model Matrix needs to be created for *every object* per frame
-* The View Matrix needs to be created *once* per frame (because the camera can move)
+* The View Matrix needs to be created *once* per frame (because the camera can move, but not between frames)
 * The Projection Matrix needs to be created *once* in `init()`, or after the user resizes the window.
 
 ```C++
@@ -877,29 +846,30 @@ glm::mat4 projection = glm::perspective(
 
 Now that we know *how* and *when* to create each matrix, what do we *do* with them? When we are ready to call our shader, we have to make a decision on how to get the matrix data into the pipeline. Here are some options, with pros and cons for each:
 
-* Send them all separately (M + V + P)
+* Send them all separately (*M + V + P*)
   * Pro:
     * Super easy to do, and requires no thinking!
     * Provides us maximum flexibility in how we construct our shaders
   * Con:
-    * GPUs are efficient, but this approach requires the GPU to do *all* the math for *every* vertex
-* Combine Model and View and send Projection separately (MV + P)
+    * GPUs are efficient, but this approach requires the GPU to do *all* the math for *every* vertex instead of the CPU doing once per object
+* Combine Model and View and send Projection separately (*MV + P*)
   * Pro:
     * The *Classic Approach* used by many legacy programs
-    * CPUs are better than GPUs for matrix math, and only need to do it once per object instead of per vertex (on the GPU)
+    * CPUs only need to do it once per object instead of per vertex (on the GPU)
+    * MV is useful for many shading/lighting algorithms
   * Con:
     * Combining V with M for every object per every frame is unneeded. V can be calculated once per frame
-* Combine View and Projection and send Model separately (M + VP)
+* Combine View and Projection and send Model separately (*M + VP*)
   * Pro:
     * The camera and perspective don't change every frame, so combining VP is efficient
-    * Many algorithms require *World Space*, which is contained in *M*
+    * Many algorithms (e.g. ray tracing) require *World Space*, which is contained in *M*
     * Debugging scenes with *World Space* (*M*) is easier than with *Eyes Space* (*V*)
   * Con:
     * Requires passing in the camera's position in order to calculate lighting
 
-Decisions, decisions, decisions... I will be honest with you. I *agonized* over which approach to use in this course. We will be going with *M + VP*.
+Decisions, decisions, decisions... I will be honest with you. I *agonized* over which approach to use in this course. We will be going with *MV + P*. This means we will be combining our *Model* and *View* matrices on the CPU, but applying the *Projection* matrix in the shader.
 
-In the end, I picked the method that is going to prepare you for *what's next* if you choose to continue in Computer Graphics. Many modern graphics approaches, such as *Physically Based Rendering* (PBR) requires *World Space* for the calculations. Other things, like *Cubemaps* and *Shadow Mapping* also require *M + VP*. Finally, using *M + VP* can improve efficiency as we learn more advanced techniques.
+In the end, I picked the method that balances efficiency and approachability. The benefits of using *M + VP* don't really come into play until you are trying to push a graphics card to its limit, so doesn't make much sense to cover in an intro course. Additionally, most examples you will see in textbooks or online will utilize *MV + P*, so using it in this course will equip you to expand your learning going forward.
 
 [^1]: [Linear Algebra](https://www.merriam-webster.com/dictionary/linear%20algebra): a branch of mathematics that is concerned with mathematical structures closed under the operations of addition and scalar multiplication and that includes the theory of systems of linear equations, matrices, determinants, vector spaces, and linear transformations
 [^2]: Technically, it isn't any other point or matrix, but in our context the statement holds. To learn more about the *actual* operation of the Identiy Matrix see [here](https://www.khanacademy.org/math/algebra-home/alg-matrices/alg-properties-of-matrix-multiplication/a/intro-to-identity-matrices)
@@ -907,4 +877,4 @@ In the end, I picked the method that is going to prepare you for *what's next* i
 [^4]: The associative property basically means that grouping the factors dosn't change the result. For example: `5 * 4 * 2` results in the same thing as `5 * (4 * 2)` and `(5 * 4) * 2`.
 [^5]: Follow this [link](https://en.wikipedia.org/wiki/Euler_angles) for more information than you would ever need about Euler Angles.
 [^6]: [Gimbal Lock](https://www.youtube.com/watch?v=zc8b2Jo7mno) is a troublesome result of using Euler Rotation. This video demonstrates how it can happen.
-[^7]: OpenGL's documentation actually uses a third term *Object Space*, because clearly we need the added confusion!
+
