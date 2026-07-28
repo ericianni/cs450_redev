@@ -194,7 +194,9 @@ My eagle-eyed students may notice that this green box isn't actually square, but
 
 Up until now, our objects have been placed into our scene using their own *Model Space* coordinates. This means, they have been centered on the origin. To make our lives easier when we set up our camera, let's push our cube back *away* from the eventual camera location.
 
-To do that, we need to add a *translation* to our `model` object. Find where we define `mvp` as the *Identity Matrix*. Replace the code with the following:
+To do that, we need to add a *translation* to our `model` object. Note, when using transforms we have to add a header file (`#include <glm/gtc/matrix_transform.hpp>`).
+
+ Find where we define `mvp` as the *Identity Matrix*. Replace the code with the following:
 
 ```C++
 glm::mat4 model = glm::mat4(1.0f); // Always start with the identiy matrix
