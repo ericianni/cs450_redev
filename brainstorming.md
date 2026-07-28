@@ -70,6 +70,9 @@
 * Color in OpenGL
   * Additive Color
 * Hardware vs Software vs GPU Graphics
+* Mouse controls
+  * Aim the camera
+  * Selecting things in the world (Week 9?)
 * Lighting/Shading
   * Flat
   * Gouraud (per vertex)

@@ -20,12 +20,35 @@
 * Simple Animation
 
 # Week 4
+
 * Working with GLSL Types
 * 3d Math Overview
 * Our First 3D Scene
+
 # Week 5
+
+* Taking Control
+* Camera Movement
+
 # Week 6
+
+* Shading
+* Lighting
+
 # Week 7
+
+* Textures
+
 # Week 8
+
+* Object stacking
+
 # Week 9
+
+* Collisions?
+
 # Week 10
+
+* Physics based rendering
+* UBOs
+* EBOs

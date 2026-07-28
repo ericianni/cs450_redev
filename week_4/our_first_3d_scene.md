@@ -1,4 +1,5 @@
 # CLOs
+
 * CLO3 - Create a dynamic 3D scene using OpenGL
 * CLO6 - Use OpenGL functions to create and apply single and compound transformations
 * CLO11 - Explain how the GLM computer graphics math library is used to create and apply transformations
