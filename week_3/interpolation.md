@@ -87,7 +87,7 @@ Notice how we use a `vec4` for out `out` variable and then we modify the color b
 
 If you did everything correctly, you should see the following when you build and run your program:
 
-![A triangle with red, blue, and green corners with the space inbetween blended](../images/week_3/color_interpolation.png)
+![A triangle with red, blue, and green corners with the space in between blended](../images/week_3/color_interpolation.png)
 
 Again, if you aren't getting the expected output, reach out on the discussion boards and we will help you troubleshoot.
 

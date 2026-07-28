@@ -21,6 +21,8 @@
 
 # Week 4
 * Working with GLSL Types
+* 3d Math Overview
+* Our First 3D Scene
 # Week 5
 # Week 6
 # Week 7

@@ -21,7 +21,7 @@ Now, *time* can be used in multiple ways and in multiple places. Most of the tim
 
 We are going to be animating our triangle from the previous exploration. Go ahead and create a *new* project with *new* files. You can copy and paste the code you had from the *Interpolation* exploration for the `.cpp` and both shader files.
 
-We will be using GLM's *translate* function to move our triangle, so we need to add a new header file at the top: `#include <glm/ext/matrix_transform.hpp>`. Next, we need to add `float t = static_cast<float>(currentTime);` at the beginning of `display()`. We are now ready to use *time*!
+We will be using GLM's *translate* function to move our triangle, so we need to add a new header file at the top: `#include <glm/gtc/matrix_transform.hpp>`. Next, we need to add `float t = static_cast<float>(currentTime);` at the beginning of `display()`. We are now ready to use *time*!
 
 # Passing the Time
 

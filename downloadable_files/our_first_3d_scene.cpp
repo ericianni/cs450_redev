@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>  // Basic include for GLM
 #include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <glm/ext/matrix_transform.hpp>
 #include <SOIL2/SOIL2.h>  // For SOIL2
 #include <iostream>
 #include <string>
@@ -12,15 +12,103 @@
 #define numVBOs 2
 
 float vertices[] = {
-      -0.5f, -0.5f, 0.0f,
-       0.5f, -0.5f, 0.0f,
-       0.0f,  0.5f, 0.0f
+    // Front face
+    -0.5f, -0.5f,  0.5f,
+     0.5f, -0.5f,  0.5f,
+     0.5f,  0.5f,  0.5f,
+     0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f,
+    -0.5f, -0.5f,  0.5f,
+
+    // Back face
+    -0.5f, -0.5f, -0.5f,
+    -0.5f,  0.5f, -0.5f,
+     0.5f,  0.5f, -0.5f,
+     0.5f,  0.5f, -0.5f,
+     0.5f, -0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
+
+    // Left face
+    -0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
+    -0.5f, -0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f,
+
+    // Right face
+     0.5f,  0.5f,  0.5f,
+     0.5f, -0.5f,  0.5f,
+     0.5f, -0.5f, -0.5f,
+     0.5f, -0.5f, -0.5f,
+     0.5f,  0.5f, -0.5f,
+     0.5f,  0.5f,  0.5f,
+
+     // Bottom face
+     -0.5f, -0.5f, -0.5f,
+      0.5f, -0.5f, -0.5f,
+      0.5f, -0.5f,  0.5f,
+      0.5f, -0.5f,  0.5f,
+     -0.5f, -0.5f,  0.5f,
+     -0.5f, -0.5f, -0.5f,
+
+     // Top face
+     -0.5f,  0.5f, -0.5f,
+     -0.5f,  0.5f,  0.5f,
+      0.5f,  0.5f,  0.5f,
+      0.5f,  0.5f,  0.5f,
+      0.5f,  0.5f, -0.5f,
+     -0.5f,  0.5f, -0.5f
 };
 
 float colors[] = {
-      1.0f, 0.0f, 0.0f,
-      0.0f, 1.0f, 0.0f,
-      0.0f, 0.0f, 1.0f,
+    // Front face (red)
+    1.0f, 0.0f, 0.0f,
+    1.0f, 0.0f, 0.0f,
+    1.0f, 0.0f, 0.0f,
+    1.0f, 0.0f, 0.0f,
+    1.0f, 0.0f, 0.0f,
+    1.0f, 0.0f, 0.0f,
+
+    // Back face (green)
+    0.0f, 1.0f, 0.0f,
+    0.0f, 1.0f, 0.0f,
+    0.0f, 1.0f, 0.0f,
+    0.0f, 1.0f, 0.0f,
+    0.0f, 1.0f, 0.0f,
+    0.0f, 1.0f, 0.0f,
+
+    // Left face (blue)
+    0.0f, 0.0f, 1.0f,
+    0.0f, 0.0f, 1.0f,
+    0.0f, 0.0f, 1.0f,
+    0.0f, 0.0f, 1.0f,
+    0.0f, 0.0f, 1.0f,
+    0.0f, 0.0f, 1.0f,
+
+    // Right face (yellow)
+    1.0f, 1.0f, 0.0f,
+    1.0f, 1.0f, 0.0f,
+    1.0f, 1.0f, 0.0f,
+    1.0f, 1.0f, 0.0f,
+    1.0f, 1.0f, 0.0f,
+    1.0f, 1.0f, 0.0f,
+
+    // Bottom face (cyan)
+    0.0f, 1.0f, 1.0f,
+    0.0f, 1.0f, 1.0f,
+    0.0f, 1.0f, 1.0f,
+    0.0f, 1.0f, 1.0f,
+    0.0f, 1.0f, 1.0f,
+    0.0f, 1.0f, 1.0f,
+
+    // Top face (magenta)
+    1.0f, 0.0f, 1.0f,
+    1.0f, 0.0f, 1.0f,
+    1.0f, 0.0f, 1.0f,
+    1.0f, 0.0f, 1.0f,
+    1.0f, 0.0f, 1.0f,
+    1.0f, 0.0f, 1.0f
 };
 
 GLuint renderingProgram;
@@ -28,8 +116,14 @@ GLuint renderingProgram;
 GLuint vao[numVAOs];
 GLuint vbo[numVBOs];
 
-GLint mvpLoc = -1;
-GLint posColorLoc = -1;
+GLint mvLoc = -1;
+GLint pLoc  = -1;
+
+int windowWidth = 800;
+int windowHeight = 600;
+float aspect = (float)windowWidth / (float)windowHeight;
+
+glm::mat4 proj;
 
 std::string loadShaderSource(const char* filePath) {
     std::string source;
@@ -83,12 +177,35 @@ GLuint buildShaderProgram() {
     return vfProgram;
 }
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+    // Avoid a divide-by-zero error if the window is minimized
+    if (height == 0) {
+        return;
+    }
+
+    // Update all our window size globals
+    windowWidth = width;
+    windowHeight = height;
+    aspect = (float)width / (float)height;
+
+    // Tell OpenGL the new dimensions
+    glViewport(0, 0, width, height);
+
+    //Calculate our new projection matrix
+    proj = glm::perspective(
+        glm::radians(45.0f),              // FOV
+        aspect,                           // aspect ratio (hard-coded for now)
+        0.1f,                             // near plane
+        100.0f                            // far plane
+    );
+}
+
 void init(GLFWwindow* window) {
     renderingProgram = buildShaderProgram();
 
     //Get uniform location
-    mvpLoc = glGetUniformLocation(renderingProgram, "mvp");
-	posColorLoc = glGetUniformLocation(renderingProgram, "posColor");
+    mvLoc = glGetUniformLocation(renderingProgram, "mv");
+	pLoc = glGetUniformLocation(renderingProgram, "p");
 
     // Generate VAOs and VBOs
     glGenVertexArrays(numVAOs, vao);
@@ -118,36 +235,40 @@ void init(GLFWwindow* window) {
     // Unbind VAO and VBO
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    proj = glm::perspective(
+        glm::radians(45.0f),              // FOV
+        aspect,                  // aspect ratio (hard-coded for now)
+        0.1f,                             // near plane
+        100.0f                            // far plane
+    );
+	glEnable(GL_DEPTH_TEST);
 }
 
 void display(GLFWwindow* window, double currentTime) {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(renderingProgram);
 
     // This is not a true mvp matrix,
     // we will learn how to do it correctly soon
-    float t = static_cast<float>(currentTime);
-	float cycle = fmod(t, 2.0f);
-	//float yOffset = 0.5f - abs(cycle - 1.0f);
-    float yOffset = 0.5f * cos(t * glm::pi<float>()); // Oscillate between -0.5 and 0.5
-	float xOffset = 0.5f * sin(t * glm::pi<float>()); // Oscillate between -0.5 and 0.5
-    glm::mat4 mvp = glm::mat4(1.0f);
-	float yOffsetNormal = (yOffset + 0.5f) / 1.0f; // Normalize yOffset to range [0, 1]
-	float xOffsetNormal = (xOffset + 0.5f) / 1.0f; // Normalize xOffset to range [0, 1]
-    glm::vec3 posColor = glm::vec3(yOffsetNormal, 0.0f, 1.0f-yOffsetNormal);
-    mvp = glm::translate(mvp, glm::vec3(xOffset, yOffset, 0.0f));
-    
+    glm::mat4 model = glm::mat4(1.0f); // Always start with the identiy matrix
+    model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f));
+    model = glm::rotate(model, glm::radians((float)currentTime * 45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+    glm::mat4 mv = model;   // using default view matrix
 
     // Set Uniforms
-    glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));
-	glUniform3fv(posColorLoc, 1, glm::value_ptr(posColor));
+    glUniformMatrix4fv(mvLoc, 1, GL_FALSE, glm::value_ptr(mv));
+    glUniformMatrix4fv(pLoc, 1, GL_FALSE, glm::value_ptr(proj));
 
     // Bind VAO
     glBindVertexArray(vao[0]);
 
     // Draw triangle
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 
     // Unbind VAO
     glBindVertexArray(0);
@@ -163,18 +284,22 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //Needed for MacOS
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Simple Animation", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "Our First 3D Scene", NULL, NULL);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         return -1;
     }
 
     glfwMakeContextCurrent(window);
+
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
     glewExperimental = GL_TRUE;  // Ensures all extensions are loaded including Core Profiles
     if (glewInit() != GLEW_OK) {
         std::cerr << "Failed to initialize GLEW" << std::endl;
         return -1;
     }
+
     glfwSwapInterval(1);  // enables Vsync3
 
     init(window);
