@@ -126,6 +126,7 @@ We will cover the specifics in our next lesson. For now, feel free to experiment
 * Changing the direction of rotation
 * Scaling the size of the cube
 * Moving the cube around the scene
+* Close the window when ESC is pressed
 
 [^1]: The code that makes this possible is `glfwPollEvents()`, which is what calls our callback when a key is pressed.
 [^2]: [Full list of GLFW Key Tokens](https://www.glfw.org/docs/3.3/group__keys.html)

@@ -28,7 +28,7 @@
 # Week 5
 
 * Taking Control
-* Camera Movement
+* LookAt Me Now
 
 # Week 6
 
