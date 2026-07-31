@@ -97,5 +97,5 @@
   * Interleaving vertex data
 
 
-**FINAL DECISIO**
-* Using MV+P
+* things to examine
+  * Back-face culling (p98)

@@ -35,10 +35,19 @@
 * Loading Objects
 * Shading
 * Lighting
+  * Types
+    * Global (ambient)
+    * Directional (like the sun)
+    * Positional (like a lamp)
+    * Spotlight (batman!)
+  * ADS
 
 # Week 7
 
 * Textures
+  * Explain 0-1
+  * mipmapping
+  * wrapping and tiling 
 
 # Week 8
 
