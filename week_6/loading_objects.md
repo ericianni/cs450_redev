@@ -1,15 +1,15 @@
 # CLOs
 * CLO9 - Explain the ways Vertex Buffer Objects can improve your display performance
 
-# Introduciton
+# Introduction
 
-Up until this point, we have stored our ojbects' vertices as hardcoded arrays in our application code. This is not *the way*. The moment we want to have more than a few objects, our code becomes bloated and unwieldy. There has to be a better way.
+Up until this point, we have stored our objects' vertices as hardcoded arrays in our application code. This is not *the way*. The moment we want to have more than a few objects, our code becomes bloated and unwieldy. There has to be a better way.
 
 Of course there is! In this lesson, we are going to learn how to load object data (not just vertices) from an `.obj` file. We will then store that data in a *mesh* object that will handle all the complicated VAO/VBO steps. Not only will this make writing code easier, but it will also make our `display()` function much easier to read.
 
 # OBJ Files
 
-There are many different ways to store object data for use with a 3D application, but we are going to focus on `.obj` files. This file format first introduced in the late 1980s by Wavefront Technologies. It started out as a proprietary format, but has sense moved to being open file format. 
+There are many different ways to store object data for use with a 3D application, but we are going to focus on `.obj` files. This file format first introduced in the late 1980s by Wavefront Technologies. It started out as a proprietary format, but has since moved to being open file format. 
 
 Without going into great detail, each `.obj` file contains:
 
@@ -18,11 +18,11 @@ Without going into great detail, each `.obj` file contains:
 * vertex normals (nx, ny, nz)
 * face list
 
-*Vertex positions* should be self-explanitory at this point. *Texture coordinates* will be covered later, but are basically the coordinates within the 2D texture associated with each vertex. *Vertex normals* will be used when we cover lighting, but are simply unit vectors pointing directly out from each vertex. 
+*Vertex positions* should be self-explanatory at this point. *Texture coordinates* will be covered later, but are basically the coordinates within the 2D texture associated with each vertex. *Vertex normals* will be used when we cover lighting, but are simply unit vectors pointing directly out from each vertex. 
 
-The *face list* takes a bit more to explain. Remember how we had to dupicate our vertices to create our cube? Well, when creating object files, we want to keep them as small as possible so we don't want to do that. Therefore, the data arrays don't contain duplicates. So how do we produce our triangles (aka faces)? The *face list* is made up of *indices* for each array. So, when reading data from the `.obj` file, we will read in something like `1/1/1 2/2/2 4/4/4`. This means grab the first, second, and fourth vertex positions (also the texture coordinates and vertex normals).
+The *face list* takes a bit more to explain. Remember how we had to duplicate our vertices to create our cube? Well, when creating object files, we want to keep them as small as possible so we don't want to do that. Therefore, the data arrays don't contain duplicates. So how do we produce our triangles (aka faces)? The *face list* is made up of *indices* for each array. So, when reading data from the `.obj` file, we will read in something like `1/1/1 2/2/2 4/4/4`. This means grab the first, second, and fourth vertex positions (also the texture coordinates and vertex normals).
 
-This *indexing* helps reduce the data we need to store. This also allows the data to be *interleaved*. We can mirror this storage in our own program, but requires the use of EBOs, which we haven't covered yet. Therefore, we are going to take this single *flat* array and store the three types of data in *separate* arrays.
+This *indexing* helps reduce the data we need to store. Indexing would allow the data to be *interleaved* as it passed to the GPU, but requires the use of EBOs, which we haven't covered yet. Therefore, we are going to take this single *flat* array and store the three types of data in *separate* arrays.
 
 # Getting by with a little help from our friends
 
@@ -73,6 +73,7 @@ public:
     GLuint program = 0;
     GLuint textureID = 0;
     glm::mat4 modelMatrix{1.0f};
+    glm:vec3 color{1.0f, 1.0f, 1.0f};
 
     Object() = default;
 
@@ -111,7 +112,7 @@ While this is not how the computer uses a header file, I want you to think of it
 * `numVertices` - will be updated with the number of vertices loaded
 * `program` - will hold the ID of the shader program built by the object
 * `textureID` - will hold the ID for the texture our object will use (covered later in the term)
-* `VAO[numVAos]` - will hold our Vertex Attributes the same way as before
+* `VAO[numVAOs]` - will hold our Vertex Attributes the same way as before
 * `VBO[numVBOs]` - will hold our buffers the same as before, but they will hold different things
 * `modelMatrix` - is used as our starting point as we did with our previous transforms
 * `color` - will allow us to define an RGB color for our object (in case no texture is loaded)
@@ -125,7 +126,7 @@ Now, let's look at the some of the new functions.
 
 We are going to be moving the transforms into the class itself. This will keep `display()` much cleaner. They will behave exactly the same as before, but this time our object keeps track of its own *Model Matrix*.
 
-* `setPosition()` - set's the object's world position
+* `setPosition()` - sets the object's world position
 * `translate()` - translates object
 * `rotate()` - rotates object (takes degrees)
 * `scale()` - scales the object
@@ -142,7 +143,7 @@ The functions listed above are *Public*, meaning we as the programmer can call t
 * `loadShaderSource()` - loads shader source from a file
 * `buildShaderProgram()` - handles all the steps of creating a shader program (loading sources, compiling, attaching, linking, and deleting)
 * `loadOBJ()` - uses *TinyObjLoader* to pull data from the `.obj` file and store it in our data arrays. It also counts how many vertices our object has (required for our draw call)
-* `setUpBuffers()` - handles the generation of our vertex array and buffers. It also binds the buffers and uploads the data. We handled this ourselves earlier, so it should look familiar.
+* `setupBuffers()` - handles the generation of our vertex array and buffers. It also binds the buffers and uploads the data. We handled this ourselves earlier, so it should look familiar.
 
 # Implementation
 
@@ -215,7 +216,7 @@ Next on our victim list is `display()`. We want to trash *everything* except for
 
 While destruction is thrilling, *creation* is where the real joy in life resides. Let's fix what we broke (and make it *better*).
 
-Back to the top we go! In order to use our new Object class we have to add it to the file: `#include "object.hpp`. Right below that, we want to declare some objects to play with. You can pick whatever you want (even download your own object files), but I am going to be using the following:
+Back to the top we go! In order to use our new Object class we have to add it to the file: `#include "object.hpp"`. Right below that, we want to declare some objects to play with. You can pick whatever you want (even download your own object files), but I am going to be using the following:
 
 ```C++
 Object cube;
@@ -226,7 +227,7 @@ At the moment, these objects are empty, we need to fill them. This is done in `i
 
 ```C++
 if (!teapot.init("shader.vert", "shader.frag", "teapot.obj")) {
-    std::cerr << "Failed to load cube" << std::endl;
+    std::cerr << "Failed to load teapot" << std::endl;
 }
         
 if (!cube.init("shader.vert", "shader.frag", "cube.obj")) {
@@ -302,7 +303,7 @@ void main() {
 
 As you can see, we now have three locations: `pos`, `normal`, and `texCoord`. We also have added `uniform mat3 n` to hold our *Normal Matrix*. We are going to use the Fragment Shader to apply our texture, so we need to declare `out vec2 fragTexCoord` to pass along the vertex attribute. By now you should be able to deduce what `main()` does here.
 
-Next, the Fragement Shader:
+Next, the Fragment Shader:
 
 ```GLSL
 #version 410 core
@@ -324,7 +325,7 @@ void main() {
 }
 ```
 
-Here we have three uniforms. The first is `tex`, which is the actual texture data loaded onto the GPU. The second is `objectColor`, which contains the object color we can adjust with `.setcolor()`. The last uniform is `useTexture`, which is a flag to let our shader know if there is any texture to apply at all.
+Here we have three uniforms. The first is `tex`, which is the actual texture data loaded onto the GPU. The second is `objectColor`, which contains the object color we can adjust with `.setColor()`. The last uniform is `useTexture`, which is a flag to let our shader know if there is any texture to apply at all.
 
 We have one `in` variable, which comes from our Vertex Shader: `fragTexCoord`. As with any Fragment Shader, we need an out variable to set the final pixel color: `fragColor`.
 
@@ -340,7 +341,7 @@ Now, build and run your project. If you followed my example code, you should hav
 
 Isn't it *awesome*?! We now have *two* objects where we had one before. I hope you can see how much easier our Object class makes adding additional objects. Since the class handles all the nitty-gritty, we can focus on crafting our scene.
 
-These objects are fairly plan, let's spice them up!
+These objects are fairly plain, let's spice them up!
 
 ## Adding Texture
 

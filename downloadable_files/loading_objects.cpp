@@ -156,7 +156,7 @@ void processInput(GLFWwindow* window)
 void init(GLFWwindow* window) {
 
     if (!teapot.init("shader.vert", "shader.frag", "teapot.obj")) {
-        std::cerr << "Failed to load cube" << std::endl;
+        std::cerr << "Failed to load teapot" << std::endl;
     }
 
     if (!teapot.loadTexture("ceramic.jpg")) {
