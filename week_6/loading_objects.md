@@ -26,11 +26,11 @@ This *indexing* helps reduce the data we need to store. Indexing would allow the
 
 # Getting by with a little help from our friends
 
-To help us, we are going to use a framework called *TinyObjLoader*. Go ahead and download the `tiny_obj_loader.h` file from it's [GitHub repo](https://github.com/tinyobjloader/tinyobjloader). We are going to want to add this to our Visual Studio Template.
+To help us, we are going to use a framework called *TinyObjLoader*. Go ahead and download the `tiny_obj_loader.h` file from its [GitHub repo](https://github.com/tinyobjloader/tinyobjloader). We are going to want to add this to our Visual Studio Template.
 
 The easiest way to do this is to create a new project using our OpenGL Template. Once it is created and saved, you need to navigate to where the project folder is in the File Explorer. Once you locate it, you need to identify the folder holding the `.vcxproj` file. Next to this file you want to copy the header file we just downloaded. 
 
-Go back to Visual Studio, and right click on "Header Files" in the Solution Explore and click "Add Existing Item..." Navigate to where you just copied the header file and add it to the project. We need to do it this way so that when we export the template, the header file will be included and not just linked.
+Go back to Visual Studio, and right click on "Header Files" in the Solution Explorer and click "Add Existing Item..." Navigate to where you just copied the header file and add it to the project. We need to do it this way so that when we export the template, the header file will be included and not just linked.
 
 We now need to tell Visual Studio where to look for header files we write or add. Right-click on the Solution name in the Solution Explorer (on the right) and select "Properties". Find where it says "VC++ Directories" and select it. Click where it says "Include Directories" and then the down arrow that appears. Select edit, and on a new line add `$(ProjectDir)`. Save and apply the changes.
 
@@ -40,7 +40,7 @@ Now you should be able to close Visual Studio and create a new project with our 
 
 # Housing our Objects
 
-In order to leverage the benefit of loading objects from a a file, we need somewhere to store them. Sure, we could declare a bunch of disconnected data structures, but this would get super messy *very* quickly. Instead, we are going to be defining an *Object Class* to manage all our data.
+In order to leverage the benefit of loading objects from a file, we need somewhere to store them. Sure, we could declare a bunch of disconnected data structures, but this would get super messy *very* quickly. Instead, we are going to be defining an *Object Class* to manage all our data.
 
 We are about to look at *a lot* of code. Much of it *should* look familiar as we are just repurposing existing code into a class. We are also going to be setting up this class for future work. I will do my best to explain the main changes, but you really need to take the time to examine the code on your own so you understand what is going on.
 
