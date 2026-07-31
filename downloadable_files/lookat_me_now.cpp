@@ -134,8 +134,6 @@ const float mouseSensitivity = 0.1f;
 
 bool mouseLookEnabled = false;
 
-
-
 bool paused = false;
 double pauseStartTime = 0.0f;
 double totalPausedTime = 0.0f;
@@ -410,7 +408,6 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetKeyCallback(window, key_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
-
 
     glewExperimental = GL_TRUE;  // Ensures all extensions are loaded including Core Profiles
     if (glewInit() != GLEW_OK) {

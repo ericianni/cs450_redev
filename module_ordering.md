@@ -32,6 +32,7 @@
 
 # Week 6
 
+* Loading Objects
 * Shading
 * Lighting
 
