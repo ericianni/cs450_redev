@@ -248,6 +248,7 @@ void init(GLFWwindow* window) {
 
     teapot_med_phong.setColor(glm::vec3{0.84f, 0.25f, 0.035f});
     teapot_med_phong.setShininess(100.0f);
+
     if (!teapot_high_phong.init("phong.vert", "phong.frag", "teapot_high.obj")) {
         std::cerr << "Failed to load teapot_high_phong" << std::endl;
 	}
@@ -261,7 +262,7 @@ void init(GLFWwindow* window) {
         100.0f                            // far plane
     );
 	glEnable(GL_DEPTH_TEST);
-	//glDisable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
 }
 
 void display(GLFWwindow* window, double currentTime) {
@@ -269,8 +270,8 @@ void display(GLFWwindow* window, double currentTime) {
 
     //define light source(s)
     Light light;
-    light.position = glm::vec3(8.0f, 8.0f, 8.0f); //world space coords
-    light.ambient = glm::vec3(0.10f);
+    light.position = glm::vec3(5.0f, 5.0f, 5.0f); //world space coords
+    light.ambient = glm::vec3(0.05f);
     light.diffuse = glm::vec3(0.6f);
     light.specular = glm::vec3(1.0f);
 
@@ -280,7 +281,8 @@ void display(GLFWwindow* window, double currentTime) {
     room.resetTransform();
 	room.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     room.scale(glm::vec3(10.0f));
-	//room.draw(view, proj, light);
+
+	room.draw(view, proj, light);
 
     // Flat shading
     teapot_low_flat.resetTransform();
@@ -334,6 +336,12 @@ void display(GLFWwindow* window, double currentTime) {
         //teapot_low_flat.draw(view, proj, light);
         //teapot_low_gouraud.draw(view, proj, light);
         teapot_low_phong.draw(view, proj, light);
+
+        teapot_low_phong.resetTransform();
+    teapot_low_phong.setPosition(glm::vec3(-5.0f, -5.0f, -5.0f));
+    teapot_low_phong.scale(glm::vec3(0.5f, 0.5f, 0.5f));
+    teapot_low_phong.rotate((float)currentTime * 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    teapot_low_phong.draw(view, proj, light);
     }
     if (med) {
         teapot_med_flat.draw(view, proj, light);

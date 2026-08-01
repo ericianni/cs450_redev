@@ -82,21 +82,24 @@ void Object::draw(const glm::mat4& view,
 {
     glUseProgram(program);
 
-    glm::mat4 uMV = view * modelMatrix;
+    glm::mat4 mv = view * modelMatrix;
 
     GLint mvLoc = glGetUniformLocation(program, "uMV");
     if (mvLoc >= 0)
-        glUniformMatrix4fv(mvLoc, 1, GL_FALSE, glm::value_ptr(uMV));
+        glUniformMatrix4fv(mvLoc, 1, GL_FALSE, glm::value_ptr(mv));
+    else
+        std::cout << "Failed to get uMV location" << std::endl;
 
     GLint pLoc = glGetUniformLocation(program, "uP");
     if (pLoc >= 0)
         glUniformMatrix4fv(pLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-    glm::mat3 uN = glm::mat3(glm::transpose(glm::inverse(uMV)));
+    glm::mat3 n = glm::mat3(glm::transpose(glm::inverse(mv)));
     GLint nLoc = glGetUniformLocation(program, "uN");
+    
     if (nLoc >= 0)
-        glUniformMatrix3fv(nLoc, 1, GL_FALSE, glm::value_ptr(uN));
-
+        glUniformMatrix3fv(nLoc, 1, GL_FALSE, glm::value_ptr(n));
+    
     // We must transform the light position into view space
     glm::vec3 lightPosView = glm::vec3(view * glm::vec4(light.position, 1.0f));
 	

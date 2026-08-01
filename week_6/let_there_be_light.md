@@ -15,6 +15,8 @@ Part of creating a convincing fake is to examine how light behaves under differe
 
 # Types of Light
 
+Below are the main types of light sources you will see in an OpenGL program. In this lesson we are going to limit ourselves to using *Ambient* and *Positional* lighting.
+
 ## Global Ambient
 
 *Ambient* light simulates light that has bounced around a space so many times that there is no identifiable source. In a way it feels like *ambient* light comes from everywhere and nowhere. Almost every scene will have some level of *ambient* light. No matter how dark the scene is, the user needs to be able to see *something*, so we will need at least some *ambient* light value.
@@ -246,7 +248,7 @@ void main()
 {
     vec3 fragPos = vec3(uMV * vec4(aPos, 1.0));
     vec3 N = normalize(uN * aNormal);
-	vec3 L = normalize(uLight.position -	fragPos);
+    vec3 L = normalize(uLight.position - fragPos);
     vec3 V = normalize(-fragPos);
     vec3 H = normalize(L + V);
 
@@ -472,13 +474,141 @@ Some things to note:
 * The highlights for the Phong-Blinn remain relatively the same
 * You have to look hard at the outline of the Phong-Blinn to notice the difference
 
-As you can see, Phong-Blinn creates *very* convincing lighting on objects: not matter the poly-count. 
+As you can see, Phong-Blinn creates *very* convincing lighting on objects: not matter the poly-count.
 
-* Add attenuation after demonstration
-* Add the ability to do directional vs point vs spotlight
+# Your Turn
+
+You will notice that I haven't provided you with as much *application* code in this lesson. The goal is that as you get more familiar with OpenGL, I can focus almost entirely on the new concepts and you will manage the rest. To be clear, I don't expect you to remember everything we have done thus far, but going back to review will only re-enforce your understanding.
+
+That said, here are some things to get your going.
+
+## Object Files
+
+In this lesson I used various versions of the teapot module:
+
+* [teapot_low.obj](../downloadable_files/objects/teapot_low.obj)
+* [teapot_med.obj](../downloadable_files/objects/teapot_med.obj)
+* [teapot_hig.obj](../downloadable_files/objects/teapot_high.obj)
+
+Using different ones helps demonstrate the differences in shading techniques.
+
+In your program, you will need to...
+
+* create your own shader files (e.g. `phong-blinn.vert` and `phong-blinn.frag`)
+* declare objects
+* initialize them in `init()`
+  * set which shader you want to test out
+  * set color and shininess
+* use them in `display()`
+  * declare a `Light` object 
+    * set a position
+    * change the default values if desired
+  * place, transform, animate
+  * draw them (don't forget to pass the `light` object)
+* Cleanup the objects you create at the end of `main()`
+
+If things aren't working out as you expect, you may have not updated all the appropriate uniform variables. Any failure to get a uniform location will result in that uniform being empty in the shader, greatly affecting the results. You can test this by adding an `else` to each `if` where you are checking the uniform location is `>= 0`. 
+
+For example:
+
+```C++
+GLint mvLoc = glGetUniformLocation(program, "uMV");
+if (mvLoc >= 0)
+    glUniformMatrix4fv(mvLoc, 1, GL_FALSE, glm::value_ptr(mv));
+else
+    std::cout << "Failed to get uMV location" << std::endl;
+```
+
+These would be good to put in either way; I left them out initially to keep the code easier to read.
+
+I highly recommend creating multiple of the same object, but with each of the shaders. This will allow you to really experience the differences between the approaches. Also, make sure you use our movement controls to move around the object to see how the highlights change based on the camera position.
+
+# But wait! There's More
+
+I don't know about you, but I am tired of having an empty background for our models to inhabit. Let's add a cube to act as a room. To help with this, I have created a special `room.obj` files. This is the same thing as the previous cube object we used, but this one has the normals pointing inward. Anyone know why that is necessary?
+
+**Hide Answer: The math we used for our ADS algorithm only illuminates triangles that have normals that face the light. The default `cube.obj` has the normals pointing outward, so you will only see *ambient* light if you use that model.**
+
+After declaring the object and loading it, you can place it in `display()` using:
+
+```C++
+// Draw the cube (room)
+room.resetTransform();
+room.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+room.scale(glm::vec3(10.0f));
+
+room.draw(view, proj, light);
+```
+
+Now, as long as you place your light and other objects within the scaled boundaries of the room object, you should see it illuminated along with the rest of your scene.
+
+I like to place the light in the upper corner of the room to see how the light plays off the walls.
+
+![White room with a light in the corner and a teapot in the forground](../images/week_6/room_w_corner_light.png)
+
+It's amazing how much a difference adding lighting (and a room!) makes with our scenes! But there's more!
+
+Remember how I said that *Positional* lights have the light dim the further you get from the light source? We aren't currently doing that. In the image below, the light exposure of both teapots is roughly the same.
+
+![White room with two teapots illuminated roughly the same](../images/week_6/without_attenuation.png)
+
+If we add *Attenuation* to our lighting model, we can make the light realistically fall off the further away an object is. See the following image for an example.
+
+![White room with two teapots with the closer one illuminated more than the one in the background](../images/week_6/with_attenuation.png)
+
+Notice how the lighting in the far corner is basically the same as our *ambient* value? That means barely any light is reaching that far. Likewise, the teapot further from the light is dimmer. The math for this is very easy.
+
+$$attenuationFactor = \frac{1}{k_c + k_ld + k_qd^2}$$
+
+* $d$ - distance from the light
+* $k_c$ - constant factor (overall brightness)
+* $k_ld$ - linear term (how fast the light fades at medium distances)
+* $k_qd^2$ - quadratic term (how fast the light fades at long distance)
+
+Some helpful usage tips:
+
+* To make the light extend further lower the *linear* and *quadratic* terms
+* To make the light fade faster increase the *linear* and *quadratic* terms
+* To increase the overall brightness decrease the *constant* term (can be $<1$)
+* Increasing the *linear* while decreasing the *quadratic* will result in the mid-range being darker, but the far-range staying lit further away
+* Decreasing the *linear* while increasing the *quadratic* will result in the mid-range being brighter, but the far-range becoming darker sooner
+
+You can implement *attenuation* in any of the shader types we covered. You just need to put it in the shader that handles the ADS calculations (i.e. vertex for Flat and Gouraud, fragment for Phong-Blinn).
+
+Declare three new variables (these are generic values):
+
+```C++
+float constant  = 1.0f;
+float linear    = 0.09f;
+float quadratic = 0.03f;
+```
+
+Then in `main()` you add the code to calculate the distance to the light and then to plug in all the values into our equation.
+
+```C++
+// Distance attenuation (point light)
+float distance = length(uLight.position - fragPos);
+float attenuation =	1.0f / (constant + linear * distance + quadratic * distance * distance);
+```
+
+Now, we just need to multiply both `diffuse` and `specular` by this `attenuation` variable.
+
+```C++
+vec3 diffuse = max(dot(N, L), 0.0) * uLight.diffuse * attenuation;
+vec3 specular = pow(max(dot(N, H), 0.0), uShininess) * uLight.specular attenuation;
+```
+
+That's it! Everything else runs as normal. If you don't want to use attenuation, you can just set `attenuation` to `1.0`. You could also set up code to toggle it when pressing a button.[^5]
+
+# Lights Out
+
+If I am being honest, this lesson ended up being much more indepth than I had first imagined. This is a good thing, we really dug deep into how lighting is calculated. Again, I refrained from *handing* you the code to get all this working. Please make sure you are actually applying these techniques during/after the lesson review. If you struggled with anything, please reach out on the discussion board for help. 
+
+Given the open-ended nature of this lesson, please push yourselves to create some complex scenes. You could even make the light move!
 
 
 [^1]: Technically, they don't "pick up" color. Instead, the energy they have is changed by the materials they interact with. High-energy photons are blue to violet. Low-energy photons are red and orange.
 [^2]: *Ray Tracing*, which mimics photons to some degree, has become the gold standard of lighting, with Nvidia and AMD both creating specialized chips to manage the massive calculations. These *Physically Based Rendering* (RBR) techniques are beyond the scope of what we can implement in this course, but are worth exploring.
 [^3]: We don't have any GLSL error checking running at the moment, so catching misnamed variables will be tricky.
 [^4]: Henri Gouraud's original algorithm didn't make use of the $\widehat{H}$ that Blinn discovered. We are going to use it anyway to keep things simpler.
+[^5]: To do this, you need to add a uniform variable to act as a flag and then check to see if it set before calculating attenuation. You should be able to use what we have already covered to set up the key-press trigger, the toggle variable, and set the uniform from our application. Super fun challenge!
