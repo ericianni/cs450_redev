@@ -8,116 +8,11 @@
 #include <string>
 #include <fstream>
 
-#define numVAOs 1
-#define numVBOs 2
+#include "object_light.hpp"
 
-float vertices[] = {
-    // Front face
-    -0.5f, -0.5f,  0.5f,
-     0.5f, -0.5f,  0.5f,
-     0.5f,  0.5f,  0.5f,
-     0.5f,  0.5f,  0.5f,
-    -0.5f,  0.5f,  0.5f,
-    -0.5f, -0.5f,  0.5f,
-
-    // Back face
-    -0.5f, -0.5f, -0.5f,
-    -0.5f,  0.5f, -0.5f,
-     0.5f,  0.5f, -0.5f,
-     0.5f,  0.5f, -0.5f,
-     0.5f, -0.5f, -0.5f,
-    -0.5f, -0.5f, -0.5f,
-
-    // Left face
-    -0.5f,  0.5f,  0.5f,
-    -0.5f,  0.5f, -0.5f,
-    -0.5f, -0.5f, -0.5f,
-    -0.5f, -0.5f, -0.5f,
-    -0.5f, -0.5f,  0.5f,
-    -0.5f,  0.5f,  0.5f,
-
-    // Right face
-     0.5f,  0.5f,  0.5f,
-     0.5f, -0.5f,  0.5f,
-     0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f, -0.5f,
-     0.5f,  0.5f, -0.5f,
-     0.5f,  0.5f,  0.5f,
-
-     // Bottom face
-     -0.5f, -0.5f, -0.5f,
-      0.5f, -0.5f, -0.5f,
-      0.5f, -0.5f,  0.5f,
-      0.5f, -0.5f,  0.5f,
-     -0.5f, -0.5f,  0.5f,
-     -0.5f, -0.5f, -0.5f,
-
-     // Top face
-     -0.5f,  0.5f, -0.5f,
-     -0.5f,  0.5f,  0.5f,
-      0.5f,  0.5f,  0.5f,
-      0.5f,  0.5f,  0.5f,
-      0.5f,  0.5f, -0.5f,
-     -0.5f,  0.5f, -0.5f
-};
-
-float colors[] = {
-    // Front face (red)
-    1.0f, 0.0f, 0.0f,
-    1.0f, 0.0f, 0.0f,
-    1.0f, 0.0f, 0.0f,
-    1.0f, 0.0f, 0.0f,
-    1.0f, 0.0f, 0.0f,
-    1.0f, 0.0f, 0.0f,
-
-    // Back face (green)
-    0.0f, 1.0f, 0.0f,
-    0.0f, 1.0f, 0.0f,
-    0.0f, 1.0f, 0.0f,
-    0.0f, 1.0f, 0.0f,
-    0.0f, 1.0f, 0.0f,
-    0.0f, 1.0f, 0.0f,
-
-    // Left face (blue)
-    0.0f, 0.0f, 1.0f,
-    0.0f, 0.0f, 1.0f,
-    0.0f, 0.0f, 1.0f,
-    0.0f, 0.0f, 1.0f,
-    0.0f, 0.0f, 1.0f,
-    0.0f, 0.0f, 1.0f,
-
-    // Right face (yellow)
-    1.0f, 1.0f, 0.0f,
-    1.0f, 1.0f, 0.0f,
-    1.0f, 1.0f, 0.0f,
-    1.0f, 1.0f, 0.0f,
-    1.0f, 1.0f, 0.0f,
-    1.0f, 1.0f, 0.0f,
-
-    // Bottom face (cyan)
-    0.0f, 1.0f, 1.0f,
-    0.0f, 1.0f, 1.0f,
-    0.0f, 1.0f, 1.0f,
-    0.0f, 1.0f, 1.0f,
-    0.0f, 1.0f, 1.0f,
-    0.0f, 1.0f, 1.0f,
-
-    // Top face (magenta)
-    1.0f, 0.0f, 1.0f,
-    1.0f, 0.0f, 1.0f,
-    1.0f, 0.0f, 1.0f,
-    1.0f, 0.0f, 1.0f,
-    1.0f, 0.0f, 1.0f,
-    1.0f, 0.0f, 1.0f
-};
-
-GLuint renderingProgram;
-
-GLuint vao[numVAOs];
-GLuint vbo[numVBOs];
-
-GLint mvLoc = -1;
-GLint pLoc  = -1;
+Object teapot;
+Object teapot2;
+Object teapot3;
 
 int windowWidth = 800;
 int windowHeight = 600;
@@ -138,7 +33,7 @@ bool paused = false;
 double pauseStartTime = 0.0f;
 double totalPausedTime = 0.0f;
 
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraPos = glm::vec3(0.0f, 5.0f, 3.0f);
 glm::vec3 cameraDirection = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -146,58 +41,6 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
 glm::mat4 proj;
-
-std::string loadShaderSource(const char* filePath) {
-    std::string source;
-    std::ifstream fileStream(filePath, std::ios::in);
-
-    if (!fileStream.is_open()) {
-        std::cerr << "Error: Could not open file " << filePath << std::endl;
-        return "";
-    }
-    else {
-        std::cout << "Loading shader: " << filePath << std::endl;
-    }
-
-    std::string line;
-    while (std::getline(fileStream, line)) {
-        source.append(line + "\n");
-    }
-
-    fileStream.close();
-    return source;
-}
-
-GLuint buildShaderProgram() {
-    // We need create our shader programs and save the ID number for each
-    GLuint vShader = glCreateShader(GL_VERTEX_SHADER);
-    GLuint fShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-    std::string vertShaderStr = loadShaderSource("shader.vert");
-    std::string fragShaderStr = loadShaderSource("shader.frag");
-
-    // We need to convert our strings into c-strings
-    const char* vertShaderSrc = vertShaderStr.c_str();
-    const char* fragShaderSrc = fragShaderStr.c_str();
-
-    // We need to load the shader source code into the shader program itself
-    glShaderSource(vShader, 1, &vertShaderSrc, NULL);
-    glShaderSource(fShader, 1, &fragShaderSrc, NULL);
-
-    // We need to compile the shader source code
-    glCompileShader(vShader);
-    glCompileShader(fShader);
-
-    // We need to create our program and attach our shader
-    GLuint vfProgram = glCreateProgram();
-    glAttachShader(vfProgram, vShader);
-    glAttachShader(vfProgram, fShader);
-
-    // We need to link the compiled shaders into a single program
-    glLinkProgram(vfProgram);
-
-    return vfProgram;
-}
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     // Avoid a divide-by-zero error if the window is minimized
@@ -312,41 +155,32 @@ void processInput(GLFWwindow* window)
 }
 
 void init(GLFWwindow* window) {
-    renderingProgram = buildShaderProgram();
 
-    //Get uniform location
-    mvLoc = glGetUniformLocation(renderingProgram, "mv");
-	pLoc = glGetUniformLocation(renderingProgram, "p");
+    if (!teapot.init("phong.vert", "phong.frag", "teapot.obj")) {
+        std::cerr << "Failed to load teapot" << std::endl;
+    }
 
-    // Generate VAOs and VBOs
-    glGenVertexArrays(numVAOs, vao);
-    glGenBuffers(numVBOs, vbo);
+    teapot.setColor(glm::vec3{0.84f, 0.25f, 0.035f});
+    teapot.setShininess(100.0f);
 
-    // Bind VAO and Position VBO
-    glBindVertexArray(vao[0]);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+    // if (!teapot.loadTexture("ceramic.jpg")) {
+    //     std::cerr << "Failed to load texture\n";
+    // }
+ if (!teapot2.init("flat.vert", "flat.frag", "teapot.obj")) {
+        std::cerr << "Failed to load teapot2" << std::endl;
+    }
 
-    // Fill Position VBO with vertex data
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    teapot2.setColor(glm::vec3{0.84f, 0.25f, 0.035f});
+    teapot2.setShininess(100.0f);
 
-    // Set Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-    glEnableVertexAttribArray(0);
+    if (!teapot3.init("gouraud.vert", "gouraud.frag", "teapot.obj")) {
+        std::cerr << "Failed to load teapot3" << std::endl;
+    }
 
-    // Bind Color VBO
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-
-    // Fill Color VBO with vertex data
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-
-    // Set Color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-    glEnableVertexAttribArray(1);
-
-    // Unbind VAO and VBO
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
+    teapot3.setColor(glm::vec3{0.84f, 0.25f, 0.035f});
+    teapot3.setShininess(100.0f);
+    
+    
     proj = glm::perspective(
         glm::radians(45.0f),              // FOV
         aspect,                  // aspect ratio (hard-coded for now)
@@ -359,32 +193,36 @@ void init(GLFWwindow* window) {
 void display(GLFWwindow* window, double currentTime) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    //define light source(s)
+    Light light;
+    light.position = glm::vec3(2.0f, 4.0f, 3.0f); //world space coords
+    light.ambient  = glm::vec3(0.10f);
+    light.diffuse  = glm::vec3(0.6f);
+    light.specular = glm::vec3(1.0f);
+
     glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraDirection, cameraUp);
 
-    glUseProgram(renderingProgram);
+    teapot.resetTransform();
+	teapot.setPosition(glm::vec3(2.5f, 0.0f, -5.0f));
+    teapot.scale(glm::vec3(0.5f, 0.5f, 0.5f));
+	teapot.rotate((float)currentTime * 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
-    // This is not a true mvp matrix,
-    // we will learn how to do it correctly soon
-    glm::mat4 model = glm::mat4(1.0f); // Always start with the identiy matrix
-    model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f));
-    model = glm::rotate(model, glm::radians((float)currentTime * 45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	teapot.draw(view, proj, light);
 
-    glm::mat4 mv = view * model;
+    teapot2.resetTransform();
+	teapot2.setPosition(glm::vec3(-2.5f, 0.0f, -5.0f));
+    teapot2.scale(glm::vec3(0.5f, 0.5f, 0.5f));
+	teapot2.rotate((float)currentTime * 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
-    // Set Uniforms
-    glUniformMatrix4fv(mvLoc, 1, GL_FALSE, glm::value_ptr(mv));
-    glUniformMatrix4fv(pLoc, 1, GL_FALSE, glm::value_ptr(proj));
+    teapot2.draw(view, proj, light);
 
-    // Bind VAO
-    glBindVertexArray(vao[0]);
+    teapot3.resetTransform();
+	teapot3.setPosition(glm::vec3(0.0f, 0.0f, -5.0f));
+    teapot3.scale(glm::vec3(0.5f, 0.5f, 0.5f));
+	teapot3.rotate((float)currentTime * 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
-    // Draw triangle
+    teapot3.draw(view, proj, light);
 
-    glDrawArrays(GL_TRIANGLES, 0, 36);
-
-    // Unbind VAO
-    glBindVertexArray(0);
 }
 
 int main() {
@@ -397,7 +235,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); //Needed for MacOS
-    GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "Our First 3D Scene", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "Let There Be Light", NULL, NULL);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         return -1;
@@ -432,7 +270,9 @@ int main() {
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
+    teapot.cleanup();
+    teapot2.cleanup();
+    teapot3.cleanup();
     glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
