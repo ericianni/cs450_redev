@@ -82,45 +82,45 @@ void Object::draw(const glm::mat4& view,
 {
     glUseProgram(program);
 
-    glm::mat4 mv = view * modelMatrix;
+    glm::mat4 uMV = view * modelMatrix;
 
-    GLint mvLoc = glGetUniformLocation(program, "mv");
+    GLint mvLoc = glGetUniformLocation(program, "uMV");
     if (mvLoc >= 0)
-        glUniformMatrix4fv(mvLoc, 1, GL_FALSE, glm::value_ptr(mv));
+        glUniformMatrix4fv(mvLoc, 1, GL_FALSE, glm::value_ptr(uMV));
 
-    GLint pLoc = glGetUniformLocation(program, "p");
+    GLint pLoc = glGetUniformLocation(program, "uP");
     if (pLoc >= 0)
         glUniformMatrix4fv(pLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-    glm::mat3 n = glm::mat3(glm::transpose(glm::inverse(mv)));
-    GLint nLoc = glGetUniformLocation(program, "n");
+    glm::mat3 uN = glm::mat3(glm::transpose(glm::inverse(uMV)));
+    GLint nLoc = glGetUniformLocation(program, "uN");
     if (nLoc >= 0)
-        glUniformMatrix3fv(nLoc, 1, GL_FALSE, glm::value_ptr(n));
+        glUniformMatrix3fv(nLoc, 1, GL_FALSE, glm::value_ptr(uN));
 
     // We must transform the light position into view space
     glm::vec3 lightPosView = glm::vec3(view * glm::vec4(light.position, 1.0f));
-
-    GLint lightPosLoc = glGetUniformLocation(program, "light.position");
+	
+    GLint lightPosLoc = glGetUniformLocation(program, "uLight.position");
     if (lightPosLoc >= 0)
         glUniform3fv(lightPosLoc, 1, glm::value_ptr(lightPosView));
 
-    GLint lightAmbLoc = glGetUniformLocation(program, "light.ambient");
+    GLint lightAmbLoc = glGetUniformLocation(program, "uLight.ambient");
     if (lightAmbLoc >= 0)
         glUniform3fv(lightAmbLoc, 1, glm::value_ptr(light.ambient));
 
-    GLint lightDiffLoc = glGetUniformLocation(program, "light.diffuse");
+    GLint lightDiffLoc = glGetUniformLocation(program, "uLight.diffuse");
     if (lightDiffLoc >= 0)
         glUniform3fv(lightDiffLoc, 1, glm::value_ptr(light.diffuse));
 
-    GLint lightSpecLoc = glGetUniformLocation(program, "light.specular");
+    GLint lightSpecLoc = glGetUniformLocation(program, "uLight.specular");
     if (lightSpecLoc >= 0)
         glUniform3fv(lightSpecLoc, 1, glm::value_ptr(light.specular));
 
-    GLint colorLoc = glGetUniformLocation(program, "objectColor");
+    GLint colorLoc = glGetUniformLocation(program, "uObjectColor");
     if (colorLoc >= 0)
         glUniform3fv(colorLoc, 1, glm::value_ptr(color));
 
-    GLint shininessLoc = glGetUniformLocation(program, "shininess");
+    GLint shininessLoc = glGetUniformLocation(program, "uShininess");
     if (shininessLoc >= 0)
         glUniform1f(shininessLoc, shininess);
     
@@ -131,7 +131,7 @@ void Object::draw(const glm::mat4& view,
     if (textureID != 0) {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureID);
-        GLint texLoc = glGetUniformLocation(program, "tex");
+        GLint texLoc = glGetUniformLocation(program, "uTex");
         if (texLoc >= 0)
             glUniform1i(texLoc, 0);
     }
