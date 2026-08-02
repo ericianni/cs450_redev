@@ -575,17 +575,37 @@ Some helpful usage tips:
 
 You can implement *attenuation* in any of the shader types we covered. You just need to put it in the shader that handles the ADS calculations (i.e. vertex for Flat and Gouraud, fragment for Phong-Blinn).
 
-Declare three new variables (these are generic values):
+We are going to add this to our light `struct` and pass it in as a uniform.
 
 ```C++
-float constant  = 1.0f;
-float linear    = 0.09f;
-float quadratic = 0.03f;
+struct Light {
+    glm::vec3 position {0.0f, 0.0f, 0.0f};
+    glm::vec3 ambient  {0.15f, 0.15f, 0.15f};
+    glm::vec3 diffuse  {0.8f, 0.8f, 0.8f};
+    glm::vec3 specular {1.0f, 1.0f, 1.0f};
+    glm::vec3 attenuation {1.0f, 0.09f, 0.03f};
+};
+```
+
+We are using a `vec3` to pass in all three values: *constant*, *linear*, and *quadratic* (x, y, z respectively). You will need to update the `struct` at the top of `object_light.hpp`. If you want to use anything other than the default, you will need to specify them in the `display()` function where you set the other light parameters. Finally, you need to add a new uniform variable in the Object `draw()` call.
+
+```C++
+GLint lightAtenLoc = glGetUniformLocation(program, "uLight.attenuation");
+    if (lightAtenLoc >= 0)
+        glUniform3fv(lightAtenLoc, 1, glm::value_ptr(light.attenuation));
+```
+
+Also in the shader code, declare three new variables and assign them the appropriate values from `vec3 attenuation`.
+
+```GLSL
+float constant  = uLight.attenuation.x;
+float linear    = uLight.attenuation.y;
+float quadratic = uLight.attenuation.z;
 ```
 
 Then in `main()` you add the code to calculate the distance to the light and then to plug in all the values into our equation.
 
-```C++
+```GLSL
 // Distance attenuation (point light)
 float distance = length(uLight.position - fragPos);
 float attenuation =	1.0f / (constant + linear * distance + quadratic * distance * distance);
@@ -593,7 +613,7 @@ float attenuation =	1.0f / (constant + linear * distance + quadratic * distance 
 
 Now, we just need to multiply both `diffuse` and `specular` by this `attenuation` variable.
 
-```C++
+```GLSL
 vec3 diffuse = max(dot(N, L), 0.0) * uLight.diffuse * attenuation;
 vec3 specular = pow(max(dot(N, H), 0.0), uShininess) * uLight.specular attenuation;
 ```
@@ -602,7 +622,7 @@ That's it! Everything else runs as normal. If you don't want to use attenuation,
 
 # Lights Out
 
-If I am being honest, this lesson ended up being much more indepth than I had first imagined. This is a good thing, we really dug deep into how lighting is calculated. Again, I refrained from *handing* you the code to get all this working. Please make sure you are actually applying these techniques during/after the lesson review. If you struggled with anything, please reach out on the discussion board for help. 
+If I am being honest, this lesson ended up being much more indepth than I had first imagined. This is a good thing, we really dug deep into how lighting is calculated. Again, I refrained from *handing* you the code to get all this working. Please make sure you are actually applying these techniques during/after the lesson review. If you struggled with anything, please reach out on the discussion board for help.
 
 Given the open-ended nature of this lesson, please push yourselves to create some complex scenes. You could even make the light move!
 

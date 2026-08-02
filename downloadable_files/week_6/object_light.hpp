@@ -14,6 +14,7 @@ struct Light {
     glm::vec3 ambient  {0.15f, 0.15f, 0.15f};
     glm::vec3 diffuse  {0.8f, 0.8f, 0.8f};
     glm::vec3 specular {1.0f, 1.0f, 1.0f};
+	glm::vec3 attenuation{ 1.0f, 0.09f, 0.03f };
 };
 
 class Object {

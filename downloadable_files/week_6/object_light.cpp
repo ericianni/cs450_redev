@@ -119,6 +119,10 @@ void Object::draw(const glm::mat4& view,
     if (lightSpecLoc >= 0)
         glUniform3fv(lightSpecLoc, 1, glm::value_ptr(light.specular));
 
+    GLint lightAtenLoc = glGetUniformLocation(program, "uLight.attenuation");
+    if (lightAtenLoc >= 0)
+        glUniform3fv(lightAtenLoc, 1, glm::value_ptr(light.attenuation));
+
     GLint colorLoc = glGetUniformLocation(program, "uObjectColor");
     if (colorLoc >= 0)
         glUniform3fv(colorLoc, 1, glm::value_ptr(color));

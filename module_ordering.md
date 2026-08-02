@@ -33,14 +33,7 @@
 # Week 6
 
 * Loading Objects
-* Shading
-* Lighting
-  * Types
-    * Global (ambient)
-    * Directional (like the sun)
-    * Positional (like a lamp)
-    * Spotlight (batman!)
-  * ADS
+* Let there be Light!
 
 # Week 7
 
