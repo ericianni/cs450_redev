@@ -263,7 +263,7 @@ void main()
 }
 ```
 
-The `layout` and first three uniforms are the same as last time. Next, you will see that we define the same `struct` in our shader as we did in our Object class. This is what allows us to pass in all the lighting data using one uniform: `uniform Light light;` We also add a uniform to hold the object's shininess.
+The `layout` and first three uniforms are the same as last time. Next, you will see that we define the same `struct` in our shader as we did in our Object class. This is what allows us to pass in all the lighting data using one uniform: `uniform Light uLight;` We also add a uniform to hold the object's shininess.
 
 When it comes to our `out` variables, we still have `texCoord`, but we also added: `flat out vec3 lightingColor;`. Since we are doing our lighting algorithms in the Vertex Shader, we need a way to send the light-adjusted color value to the Fragment Shader. The `flat` keyword here tells the Fragment Shader to *not interpolate* the value across the face. This is how we ended up with one color per face.
 
@@ -381,9 +381,9 @@ void main()
 
 In 1973, Bui Tuong Phong created an algorithm that calculated the lighting *per-pixel* (vs. *per-vertex* with Gouraud Shading). In 1977 James Blinn came up with his modified approach (mentioned above). Both techniques allowed for the normals to be interpolated across the entire triangle. This allows for more accurate *specular lighting*. We are taking this a step further and also doing *per-pixel* light vector calculations. 
 
-![Screen with a low-poly teapot with Phong-Blinn shading](../images/week_6/phong_blinn_low.png)
+![Screen with a low-poly teapot with Blinn-Phong shading](../images/week_6/phong_blinn_low.png)
 
-Notice how the *specular* highlights don't follow the triangle edges any more. Phong-Blinn shading really makes it hard to see *any* triangles unless you are looking at the outline. In this way, Phong-Blinn can take low-poly objects and make them look much higher resolution.
+Notice how the *specular* highlights don't follow the triangle edges any more. Blinn-Phong shading really makes it hard to see *any* triangles unless you are looking at the outline. In this way, Blinn-Phong can take low-poly objects and make them look much higher resolution.
 
 The shader code is roughly the same, but the role the Vertex and Fragment shader have is reversed.
 
@@ -461,20 +461,20 @@ We had to move all the lighting code into the Fragment Shader (including the `st
 
 You have seen the code for each type of shading algorithm. I also provided a screenshot for each. While this helped highlight the differences, seeing the lighting *in motion* makes it even more clear. Below are three GIFs. In each, the same object is shown using all three shading techniques. With each GIF, the poly-count of the teapot increases.
 
-![Gif of flat, Gouraud, and Phong-Blinn shading on three low-poly teapots](../images/week_6/teapot_low.gif)
+![Gif of flat, Gouraud, and Blinn-Phong shading on three low-poly teapots](../images/week_6/teapot_low.gif)
 
-![Gif of flat, Gouraud, and Phong-Blinn shading on three med-poly teapots](../images/week_6/teapot_med.gif)
+![Gif of flat, Gouraud, and Blinn-Phong shading on three med-poly teapots](../images/week_6/teapot_med.gif)
 
-![Gif of flat, Gouraud, and Phong-Blinn shading on three high-poly teapots](../images/week_6/teapot_high.gif)
+![Gif of flat, Gouraud, and Blinn-Phong shading on three high-poly teapots](../images/week_6/teapot_high.gif)
 
 Some things to note:
 
 * Gouraud Shading produces a "strobing" effect with the *specular* lighting
 * Increasing the poly-count produces better highlights with Gouraud Shading, but the "strobing" gets faster
-* The highlights for the Phong-Blinn remain relatively the same
-* You have to look hard at the outline of the Phong-Blinn to notice the difference
+* The highlights for the Blinn-Phong remain relatively the same
+* You have to look hard at the outline of the Blinn-Phong to notice the difference
 
-As you can see, Phong-Blinn creates *very* convincing lighting on objects: not matter the poly-count.
+As you can see, Blinn-Phong creates *very* convincing lighting on objects: not matter the poly-count.
 
 # Your Turn
 
@@ -488,13 +488,13 @@ In this lesson I used various versions of the teapot module:
 
 * [teapot_low.obj](../downloadable_files/objects/teapot_low.obj)
 * [teapot_med.obj](../downloadable_files/objects/teapot_med.obj)
-* [teapot_hig.obj](../downloadable_files/objects/teapot_high.obj)
+* [teapot_high.obj](../downloadable_files/objects/teapot_high.obj)
 
 Using different ones helps demonstrate the differences in shading techniques.
 
 In your program, you will need to...
 
-* create your own shader files (e.g. `phong-blinn.vert` and `phong-blinn.frag`)
+* create your own shader files (e.g. `blinn-phong.vert` and `blinn-phong.frag`)
 * declare objects
 * initialize them in `init()`
   * set which shader you want to test out
@@ -573,7 +573,7 @@ Some helpful usage tips:
 * Increasing the *linear* while decreasing the *quadratic* will result in the mid-range being darker, but the far-range staying lit further away
 * Decreasing the *linear* while increasing the *quadratic* will result in the mid-range being brighter, but the far-range becoming darker sooner
 
-You can implement *attenuation* in any of the shader types we covered. You just need to put it in the shader that handles the ADS calculations (i.e. vertex for Flat and Gouraud, fragment for Phong-Blinn).
+You can implement *attenuation* in any of the shader types we covered. You just need to put it in the shader that handles the ADS calculations (i.e. vertex for Flat and Gouraud, fragment for Blinn-Phong).
 
 We are going to add this to our light `struct` and pass it in as a uniform.
 
@@ -611,7 +611,7 @@ float distance = length(uLight.position - fragPos);
 float attenuation =	1.0f / (constant + linear * distance + quadratic * distance * distance);
 ```
 
-Now, we just need to multiply both `diffuse` and `specular` by this `attenuation` variable.
+Now, we just need to multiply both `diffuse` and `specular` by this `attenuation` variable. Note, *ambient* light isn't attenuated, it comes from "everywhere".
 
 ```GLSL
 vec3 diffuse = max(dot(N, L), 0.0) * uLight.diffuse * attenuation;
