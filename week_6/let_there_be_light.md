@@ -494,7 +494,7 @@ Using different ones helps demonstrate the differences in shading techniques.
 
 In your program, you will need to...
 
-* create your own shader files (e.g. `blinn-phong.vert` and `blinn-phong.frag`)
+* create your own shader files (e.g. `blinn_phong.vert` and `blinn_phong.frag`)
 * declare objects
 * initialize them in `init()`
   * set which shader you want to test out
@@ -507,7 +507,7 @@ In your program, you will need to...
   * draw them (don't forget to pass the `light` object)
 * Cleanup the objects you create at the end of `main()`
 
-If things aren't working out as you expect, you may have not updated all the appropriate uniform variables. Any failure to get a uniform location will result in that uniform being empty in the shader, greatly affecting the results. You can test this by adding an `else` to each `if` where you are checking the uniform location is `>= 0`. 
+If things aren't working out as you expect, you may have not updated all the appropriate uniform variables. Any failure to get a uniform location will result in that uniform being empty in the shader, greatly affecting the results. You can test this by adding an `else` to each `if` where you are checking the uniform location is `>= 0`.
 
 For example:
 
