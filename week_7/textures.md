@@ -184,10 +184,12 @@ Here is the same brick floor from before, but this time with *mipmapping* turned
 
 Notice that the *aliasing* ("shimmering") is pretty much gone! You may be thinking, "This looks *blurry*" and you wouldn't be wrong. This is because we are using *linear* sampling the same way we could do with *texture filtering* (above). We can actually set multiple types of filtering, but the default is generally what we want to go with:
 
-* `GL_NEAREST_MIPMAP_NEAREST`
+* `GL_NEAREST_MIPMAP_NEAREST` (good for pixel-art/retro)
 * `GL_LINEAR_MIPMAP_NEAREST`
 * `GL_NEAREST_MIPMAP_LINEAR`
-* `GL_GL_LINEAR_MIPMAP_LINEAR`
+* `GL_LINEAR_MIPMAP_LINEAR` (default in our code)
+
+We will see shortly that these *filters* will be assigned to either the `minFilter` or `magFilter`. The names hint at when they are used: minimizing (shrinking) or magnifying (enlarging) a texture across an object. The defaults that we set up in our code collectively are called *Trilinear Filtering*: `minFilter` - `GL_LINEAR_MIPMAP_LINEAR` and `magFilter` - `GL_LINEAR`.
 
 
 [^1]: Technically, it is possible to have a 3D texture, but we are going to focus only on the more common 2D textures.
