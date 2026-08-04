@@ -38,14 +38,9 @@
 # Week 7
 
 * Textures
-  * Explain 0-1
-  * mipmapping
-  * wrapping and tiling 
-  * Assignment idea
-    * have them map textures to a pyramid and have the lines match up
-    * have them wrap textures in at least two ways
-    
-
+* Assignment idea
+  * have them map textures to a pyramid and have the lines match up
+  * have them wrap textures in at least two ways
 
 # Week 8
 

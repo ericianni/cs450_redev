@@ -330,7 +330,7 @@ void main()
 }
 ```
 
-This is where we set our texture uniforms. The first is of the type `sampler2D`. This *does not* hold our texture data; it holds the *texture index* that points to the texture object on the GPU (Texture Unit 0 in our code). Notice that we have to specify the dimensionality of our sampler. This is because OpenGL can also use other types of samplers.[^7] 
+This is where we set our texture uniforms. The first is of the type `sampler2D`. This *does not* hold our texture data; it holds the *texture unit index* that points to the texture object on the GPU (Texture Unit 0 in our code). Notice that we have to specify the dimensionality of our sampler. This is because OpenGL can also use other types of samplers.[^7] 
 
 We also set `useTexture`. This allows us to only apply texture colors to our pixels if a texture is actually loaded. Notice how we apply the texture color. We simply call `texture(uTex, texCoord)`. This returns a `vec4` containing the color information for the provided texture coordinates (`texCoord`). We then grab only the `rgb` values (we aren't dealing with transparencies) and multiply the texture color by the `lightingColor`, which has already combined the object color with the lighting effects.
 
@@ -351,12 +351,12 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 ```
 
-`GL_TEXTURE_WRAP_*` allows us to independatly set the type of wrapping/tiling we want to use. You may recall from the examples above, that you can mix and match the types: `GL_REPEAT`, `GL_MIRRORED_REPEAT`, `GL_CLAMP_TO_EDGE`, and `GL_CLAMP_TO_BORDER`.
+`GL_TEXTURE_WRAP_*` allows us to independently set the type of wrapping/tiling we want to use. You may recall from the examples above, that you can mix and match the types: `GL_REPEAT`, `GL_MIRRORED_REPEAT`, `GL_CLAMP_TO_EDGE`, and `GL_CLAMP_TO_BORDER`.
 
 In order to use `GL_CLAMP_TO_BORDER` we really should set a background color (the default is black). We do this by defining a `vec4` to hold our RGBA color (the `A` is for *Alpha*).
 
 ```C++
-glm::vec4 borderColor = glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}; // red`
+glm::vec4 borderColor = glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}; // red
 ```
 
 We then set the texture parameter, but we can't pass in a `vec4` directly so we have to use `value_ptr()`.
