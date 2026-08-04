@@ -11,7 +11,7 @@ Simply put, *Texture Mapping* is the process of painting an image across the sur
 
 Almost any image file can be used as a texture, as long as it is loaded into memory.[^1] While it is possible to write custom code to handle this, we are going to be using *SOIL2* so we can focus on *using* textures right away (more on usage later).
 
-So, *how* do we get OpenGL to apply the textures how we want? We use *Texture Coordinates*. Think back to the code we wrote to load `.obj` files. We created three UBOs to house our *vertex attributes*. The first one is for our vertex *position*. The second one is for our vertex *normals*. The last one is for our *texture coordinates*.
+So, *how* do we get OpenGL to apply the textures how we want? We use *Texture Coordinates*. Think back to the code we wrote to load `.obj` files. We created three VBOs to house our *vertex attributes*. The first one is for our vertex *position*. The second one is for our vertex *normals*. The last one is for our *texture coordinates*.
 
 # Texture Coordinates
 
@@ -84,15 +84,15 @@ Notice that each face line has three elements? Each of those elements represents
 
 * Vertex 1
   * position - (1.0, 1.0, 1.0)
-  * textCoord - (0.625, 0.75)
+  * texCoord - (0.625, 0.75)
   * normal - (0.0, 0.0, 1.0)
 * Vertex 2
   * position - (-1.0, -1.0, 1.0)
-  * textCoord - (0.375, 1.0)
+  * texCoord - (0.375, 1.0)
   * normal - (0.0, 0.0, 1.0)
 * Vertex 3
   * position - (1.0, -1.0, 1.0)
-  * textCoord - (0.375, 0.75)
+  * texCoord - (0.375, 0.75)
   * normal - (0.0, 0.0, 1.0)
 
 These are the values that our object loading code will put into `vertices`, `normals`, and `texCoords` arrays. These will then be passed into the shader using `Vertex Attributes`. This why it is possible to only specify *texture coordinates* at each vertex and still have the entire image show up. More on this in a moment.
@@ -189,12 +189,223 @@ Notice that the *aliasing* ("shimmering") is pretty much gone! You may be thinki
 * `GL_NEAREST_MIPMAP_LINEAR`
 * `GL_LINEAR_MIPMAP_LINEAR` (default in our code)
 
-We will see shortly that these *filters* will be assigned to either the `minFilter` or `magFilter`. The names hint at when they are used: minimizing (shrinking) or magnifying (enlarging) a texture across an object. The defaults that we set up in our code collectively are called *Trilinear Filtering*: `minFilter` - `GL_LINEAR_MIPMAP_LINEAR` and `magFilter` - `GL_LINEAR`.
+We will see shortly that these *filters* will be assigned to either the `minFilter` or `magFilter`. The names hint at when they are used: minimizing (shrinking) or magnifying (enlarging) a texture across an object. The defaults that we set up in our code collectively are called *Trilinear Filtering*: `minFilter` &rarr; `GL_LINEAR_MIPMAP_LINEAR` and `magFilter` &rarr; `GL_LINEAR`.
 
+# The Code
+
+Now that we have the *theory* of textures covered, how do we actually *use* it in our own programs? The good news is that we already have most of the code needed for textures in our Object class. So, let's start with what we have before we move onto the new bits.
+
+## Loading Textures
+
+Below you will see the function that our objects use to load our textures. It takes one parameter (`path`), which holds the location and filename of the desired texture. It returns `true` or `false` based on whether the texture was successfully loaded (useful for debugging). Note: I have made some small changes to make this code work better with setting texture parameters (done later on).
+
+```C++
+bool Object::loadTexture(const std::string& path)
+{
+    textureID = SOIL_load_OGL_texture(
+        path.c_str(),
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_INVERT_Y | SOIL_FLAG_MIPMAPS);
+
+    if (textureID == 0) {
+        return false;
+    }
+
+    // Refactored code so we can put texture paremeters here
+
+    return true;
+}
+```
+
+* `textureID` - stores the `GLunit` ID number used for binding our texture data
+* `SOIL_load_OGL_texture()` - handles loading images, creating an OpenGL texture object (and filling it), and returns the ID associated with it
+* `SOIL_LOAD_AUTO` - Flag to allow SOIL2 to determine the color format (RGB, RGBA, etc.)
+* `SOIL_CREATE_NEW_ID` - instructs SOIL2 to create a new ID. We could also have provided an existing one to be filled
+* `SOIL_FLAG_INVERT_Y` - most image formats have the origin at the top left, but OpenGL `st` coordinates want it in the bottom left. This flag tells SOIL2 to flip the Y-axis
+* `SOILD_FLAG_MIPMAPS` - setups the *Trilinear Filtering* discussed above
+
+Pretty simple right? SOIL2 takes care of so much of the annoying bits of working with textures (e.g. loading them and generating mipmaps). What it does not do, is actually *bind* the textures and pass them into the shader. It also defaults to `GL_CLAMP_TO_EDGE` for *texture wrapping*.
+
+Calling the above function is also very simple. Once you have declared your object (`Object myObj`), you need to initialize it (covered in an earlier lesson) before loading the texture. It is helpful for debugging to use the `bool` return type to call `loadTexture()` within an `if` statement.
+
+```C++
+if (!crate.loadTexture("brick.jpg")) {
+    std::cerr << "Failed to load brick texture" << std::endl;
+}
+```
+
+## Binding Textures
+
+Now that we have loaded our texture, we need to *bind* it and get it off to the shader. This is done within `draw()`. We actually have two functions that we use to set up our shaders. The first manages our `useTexture` flag. This flag is automatically set to `0` if no texture was loaded. This is needed to turn off any texture related code in our shaders.
+
+```C++
+GLint useTexLoc = glGetUniformLocation(program, "useTexture");
+if (useTexLoc >= 0) {
+    glUniform1i(useTexLoc, (textureID != 0) ? 1 : 0);
+}
+```
+
+Then we get to the actual binding of the texture.
+
+```C++
+if (textureID != 0) {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    GLint texLoc = glGetUniformLocation(program, "uTex");
+    if (texLoc >= 0) {
+        glUniform1i(texLoc, 0);
+    }
+}
+```
+
+* `glActiveTexture(GL_TEXTURE0)` - tells OpenGL which texture we are going to be manipulating (e.g. Texture Unit 0)
+* `glBindTexture(GL_TEXTURE_2D, textureID)` - tells OpenGL the type of texture to bind and the ID of the texture object on the GPU to use
+* `GLint texLoc = glGetUniformLocation(program, "uTex")` - we should be familiar by now with how to get uniform locations
+* `glUniform1i(texLoc, 0)` - tells the texture sampler (discussed below) where to find the texture (i.e. Texture Unit 0)
+
+
+## Textures In Shaders
+
+It may help to see the shader code as well. I am reproducing the Blinn-Phong shaders we wrote last lesson.
+
+```GLSL
+// Vertex Shader
+#version 410 core
+
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aNormal;
+layout (location = 2) in vec2 aTexCoord;
+
+uniform mat4 uMV;
+uniform mat4 uP;
+uniform mat3 uN;
+
+out vec3 fragPos;
+out vec3 normal;
+out vec2 texCoord;
+
+void main()
+{
+    fragPos  = vec3(uMV * vec4(aPos, 1.0));
+    normal   = uN * aNormal;
+    texCoord = aTexCoord;
+
+    gl_Position = uP * uMV * vec4(aPos, 1.0);
+}
+```
+
+The first texture related code is `layout (location = 2) in vec2 aTexCoord;`.  This is one of the *vertex attributes*. The data is loaded by our object loading function and passed in our `draw()` function. We don't actually use it in our Vertex Shader, so we need to pass it along down the pipeline using `out vec2 texCoord` (after filling `texCoord`).
+
+The Fragment Shader is where the true fun begins!
+
+```GLSL
+#version 410 core
+
+in vec3 fragPos;
+in vec3 normal;
+in vec2 texCoord;
+
+// lighting code omitted
+
+uniform sampler2D uTex;
+uniform int useTexture;
+
+out vec4 FragColor;
+
+void main()
+{
+    vec3 N = normalize(normal);
+    vec3 L = normalize(uLight.position - fragPos);
+    vec3 V = normalize(-fragPos);
+    vec3 H = normalize(L + V);
+
+    // lighting code omitted
+
+    vec3 lightingColor = (ambient + diffuse + specular) * uObjectColor;
+    if (useTexture == 1)
+        lightingColor *= texture(uTex, texCoord).rgb;
+
+    FragColor = vec4(lightingColor, 1.0);
+}
+```
+
+This is where we set our texture uniforms. The first is of the type `sampler2D`. This *does not* hold our texture data; it holds the *texture index* that points to the texture object on the GPU (Texture Unit 0 in our code). Notice that we have to specify the dimensionality of our sampler. This is because OpenGL can also use other types of samplers.[^7] 
+
+We also set `useTexture`. This allows us to only apply texture colors to our pixels if a texture is actually loaded. Notice how we apply the texture color. We simply call `texture(uTex, texCoord)`. This returns a `vec4` containing the color information for the provided texture coordinates (`texCoord`). We then grab only the `rgb` values (we aren't dealing with transparencies) and multiply the texture color by the `lightingColor`, which has already combined the object color with the lighting effects.
+
+## Setting Texture Parameters
+
+Above, I mentioned that I had to refactor the loading code to get it ready to set *Texture Parameters*. We will be adding these lines of code to the `loadTexture()` function after checking for a valid Texture ID.
+
+What is a *Texture Parameters*? For us, it means:
+
+* Wrapping/Tiling
+* Background Color
+* Filtering
+
+By default, our code utilizes `GL_CLAMP_TO_EDGE`. Typically, this is not what you actually want (tiling is so useful!), so we likely want to change this. To do so, we need to set *two* parameters:
+
+```C++
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+```
+
+`GL_TEXTURE_WRAP_*` allows us to independatly set the type of wrapping/tiling we want to use. You may recall from the examples above, that you can mix and match the types: `GL_REPEAT`, `GL_MIRRORED_REPEAT`, `GL_CLAMP_TO_EDGE`, and `GL_CLAMP_TO_BORDER`.
+
+In order to use `GL_CLAMP_TO_BORDER` we really should set a background color (the default is black). We do this by defining a `vec4` to hold our RGBA color (the `A` is for *Alpha*).
+
+```C++
+glm::vec4 borderColor = glm::vec4{1.0f, 0.0f, 0.0f, 1.0f}; // red`
+```
+
+We then set the texture parameter, but we can't pass in a `vec4` directly so we have to use `value_ptr()`.
+
+```C++
+glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(borderColor));
+```
+
+Now, whenever we use `GL_CLAMP_TO_BORDER`, the border will be the color we specify (red in this example).
+
+The last type of *Texture Parameter* we will discuss today is *Filtering*. You likely won't ever want to change the default *Trilinear Filtering*, but you have the option. We can set both the *Minification* and *Magnification* filters. The former is used when a texture has to be *shrunk* to fit an on-screen object. The latter is used when a texture has to be *stretched* to fit an on-screen object.
+
+```C++
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+```
+
+For the *Min Filter* you have many options:
+
+* Without Mipmapping
+  * `GL_NEAREST`
+  * `GL_LINEAR`
+* With Mipmapping
+  * `GL_NEAREST_MIPMAP_NEAREST`
+  * `GL_LINEAR_MIPMAP_NEAREST`
+  * `GL_NEAREST_MIPMAP_LINEAR`
+  * `GL_LINEAR_MIPMAP_LINEAR` - our default
+
+  For the *Mag Filter* we only have the two options: `GL_NEAREST` and `GL_LINEAR` (our default).
+
+That's it for *Texture Parameters*!
+
+# Textures Wrapup
+
+As we seem to do frequently, we covered *a lot* of ground in this one lesson. We learned how *Texture Coordinates* are determined and how to use them. We examined how they are stored in our `.obj` files and how we can change the data to suit our needs. We learned how to wrap/tile textures as well as how to set filters to dictate how the interpolation is done. Finally, we went over *Mipmapping* and how it can be used to prevent `aliasing` in our scenes.
+
+Despite *all* we learned, there is still a great deal we can explore with textures. Textures can be used for so much more than just images. They are also a great way to pass in massive amounts of data into the pipeline. One of my favorite is *Render-to-texture* where we do a first rendering pass and store the framebuffer data in a texture and then use it in additional rendering passes. Another common usage is to send in a modified texture image to act as a *normal map*.[^8]
+
+Those advanced topics will need to wait. For now, I recommend you play around with textures on your own. Some things to try:
+
+* Create a pyramid object and apply a brick texture. Try to line up the texture on each face so it looks realistic
+* Create your own tiled floor and witness first hand the effects of *aliasing*
+* Create objects of different shapes and apply the same texture to see how each shape handles *texture coordinates*
 
 [^1]: Technically, it is possible to have a 3D texture, but we are going to focus only on the more common 2D textures.
-[^2]: Most modern approaches use $uv$ instead of $st$ for texture coordinates to match the same terminology that 3D artist use in their software. We are sticking with $st$ because that is that is permitted by GLSL: `texture.st` is valid, `texture.uv` is invalid.
-[^3]: Notice that the faces of the model are *quads* (not *triangles*). 3D artists prefer to work in quads. Modern graphics enginges (e.g. Unreal and Unity) can convert quads to triangles, which GPUs require. We are not going to be able to do that in this course, so all our faces will be triangles.
+[^2]: Most modern approaches use $uv$ instead of $st$ for texture coordinates to match the same terminology that 3D artist use in their software. We are sticking with $st$ because that is permitted by GLSL: `texture.st` &rarr; valid, `texture.uv` &rarr; invalid.
+[^3]: Notice that the faces of the model are *quads* (not *triangles*). 3D artists prefer to work in quads. Modern graphics engines (e.g. Unreal and Unity) can convert quads to triangles, which GPUs require. We are not going to be able to do that in this course, so all our faces will be triangles.
 [^4]: Mesh just means the vertices that make up an object.
 [^5]: You may have noticed the `Failed to load material file(s). Use default material.` warning when running our applications. TinyObjLoader tries to load a *Material* file. These files contain DAS data for lighting, color, shininess, and texture map paths. To keep things approachable, I have not introduced these.
-[^6]: It get's it's name from how it stores many versions of a texture in a single texture file: *Multum In Parvo* (Latin for "much in a small place").
+[^6]: It gets its name from how it stores many versions of a texture using only 33% more space than the original: *Multum In Parvo* (Latin for "much in a small place").
+[^7]: [OpenGL Sampler Types](https://wikis.khronos.org/opengl/Sampler_(GLSL))
+[^8]: [Normal Mapping](https://learnopengl.com/Advanced-Lighting/Normal-Mapping)
