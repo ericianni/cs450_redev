@@ -28,7 +28,7 @@ In other words, to place a person in a seat the location of the cruise ship isn'
 
 # Matrix Stacking
 
-There are multiple ways of implementing *Hierarchical Modeling* in an OpenGL program. The most *traditional*, and the one that is easiest to implement with our current codebase, is called *Matrix Stacking*. It gets its name because of how it uses `stack` objects to create the hierarchy. This was such a common way of doing things back in 1990s that OpenGL had dedicated built-ins: `glPushMatrix()` and `glPopMatrix()`.[^2]
+There are multiple ways of implementing *Hierarchical Modeling* in an OpenGL program. The most *traditional*, and the one that is the easiest to implement with our current codebase, is called *Matrix Stacking*. It gets its name because of how it uses `stack` objects to create the hierarchy. This was such a common way of doing things back in 1990s that OpenGL had dedicated built-ins: `glPushMatrix()` and `glPopMatrix()`.[^2]
 
 While OpenGL's Core Profile no longer supports these functions, there is nothing stopping us from using `std::stack` to implement the same concept. If you aren't familiar with a stack, here is a quick crash course.
 
@@ -125,7 +125,7 @@ float moonOrbit = currentTime * 320.0f; // Orbit speed of Moon around Earth
 float moonSpin = currentTime * 10.0f; // Moon's spin speed
 ```
 
-As you can see, we are going to apply a rotation animation to the Sun, Earth, and Moon. We also calculate orbital position for both the Earth and Moon (the sun is in the center). Notice, these are all *angles* in degrees. The specific values used to multiply `currentTime` are not important, but these will produce the face orbit seen in the animation above. Feel free to change them to something more realistic.
+As you can see, we are going to apply a rotation animation to the Sun, Earth, and Moon. We also calculate orbital position for both the Earth and Moon (the sun is in the center). Notice, these are all *angles* in degrees. The specific values used to multiply `currentTime` are not important, but these will produce the fast orbit seen in the animation above. Feel free to change them to something more realistic.
 
 Now we need to set up our *Matrix Stack* and *prime* it. Anyone want to take a guess what we are going to push onto our stack first?
 
@@ -340,7 +340,7 @@ Before moving on, take some time to change some of the transforms to see how the
 
 # Let's Spice It Up!
 
-No, that isn't a Dune reference! I am talking about making our scene look nicer. None of what we are going to cover here has to do with *Matrix Staking*, but will teach you how to make your scenes look better and therefore fun to show off.
+No, that isn't a Dune reference! I am talking about making our scene look nicer. None of what we are going to cover here has to do with *Matrix Stacking*, but will teach you how to make your scenes look better and therefore fun to show off.
 
 ## Correcting a Dim Sun
 
@@ -458,7 +458,7 @@ I can't get over how cool this is. It also is just *math*. Our scene looks so mu
 
 ## Twinkle Twinkle
 
-You may have noticed that the original GIF I showed you had the Milky Way in the background. I got the texture from the same website I got the other onces. Anyone want to guess how I placed it in the scene?
+You may have noticed that the original GIF I showed you had the Milky Way in the background. I got the texture from the same website I got the other ones. Anyone want to guess how I placed it in the scene?
 
 **HIDE ANSWER: Just like I did with the floor in our Textures lesson, I created a large flat object and applied a texture to it. In this case, I rotated the surface to be vertical and pushed it back behind the Sun.**
 
