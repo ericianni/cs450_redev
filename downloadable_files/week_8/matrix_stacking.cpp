@@ -59,7 +59,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
         glm::radians(45.0f),              // FOV
         aspect,                           // aspect ratio (hard-coded for now)
         0.1f,                             // near plane
-        100.0f                            // far plane
+        1000.0f                            // far plane
     );
 }
 
@@ -140,7 +140,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
 void processInput(GLFWwindow* window)
 {
-    const float cameraSpeed = 2.5f * deltaTime;
+    const float cameraSpeed = 15.0f * deltaTime;
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         cameraPos += cameraSpeed * cameraDirection;
@@ -161,10 +161,9 @@ void init(GLFWwindow* window) {
         glm::radians(45.0f),              // FOV
         aspect,                  // aspect ratio (hard-coded for now)
         0.1f,                             // near plane
-        100.0f                            // far plane
+        1000.0f                            // far plane
     );
 	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
 }
 
 void display(GLFWwindow* window, double currentTime) {

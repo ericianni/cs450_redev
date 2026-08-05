@@ -262,7 +262,6 @@ void init(GLFWwindow* window) {
         100.0f                            // far plane
     );
 	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
 }
 
 void display(GLFWwindow* window, double currentTime) {

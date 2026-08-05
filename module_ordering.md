@@ -59,6 +59,7 @@
 # Week 9
 
 * Collisions?
+* Culling?
 
 # Week 10
 

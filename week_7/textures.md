@@ -60,9 +60,15 @@ These are our *Texture Coordinates* (prefixed with `vt`). Notice, that the Left 
 
 You can see how each triangle are mapped. In the Left Cube, the texture coordinates are plotted at the corners so only have a value of 0.0 or 1.0. On the other hand, the Right Cube has texture coordinates mapped all over the image, so has values that run the gamut from 0.0 to 1.0.
 
-It is outside the scope of this course, but it is possible to create some very complex mappings.[^3]
+It is outside the scope of this course, but it is possible to create some very complex mappings. Take a look at this texture and try to guess what it wraps.
 
-![Complex mapping from Blender Manual](../images/week_7/blender_example.png)
+![Complex Texture](../images/week_7/complex_texture.jpg)
+
+If you guessed "Space Shuttle", not only are you correct, but you are very perceptive! Here is what the mappings look like in Blender:
+
+![Blender UV mappings of the Space Shuttle texture](../images/week_7/shuttle_mappings.png)
+
+I downloaded this model from the Smithsonian, but you can find it here: [shuttle.obj](../downloadable_files/objects/shuttle.obj) and [shuttle.jpg](../downloadable_files/objects/shuttle.jpg).
 
 ## OBJ File Face Normals
 
