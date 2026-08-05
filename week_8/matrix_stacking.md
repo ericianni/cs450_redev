@@ -342,6 +342,8 @@ Before moving on, take some time to change some of the transforms to see how the
 
 No, that isn't a Dune reference! I am talking about making our scene look nicer. None of what we are going to cover here has to do with *Matrix Staking*, but will teach you how to make your scenes look better and therefore fun to show off.
 
+## Correcting a Dim Sun
+
 Did you happen to fly around to the backside of the Sun? If you did, you likely noticed that it is dimmer on that side.
 
 ![Screen with a Sun in the middle and the Earth and Moon orbiting on the right. The sun is dimmer than the previous image](../images/week_8/solar_system_darkside.png)
@@ -381,7 +383,118 @@ Build and run your new shader code and you should see:
 
 ![Screen with a Sun in the middle and the Earth and Moon orbiting on the right. The sun is brighter than the previous image, but the earth is now illuminated on the correct side](../images/week_8/solar_system_part3.png)
 
-Go, take your spaceship and fly around to the backside. It should now be illuminated completely, with no dim areas.
+Go, take your spaceship and fly around to the backside. It should now be illuminated completely, with no dim areas. You have just learned why you sometimes need specific shaders for specific objects. Don't be afraid to make custom shaders if you want to apply a fun effect to an object. 
+
+Heck, there is no time like the present! Let's do just that!
+
+## Making the Sun Churn
+
+We are going to have some fun with our Fragment Shader. The concepts used here will be expanded greatly in CS457/557 (Computer Graphics Shaders). For now, they are just something to get you excited about continuing your Graphics Journey.
+
+The real surface of the Sun is in constant motion. We already have it rotating, but it would look much better if it looked more fluid. There are *a lot* of ways to accomplish this task, but we are going to go with one of the simplest.
+
+When working with shaders, it is a good idea to remember that the vertex attributes that are passed into the pipeline can be manipulated. Vertices can be completely adjusted, and those adjustments will be reflected in the final scene. Likewise, we can mess with the texture coordinates.
+
+We are going to be using $sin$ and $cos$ to nudge our texture coordinates about before we sample the texture file. We will be tying the motion to *time*, so we once again need to update our `draw()` function and shader code to accept another parameter/uniform.
+
+In `object_light.hpp` add `const float time` to the end of the parameter list for both of our `draw()` functions. Then in `object_light.cpp` update the function headers to match. Finally, add the code to set our new uniform:
+
+```C++
+GLint timeLoc = glGetUniformLocation(program, "uTime");
+    if (timeLoc >= 0) {
+        glUniform1f(timeLoc, time);
+    }
+```
+
+Pretty straight forward at this point in the term. Next, we have to add this uniform to our Sun shaders. So, in both `sun.vert` and `sun.frag` add:
+
+```GLSL
+uniform float uTime;
+```
+
+Make sure you go back to all our `draw()` calls and add the `currentTime` argument to each.
+
+For our task, we will only be using `uTime` in `sun.frag`, but it is nice to have just in case in `sun.vert`. To use `uTime` replace the entire `if(useTexture == 1)` block with:
+
+```GLSL
+if (useTexture == 1)
+    {
+        // Base panning speeds for the two layers
+        vec2 speed1 = vec2(0.01, 0.008) * uTime;
+        vec2 speed2 = vec2(-0.007, 0.012) * uTime;
+
+        // Layer 1: Distort coordinates with sine waves based on time and space
+        vec2 distort1 = vec2(
+            sin(texCoord.y * 10.0 + uTime * 0.5),
+            cos(texCoord.x * 10.0 + uTime * 0.4)
+        ) * 0.015;
+        vec2 coord1 = texCoord + speed1 + distort1;
+
+        // Layer 2: Counter-distort for contrasting motion
+        vec2 distort2 = vec2(
+            cos(texCoord.y * 14.0 - uTime * 0.3),
+            sin(texCoord.x * 12.0 + uTime * 0.6)
+        ) * 0.012;
+        vec2 coord2 = texCoord + speed2 + distort2;
+
+        // Sample the same texture at both evolving coordinates
+        vec3 texLayer1 = texture(uTex, coord1).rgb;
+        vec3 texLayer2 = texture(uTex, coord2).rgb;
+
+        // Blend layers (multiply blends create high-contrast solar "hot spots")
+        vec3 blendedTex = texLayer1 * texLayer2 * 2.0;
+
+        lightingColor *= blendedTex;
+    }
+```
+
+I am not going to lie, this is a fairly advanced approach to the problem, but *go big or go home*! What we are doing here is creating multiple "layers" of sampling. In each layer, we distort the texture coordinates in opposite directions. This will create the illusion of a surface layer moving in one direction while the sub-surface layer moves in another. We blend these together and then apply it to our `lightingColor`.
+
+Go ahead and run the new shader! The effect is *so* cool, I am going to hide the results, so I don't ruin the surprise.
+
+**HIDE IMAGE: ![GIF of the Sun texture "churning"](../images/week_8/churing_sun.gif)**
+
+I can't get over how cool this is. It also is just *math*. Our scene looks so much more realistic. The only issue now is there are no *stars*.
+
+## Twinkle Twinkle
+
+You may have noticed that the original GIF I showed you had the Milky Way in the background. I got the texture from the same website I got the other onces. Anyone want to guess how I placed it in the scene?
+
+**HIDE ANSWER: Just like I did with the floor in our Textures lesson, I created a large flat object and applied a texture to it. In this case, I rotated the surface to be vertical and pushed it back behind the Sun.**
+
+To do the same, you need to declare a new object. I called mine `Object space_wall`. As we have done with all the other objects, call `init()` and `loadTexture()`. I created a simple flat box you can use: [flat.obj](../downloadable_files/objects/flat.obj). Don't forget to add a `cleanup()`!
+
+Now, when it comes to place it in the scene, we *could* put it in our *Matrix Stack*, but we don't need to move the *Space Wall*, so we are just going to handle all that in `display()` *before* we start the stacking.
+
+```C++
+// Place Milky Way
+space.resetTransform();
+space.setPosition(glm::vec3(0.0f, 0.0f, -100.0f)); // place well behind Sun
+space.rotate(90.0f, glm::vec3(1.0f, 0.0f, 0.0f));  // stand it upright
+space.scale(glm::vec3(100.0f, 1.0f, 100.0f));      // make it fill the screen
+space.draw(view, proj, light, static_cast<float>(currentTime));
+```
+
+Much better! I think we have done some good work. I hope you are as impressed with your efforts as I am.
+
+# Matrix Stacking
+
+Despite getting distracted with beutification at the end, our main focus today was on *Matrix Stacking*. This is a very powerful concept that really makes designing animated scenes *so* much easier. Using *stacking* we are able to carry forward all the previous transforms and then apply *relative* transforms on *child* objects.
+
+We also spent some time exploring how we can make our scenes more realistic. Now that we have a pretty full toolkit, we need to make sure we are expending thought and effort on making our scenes look good: Computer Graphics is a *visual* field after all. I showed you some advanced techniques to inspire to explore what other shader techniques exist out there.[^7]
+
+As I have become accustomed to do, I want to challenge you to expand on what we have done here. Some ideas:
+
+* Add more planets (think about which "Level" to put these)
+* Give a planet/moon a different angle of orbit. Mercury's orbit is tilted by 7&deg;
+* Make the orbits more realistic by making them *eliptical*
+* Use the Space Shuttle model from Week 7 and have it orbit the Earth
+
+I liked the last one so much I had to do it myself!
+
+![Screen showing the Sun on the left, Earth in the middle, and the moon on the right. A space shuttle can be seen orbiting the Earth](../images/week_8/space_shuttle.png)
+
+
 
 [^1]: [*Yes, Virginia, there is a Santa Claus*](https://en.wikipedia.org/wiki/Yes,_Virginia,_there_is_a_Santa_Claus).
 [^2]: As with many of the OpenGL built-ins, these were removed when OpenGL moved to the fully-programmable pipeline.
@@ -389,3 +502,4 @@ Go, take your spaceship and fly around to the backside. It should now be illumin
 [^4]: You should get into the habit of always going into `main()` and adding `object.cleanup()` whenever you declare a new `Object` so you don't forget later.
 [^5]: Remember, rotations always occur around the center point of the *Model Matrix*. If you translate before you rotate, then the object is further from the origin so the rotation carries it around in a sweeping motion.
 [^6]: Due to a phenominon called [*Tidal Locking*](https://en.wikipedia.org/wiki/Tidal_locking), we only ever see the one side of the Moon.
+[^7]: As long as you cite and can explain the shader code you find online, you are free to use it in your assignments (as long as it doesn't conflict with the requirements).

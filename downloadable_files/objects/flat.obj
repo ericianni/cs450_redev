@@ -1,0 +1,27 @@
+# Tiled Floor Plane (Double-Sided)
+# Size: 200x200 units
+# Texture Repeat: 50x50 times
+
+# Vertices (X Y Z)
+v -1.0 0.0  1.0
+v  1.0 0.0  1.0
+v  1.0 0.0 -1.0
+v -1.0 0.0 -1.0
+
+# Texture Coordinates (U V)
+vt 0.0  0.0
+vt 1.0 0.0
+vt 1.0 1.0
+vt 0.0  1.0
+
+# Normals
+vn 0.0 1.0 0.0
+vn 0.0 -1.0 0.0
+
+# Top Face (Visible from above)
+f 1/1/1 2/2/1 3/3/1
+f 1/1/1 3/3/1 4/4/1
+
+# Bottom Face (Visible from below)
+f 3/3/2 2/2/2 1/1/2
+f 4/4/2 3/3/2 1/1/2
