@@ -40,6 +40,10 @@ bool Object::loadTexture(const std::string& path)
         SOIL_CREATE_NEW_ID,
         SOIL_FLAG_INVERT_Y | SOIL_FLAG_MIPMAPS);
 
+    glBindTexture(GL_TEXTURE_2D, textureID);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
     return textureID != 0;
 }
 

@@ -353,6 +353,7 @@ What is a *Texture Parameters*? For us, it means:
 By default, our code utilizes `GL_CLAMP_TO_EDGE`. Typically, this is not what you actually want (tiling is so useful!), so we likely want to change this. To do so, we need to set *two* parameters:
 
 ```C++
+glBindTexture(GL_TEXTURE_2D, textureID); // required to set params
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 ```

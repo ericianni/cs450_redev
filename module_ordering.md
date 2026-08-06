@@ -45,24 +45,23 @@
 # Week 8
 
 * Object stacking
-* Have different shaders for different objects
-  * Sun needs reversed normals. Only mention this after they see the issue themselves
 * assignment idea
   * Have them create a farris wheel
   * Add a space ship around the moon/planet
   * Add additional planets with their own moons
   * Have a non-planar orbit
   * Make the orbit eliptical
-* Blending textures if light is present (day/night texture for the earth)
-  * this may not work as we can only load one texture at a time
+
 
 # Week 9
 
-* Collisions?
-* Culling?
+* Performance
+  * UBOs
 
 # Week 10
 
 * Physics based rendering
 * UBOs
 * EBOs
+* Cubemaps?
+* Culling?

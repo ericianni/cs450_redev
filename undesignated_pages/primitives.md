@@ -3,7 +3,7 @@
 
 # Introduction
 
-Think back to when we went over the [OpenGL Pipeline](../undesignated_pages/opengl_pipeline.md). What came right before *Rasterization*?
+Think back to when we went over the [OpenGL Pipeline](../week_2/opengl_pipeline.md). What came right before *Rasterization*?
 
 **HIDE ANSWER** That's right! After all the shaders are processed (excluding the Fragment Shader), the pipeline moves into *Primitive Assembly*. But what is a *primitive*?
 
