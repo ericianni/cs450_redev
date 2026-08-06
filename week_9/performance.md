@@ -38,7 +38,7 @@ What is `std140`? It is a standardized memory layout. The layout assigns *base a
 |`vec2` | 8 | 8 |
 |`vec3` | 12 | 16 |
 | `vec4` | 16 | 16 |
-| `mat3` | 48[^2] | 16 |
+| `mat3` | 48[^1] | 16 |
 |`mat4` | 64 | 16 |
 
 The *base alignment* alignments are used to calculate (once) the memory offsets for each member of our *Block* (aka the variables inside the layout). It uses these offsets to determine where to look for the next piece of data. If the size of the data doesn't match the *base alignment* (or multiple of) things can go wrong. In these cases we have to "pad" our data. This will be best explained using an example.
@@ -55,18 +55,62 @@ struct Light {
 };
 ```
 
+Note, every thing declared in this `struct` is a `vec3`. Each will take up 12-bytes of memory in our application. The CPU *tightly* packs data. The GPU *pads* data. So, given the same variables, each will calculate offsets differently.
 
+|Variable|C++ offset | std140 offset| Difference|
+|--|--|--|--|
+| position | 0 | 0 | none |
+| ambient | 12 | 16 | +4 |
+| diffuse | 24 | 32 | +8 |
+| specular| 36 | 48 | +12|
+| attenuation| 48|64|+16|
 
-```GLSL
-layout(std140) uniform VariableName {
-    
+As you can see, after the first `vec3`, the offsets of the CPU and GPU diverge. This means, that when the GPU goes to look for `ambient`, it will use the offset of `16`, which will miss the first 4-bytes of the desire data. This problem just gets worse the more variables we have with mismatched size and base alignments. What can we do?
+
+The answer is, "We pad!" We need to construct our `struct` so that our variables all land on the appropriate offset based upon *base alignment*. Since a `vec3` takes up 12-bytes, we need to "pad" with an additional 4-bytes. Looking at the earlier table, we see that a `float` is 4-bytes. Therefore, as long as we declare a `float` after each `vec3` we will pad the offset correctly for the GPU.
+
+```C++
+struct Light {
+    glm::vec3 position {0.0f, 0.0f, 0.0f};
+    float pad0;
+    glm::vec3 ambient  {0.15f, 0.15f, 0.15f};
+    float pad1;
+    glm::vec3 diffuse  {0.8f, 0.8f, 0.8f};
+    float pad2;
+    glm::vec3 specular {1.0f, 1.0f, 1.0f};
+    float pad3;
+	glm::vec3 attenuation{ 0.5f, 0.03f, 0.003f };
+    float pad4;
 };
 ```
 
+|Variable|C++ offset (tight)|std140 offset| Difference|
+|--|--|--|--|
+| position | 0 | 0 | none |
+| pad0    | 12 | 12 | none |
+| ambient | 16 | 16 | none |
+| pad1 |28 | 28 |none|
+| diffuse | 32 | 32 | none |
+|pad2 | 44 | 44 | none |
+| specular| 48 | 48 | none |
+pad3 | 60 | 60 | none |
+| attenuation| 64|64|none|
+| pad4 | 76 | 76 | none |
+
+Notice how each `float` pushes the start of the next `vec3` to *align* with where the GPU expects to find it. We add in `pad4` at the end because `std140` requires all blocks to have a size that is a multiple of 16-bytes (80-bytes for this block).
+
+Make sure you got this locked down before moving on, otherwise things are going to get *really* confusing.
 
 ### Shader Changes
 
+The syntax we will use to declare our `std140` block is:
 
+```GLSL
+layout(std140) uniform VariableName {
+    // block member1
+    // block member2    
+};
+```
 
 Let's take a look at our Vertex Shader code and try to figure out which uniforms to convert into *UBO*s.
 
@@ -102,12 +146,12 @@ As we mentioned above, we want to store our *Projection Matrix* and *View Matrix
 layout(std140) uniform Camera {
     mat4 uV;
     mat4 uP;
-};
+};[^2]
 ```
 
 Reminder: Previously, we sent in our *Model View Matrix* as `uMV`. Now, we are sending the *View Matrix* separate from the *Model Matrix*, so we will have to rename our `uniform mat4 uMV` to `uniform mat uM`. This also means we will need to update what we fill it with in our application. 
 
-Additionally, since the goal is to stop sending the *View* and *Projection* matrices to `draw()`, we can no longer calculate the *Inverse Normal Matrix* inside our object.[^1] This means, we need to remove the `uniform mat3 uN` and calculate it inside `main()`. **NOTA BENE**: we want to keep our `aNormal` unchanged; these are *vertex attributes* and need to be updated every `draw()` call.
+Additionally, since the goal is to stop sending the *View* and *Projection* matrices to `draw()`, we can no longer calculate the *Inverse Normal Matrix* inside our object.[^3] This means, we need to remove the `uniform mat3 uN` and calculate it inside `main()`. **NOTA BENE**: we want to keep our `aNormal` unchanged; these are *vertex attributes* and need to be updated every `draw()` call.
 
 After making all the changes, we will have the following Vertex Shader code:
 
@@ -236,6 +280,6 @@ void main()
 }
 ```
 
-
-[^1]: From our previous version of `draw()`: `glm::mat3 n = glm::mat3(glm::transpose(glm::inverse(mv)));`
-[^2]: A `mat3` is stored as three `vec3`s, but each has a *base alignment* of 16: 3 * 16 = 48 (not the expected 36).
+[^1]: A `mat3` is stored as three `vec3`s, but each has a *base alignment* of 16: 3 * 16 = 48 (not the expected 36).
+[^2]: Notice that we don't have to do any padding here. A `vec4`'s size matches it's *base alignment*.
+[^3]: From our previous version of `draw()`: `glm::mat3 n = glm::mat3(glm::transpose(glm::inverse(mv)));`
