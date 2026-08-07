@@ -17,9 +17,9 @@ What you are about to see is basically *Linear Algebra*[^1] If you have taken a 
 
 This is likely the easiest concept to grasp, so it's a good place to start! A *point* is just that: *a point in space*. You have surely plotted countless points across your academic career. They show up when graphing equations on you calculator. They show up when plotting data on a graph for a presentation.
 
-Most of these points are presented in a *2-D plane*. This means, they have both an *X* and a *Y* coordinate. These two coordinates allow us to describe a point's position on the x and y axis. As we mentioned in our [Coordinate Systems](./coordinate_systems.md) exploration, we need to expand our axis to include a *Z*. 
+Most of these points are presented in a *2-D plane*. This means, they have both an *X* and a *Y* coordinate. These two coordinates allow us to describe a point's position on the X and Y-axis. As we mentioned in our [Coordinate Systems](./coordinate_systems.md) exploration, we need to expand our axis to include a *Z*.
 
-This means that *any* vertex we want to place in our scene requires an *X*, *Y*, an *Z* coordinate. Given this information, what *type* do you think we should use: `vec3` or `vec4`?
+This means that *any* vertex we want to place in our scene requires an *X*, *Y*, an *Z* coordinates. Given this information, what *type* do you think we should use: `vec3` or `vec4`?
 
 **HIDE ANSWER: If you guessed `vec3` you are making the purely logical choice. Sadly, you are incorrect in the context of 3D Graphics Math. We actually want a `vec4`**
 
@@ -31,7 +31,7 @@ This is just a fancy term for adding an element to the coordinate vector to make
 glm::vec4 point(0.0f, 0.0f, 0.0f, 1.0f);
 ```
 
-OK, so we now know how to create a `vec4` to hold our *homogenous coordinates*, but what math is made easier because of it? Well, *Matrix Math* of course! (editor's note: great segue!)
+OK, so we now know how to create a `vec4` to hold our *homogeneous coordinates*, but what math is made easier because of it? Well, *Matrix Math* of course! (editor's note: great segue!)
 
 # Matrices
 
@@ -160,7 +160,7 @@ Matrix *multiplication* is going to be our mathematical workhorse when it comes 
 
 **Nota bene:** The number of rows in the resultant matrix will equal the number of rows in the first matrix. The number of columns in the resultant matrix will equal the number of columns in the second matrix.
 
-Let's take a look at two examples. First, we will look at multiplying two 4x4 matrices. 
+Let's take a look at two examples. First, we will look at multiplying two 4x4 matrices.
 
 $$
 \begin{bmatrix}
@@ -210,7 +210,7 @@ Question Time: Did you notice that the second example uses `()` around the singl
 
 **HIDE ANSWER: We use the `()` to designate the matrix as a *point*, not a *transformation* matrix. In the second example, the resultant matrix is also a point, so is wrapped with `()`s.**
 
-Something to be aware of is that the *associative property*[^4] applies to matrix multiplication. This "feature" of matrix multiplication is often called *concatenation*. This is a very powerful aspect of matrix multiplication that we will use *a lot*. 
+Something to be aware of is that the *associative property*[^4] applies to matrix multiplication. This "feature" of matrix multiplication is often called *concatenation*. This is a very powerful aspect of matrix multiplication that we will use *a lot*.
 
 We will find ourselves needing to apply the same sequence of transformations (represented by matrices) to all the vertices in a model. Instead of calculating it for each vertex, we can precalculate it once and save the *concatenation* matrix for future use.
 
@@ -420,9 +420,10 @@ So, let's look at a fairly standard transform concatenation. Remember how I said
 So, what are we to do? Take a guess given *all the context clues* I have provided.
 
 **HIDE ANSWER: That's right! We need to:**
-* move our object to the be centered at the origin
+
+* move our object to to be centered at the origin
 * apply our rotation
-* return the object back to it's original position
+* return the object to its original position
 
 **END HIDING**
 
@@ -487,7 +488,7 @@ $$
 \mathbf{A} + (-\mathbf{B})
 $$
 
-**Nota bene**L  $\mathbf{A} - \mathbf{B}$ gives the vector that points **from $\mathbf{B}$ to $\mathbf{A}$**.
+**NOTA BENE:  $\mathbf{A} - \mathbf{B}$ gives the vector that points from $\mathbf{B}$ to $\mathbf{A}$**.
 
 Both GLM and GLSL have overloaded the `+` and `-` operators to make vector addition easy. This will work for both `vec3` and `vec4` types.
 
@@ -605,7 +606,7 @@ Try to keep these concepts in mind as we move forward.
 
 As discussed, we will use *transforms* to move our model's local coordinates into *World Space*. We can *translate*, *rotate*, and *scale* as much as we want in order to position all our models where we want them to appear in the world.
 
-But how do we simulate our eye in our 3D scene? Well, OpenGL has a built in camera, that is centered at the origin (0, 0, 0) and pointing along the negative Z-axis. Having the camera in a fixed location pointing in a fixed direction isn't really helpful. Therefore, we need to transform our objects from *World Space* into *View Space*. 
+But how do we simulate our eye in our 3D scene? Well, OpenGL has a built-in camera, that is centered at the origin (0, 0, 0) and pointing along the negative Z-axis. Having the camera in a fixed location pointing in a fixed direction isn't really helpful. Therefore, we need to transform our objects from *World Space* into *View Space*.
 
 There is *a lot* of math involved in transforming the camera position, where it is pointing, and then the objects themselves into *Eye Space*. I *could* bore you with all of that, but I am a nice guy so we are going to *cheat* and use a GLM function to help us out. Our goal is to create something called the *View Matrix*, which we can then concatenate with our *Model Matrix* to move our objects from *World Space* into *Eye Space*.
 
@@ -651,7 +652,7 @@ Now, let us look at a painting drawn with an eye for *prospective*. This is one 
 
 ![The School of Athens painted by Raphael between 1509-1511](../images/week_4/school_of_athens.jpg)
 
-Notice how the figures in the back are noticably smaller than those in the front. Additionally, there is a clear *vanishing point* in the center, directly behind the figures of Plato and Aristole. If you look at all the non-horizontal lines, you can trace them all back to this point. Can you see it? Hint: look at the architecture above them and the designs on the floor in front.
+Notice how the figures in the back are noticeably smaller than those in the front. Additionally, there is a clear *vanishing point* in the center, directly behind the figures of Plato and Aristotle. If you look at all the non-horizontal lines, you can trace them all back to this point. Can you see it? Hint: look at the architecture above them and the designs on the floor in front.
 
 Let me show you.
 
@@ -705,7 +706,7 @@ $$
 That sounds like a lot of work, and it is! Again, GLM comes to our aid with `glm::perspective(fov, aspect, near, far)`. We only need to provide these four values and GLM will do all the heavy lifting for us. Not sure what to put in for each? Let's look at some good "default" values.
 
 * **FOV** - This will greatly depend on the type of experience you want for your users.Typically, we want to use something around $45\degree$. If you make the FOV larger, you start moving into the *fisheye* or *wide-angle* effects. **Caution:** Don't forget to convert the degrees to radians.
-* **Aspect** - If you are doing fullscreen rendering, you want the aspect ratio to match the monitors aspect ratio. If you are rendering in a window, you want to match the aspect ratio of the window.
+* **Aspect** - If you are doing full-screen rendering, you want the aspect ratio to match the monitor's aspect ratio. If you are rendering in a window, you want to match the aspect ratio of the window.
 * **Near** - You can monkey around with this to give different sensations to the camera movement, but typically we should stick with `0.1f`.
 * **Far** - You want to set this far enough away from the camera that you can see your scene, but not so far as to be rendering things that aren't actually visible to the viewer (e.g. things are so far away they are just a few pixels on the screen). For our purposes, we likely want to set it to be larger than the largest dimension of our scene (and then some).
 
@@ -874,7 +875,7 @@ In the end, I picked the method that balances efficiency and approachability. Th
 [^1]: [Linear Algebra](https://www.merriam-webster.com/dictionary/linear%20algebra): a branch of mathematics that is concerned with mathematical structures closed under the operations of addition and scalar multiplication and that includes the theory of systems of linear equations, matrices, determinants, vector spaces, and linear transformations
 [^2]: Technically, it isn't any other point or matrix, but in our context the statement holds. To learn more about the *actual* operation of the Identiy Matrix see [here](https://www.khanacademy.org/math/algebra-home/alg-matrices/alg-properties-of-matrix-multiplication/a/intro-to-identity-matrices)
 [^3]: If you are more the "Screw Waiting" type, you can find the answer to why we need 4x4 matrices in the *Transforms* section under *Translation*.
-[^4]: The associative property basically means that grouping the factors dosn't change the result. For example: `5 * 4 * 2` results in the same thing as `5 * (4 * 2)` and `(5 * 4) * 2`.
+[^4]: The associative property basically means that grouping the factors doesn't change the result. For example: `5 * 4 * 2` results in the same thing as `5 * (4 * 2)` and `(5 * 4) * 2`.
 [^5]: Follow this [link](https://en.wikipedia.org/wiki/Euler_angles) for more information than you would ever need about Euler Angles.
 [^6]: [Gimbal Lock](https://www.youtube.com/watch?v=zc8b2Jo7mno) is a troublesome result of using Euler Rotation. This video demonstrates how it can happen.
 

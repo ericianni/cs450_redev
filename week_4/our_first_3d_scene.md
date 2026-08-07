@@ -189,7 +189,7 @@ Now that you have told OpenGL to use 36 vertices, you should end up with:
 
 ![Green box](../images/week_4/green_box.png)
 
-My eagle-eyed students may notice that this green box isn't actually square, but *rectangular*. This is caused by us using the *Identity Matrix* as a standin for our *Model-View-Projection Matrix*. Once we have properly applied all of those, we should get an actual cube.
+My eagle-eyed students may notice that this green box isn't actually square, but *rectangular*. This is caused by us using the *Identity Matrix* as a stand-in for our *Model-View-Projection Matrix*. Once we have properly applied all of those, we should get an actual cube.
 
 # Placing our object
 
@@ -278,7 +278,7 @@ We need to do one last thing before we can run our program again. We have to act
 glm::mat4 mvp = proj * model;   // using default view matrix
 ```
 
-Before you run the code, what do you supspect you will see? Take a look at the way we defined both the faces and the colors. Try to predict what will be displayed.
+Before you run the code, what do you suspect you will see? Take a look at the way we defined both the faces and the colors. Try to predict what will be displayed.
 
 **HIDE ANSWER: Did you predict you would see a red square representing the front face of our cube? That is a very reasonable thing to think, but that isn't what we are seeing. Let's explore why!**
 
@@ -314,7 +314,7 @@ If we run this now, we should be presented with a *red* square.
 
 ![Window displaying a red square](../images/week_4/red_square.png)
 
-Perfect! We now have the front face correctly displayed and it is indeed *square* (compare it to the green *rectangle* we started with). Sadly, I feel like we are back to square one. You know, and I know that we are looking at a cube because we wrote the code. If we were to show this to someone else as *proof* that we were working in 3D, they may think we were crazy.
+Perfect! We now have the front face correctly displayed, and it is indeed *square* (compare it to the green *rectangle* we started with). Sadly, I feel like we are back to square one. You know, and I know that we are looking at a cube because we wrote the code. If we were to show this to someone else as *proof* that we were working in 3D, they may think we were crazy.
 
 # Transform and roll out!
 
@@ -382,12 +382,12 @@ uniform mat4 mv;
 uniform mat4 p;
 ```
 
-Now, we need ot update how we calculate `gl_Position`. Despite us calling the combined matrix `MVP`, we want to arrange them in reverse when multiplying: `P * V * M`. Note, our `mv` variable would be constructed using `V * M` before passing it to the shader.
+Now, we need to update how we calculate `gl_Position`. Despite us calling the combined matrix `MVP`, we want to arrange them in reverse when multiplying: `P * V * M`. Note, our `mv` variable would be constructed using `V * M` before passing it to the shader.
 
 ```GLSL
 gl_Position = p * mv * vec4(pos, 1.0f);
 ```
-Back in our application code, we will need update our `mvp` associated variables to be `mv` and declare a new `p` variable. Here is a refresher of where we need to make our changes.
+Back in our application code, we will need to update our `mvp` associated variables to be `mv` and declare a new `p` variable. Here is a refresher of where we need to make our changes.
 
 * Global Declarations
   `mvpLoc` needs to be renamed `mvLoc`
@@ -447,21 +447,14 @@ Build and run this new version of our program. Now, every time we resize the win
 
 # Explore some more!
 
-While we covered a great deal during this exploration, there is *a lot* of things to learn *by doing*. I highly recommend that you spend some time adding transforms/animations to our cube before you move onto the next lesson. Some things to try:
+While we covered a great deal during this exploration, there are *a lot* of things to learn *by doing*. I highly recommend that you spend some time adding transforms/animations to our cube before you move onto the next lesson. Some things to try:
 
 * Try animating the translation as well as the rotation. Which order should you do it in?
 * Try rotating the object in multiple directions as once.
 * Try to get the cube to "orbit" around the camera. This would require it to go out of view on one side and then back on the other.
 * If you come up with anything fun, please share on the discussion board!
 
-Next we will discuss moving the camera around our objects. This will be very helpful to show off how shading/lighting works. 
+Next we will discuss moving the camera around our objects. This will be very helpful to show off how shading/lighting works.
 
 [^1]: Later we will learn how to be more efficient and *reuse* vertices using *EBOs*.
 [^2]: Generated using Gemini Pro. Yes, that is me (Eric). No, that is not my actual setup.
-
-# Reminders of things to cover
-* Depth buffer stuff
- * glEnable(GL_DEPTH_TEST)
- * glClear(GL_DEPTH_BUFFER_BIT)
-* Framebuffer resize code
-* gtc vs ext include
