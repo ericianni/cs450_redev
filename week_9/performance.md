@@ -93,7 +93,7 @@ struct LightUBO {
 | lightDiffuse | 32 | 32 | none |
 |pad2 | 44 | 44 | none |
 | lightSpecular| 48 | 48 | none |
-pad3 | 60 | 60 | none |
+| pad3 | 60 | 60 | none |
 | lightAttenuation| 64|64|none|
 | pad4 | 76 | 76 | none |
 
@@ -244,7 +244,7 @@ layout(std140) uniform LightBlock {
 As you can see, we are declaring a `float` as padding between each `vec3`, just like we did in our application's `struct`.[^3] Previously we had to access each of these through the `uLight` variable (e.g. `uLight.position`). Now we can just access them directly, which is why we needed to rename them to make it clear what data they hold; `position` could mean multiple things, but `lightPosition` leaves nothing to the imagination. So, let's go and update the shader code to reflect our new *UBO* data. Pay attention to all the places we had to update the names of variables.
 
 ```GLSL
-// Fragement Shader
+// Fragment Shader
 #version 410 core
 
 in vec3 fragPos;
@@ -550,7 +550,7 @@ First, we greatly increased the efficiency of our application. With the small sc
 
 Additionally, by using *UBO*s we allow multiple shaders to use the same data, so the GPU memory isn't wasted on redundancies. Remember how we created a separate shader for our Sun to animate the texture? Under the old approach, each of our shader programs had their own version of the *Projection Matrix* and *View Matrix* (though combined with the *Model Matrix*). Now imagine an application with *dozens* (if not *hundreds*) of shader programs. Most would likely need access to these matrices, and it would eat up RAM like whoa if each shader program had their own copy.
 
-But more importantly, using *UBO*s are pretty much required for any advanced graphics techniques. For example, you likely want to have multiple lights in a scene. Uploading each individually as a uniform would be very tedious. With *UBO*s you can have a large array of light structs and upload those all at once for your shader to iterate over and apply each to the scene.
+But more importantly, using *UBO*s is pretty much required for any advanced graphics techniques. For example, you likely want to have multiple lights in a scene. Uploading each individually as a uniform would be very tedious. With *UBO*s you can have a large array of light structs and upload those all at once for your shader to iterate over and apply each to the scene.
 
 Other techniques that require *UBO*s:
 
