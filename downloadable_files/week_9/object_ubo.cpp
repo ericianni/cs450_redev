@@ -107,10 +107,11 @@ void Object::draw(const glm::mat4& modelFromStack,
     glm::mat4 finalModelMatrix = modelFromStack * modelMatrix;
 
     GLint mLoc = glGetUniformLocation(program, "uM");
-    if (mLoc >= 0)
+    if (mLoc >= 0) {
         glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(finalModelMatrix));
-    else
+    } else {
         std::cerr << "Failed to get uM location" << std::endl;
+    }
 
     GLint colorLoc = glGetUniformLocation(program, "uObjectColor");
     if (colorLoc >= 0)

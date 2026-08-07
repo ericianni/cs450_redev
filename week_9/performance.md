@@ -8,7 +8,7 @@
 
 We have been refactoring our code more and more as the weeks go by. Some of you may find this annoying, but there is a purpose. With the *programmable pipeline* there was a great deal of details to cover before you could get *anything* on the screen. This complexity is great because it gives the developer a great deal of control, but the learning curve is steep.
 
-In an attempt to flatten that curve, I made some design decisions to make conceptualizing the OpenGL process more approachable. Now that we are more familiar with how everything fits together, it is time to start moving towards "best practices." One area our code could use improvement is in how we pass data to the pipeline. We are going to look at *Uniform Buffer Objects* to help make our programs more effecient.
+In an attempt to flatten that curve, I made some design decisions to make conceptualizing the OpenGL process more approachable. Now that we are more familiar with how everything fits together, it is time to start moving towards "best practices." One area our code could use improvement is in how we pass data to the pipeline. We are going to look at *Uniform Buffer Objects* to help make our programs more efficient.
 
 ## Uniform Buffer Objects
 
@@ -20,7 +20,7 @@ So, how does having an *UBO* make this more efficient? You know, that is a great
 
 To drive the point home, go count how many times we query for *Uniform IDs* and set them for our Solar System example last module. That is just a small scene. Now imagine a scene with *thousands* of objects and multiple lights. So we know *how* *UBO*s can improve performance by reducing redundancies of uniforms, but not *which* uniforms are well suited for an *UBO*. Any guesses?
 
-**HIDE ANSWER: We are going to want to convert any uniforms that are updated once per program or once per frame. This includes the *Project Matrix*, *View Matrix*, and lighting data.**
+**HIDE ANSWER: We are going to want to convert any uniforms that are updated once per program or once per frame. This includes the *Projection Matrix*, *View Matrix*, and lighting data.**
 
 Reducing redundancy is only one of the reasons we want to move these things into *UBO*s.  From a design perspective, it makes little sense for our objects to have any knowledge (even as a pass-through) of these details. It is the shader programs that need these, so it is better to have it handled outside the object class.
 
@@ -86,15 +86,15 @@ struct LightUBO {
 
 |Variable|C++ offset |std140 offset| Difference|
 |--|--|--|--|
-| position | 0 | 0 | none |
+| lightPosition | 0 | 0 | none |
 | pad0    | 12 | 12 | none |
-| ambient | 16 | 16 | none |
+| lightAmbient | 16 | 16 | none |
 | pad1 |28 | 28 |none|
-| diffuse | 32 | 32 | none |
+| lightDiffuse | 32 | 32 | none |
 |pad2 | 44 | 44 | none |
-| specular| 48 | 48 | none |
+| lightSpecular| 48 | 48 | none |
 pad3 | 60 | 60 | none |
-| attenuation| 64|64|none|
+| lightAttenuation| 64|64|none|
 | pad4 | 76 | 76 | none |
 
 Notice how each `float` pushes the start of the next `vec3` to *align* with where the GPU expects to find it. We add in `pad4` at the end because `std140` requires all blocks to have a size that is a multiple of 16-bytes (80-bytes for this block).
@@ -150,7 +150,7 @@ layout(std140) uniform Camera {
 ```
 **NOTA BENE**: we don't have to do any padding here. A `mat4`'s size matches its *base alignment*. Additionally, the `Camera` block is 128-bytes, which is a multiple of 16-bytes.
 
-Reminder: Previously, we sent in our *Model View Matrix* as `uMV`. Now, we are sending the *View Matrix* separate from the *Model Matrix*, so we will have to rename our `uniform mat4 uMV` to `uniform mat uM`. This also means we will need to update what we fill it with in our application.
+Reminder: Previously, we sent in our *Model View Matrix* as `uMV`. Now, we are sending the *View Matrix* separate from the *Model Matrix*, so we will have to rename our `uniform mat4 uMV` to `uniform mat4 uM`. This also means we will need to update what we fill it with in our application.
 
 Additionally, since the goal is to stop sending the *View* and *Projection* matrices to `draw()`, we can no longer calculate the *Inverse Normal Matrix* inside our object.[^2] This means, we need to remove the `uniform mat3 uN` and calculate it inside `main()`. **NOTA BENE**: we want to keep our `aNormal` unchanged; these are *vertex attributes* and need to be updated every `draw()` call.
 
@@ -189,7 +189,7 @@ void main()
 Now we need to update our Fragment Shader. Now, this is going to get *weird*, and I am sorry. Therefore, take a close look at the following code before moving on to how we are going to update it.
 
 ```GLSL
-// Fragement Shader
+// Fragment Shader
 #version 410 core
 
 in vec3 fragPos;
@@ -370,10 +370,10 @@ Doing this will save us *a lot* of time later if we ever want to update `draw()`
 Remember that our shader no longer uses a combined *Model-View Matrix* and instead just takes the *Model Matrix* as `uM`. Therefore, we need to update the code in our overridden `draw()` function. We need to remove our `mv` calculation and instead set the `uM` variable to be our `finalModelMatrix`.
 
 ```C++
-GLint mLoc - glGetUniformLocation(program, "uM");
+GLint mLoc = glGetUniformLocation(program, "uM");
 if (mLoc >= 0) {
-    glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(finalModel));
-else
+    glUniformMatrix4fv(mLoc, 1, GL_FALSE, glm::value_ptr(finalModelMatrix));
+} else {
     std::cerr << "Failed to get uM location" << std::endl;
 }
 ```
@@ -408,7 +408,7 @@ While this looks similar to how we set *uniforms* in the past, here we are *bind
 
 ### Application
 
-Now need to get our application set up for using *UBO*s. We are goint to start by declaring two global variables to hold our *UBO* IDs.
+Now need to get our application set up for using *UBO*s. We are going to start by declaring two global variables to hold our *UBO* IDs.
 
 ```C++
 GLuint cameraUBO = 0;
@@ -546,7 +546,7 @@ With our *UBO*s filled, we can now draw our objects to our hearts' content. One 
 
 Ok, I know what you are thinking. "We did *ALL* that work to only end up with the same thing on screen as before!" This is a fair observation, but what we did here is actually important.
 
-First, we greatly increased the efficiency of our application. With the small scenes we are dealing with, it likely won't be felt. Yet, as you start creating more elaborate scenes, limiting how many times you have to upland data to the GPU will increase performance.
+First, we greatly increased the efficiency of our application. With the small scenes we are dealing with, it likely won't be felt. Yet, as you start creating more elaborate scenes, limiting how many times you have to upload data to the GPU will increase performance.
 
 Additionally, by using *UBO*s we allow multiple shaders to use the same data, so the GPU memory isn't wasted on redundancies. Remember how we created a separate shader for our Sun to animate the texture? Under the old approach, each of our shader programs had their own version of the *Projection Matrix* and *View Matrix* (though combined with the *Model Matrix*). Now imagine an application with *dozens* (if not *hundreds*) of shader programs. Most would likely need access to these matrices, and it would eat up RAM like whoa if each shader program had their own copy.
 
@@ -559,7 +559,7 @@ Other techniques that require *UBO*s:
 * Instancing
 * Physically Based Rendering
 
-So, rest assured that our efforts were wasted.
+So, rest assured that our efforts were *not* wasted.
 
 As always, I want to encourage you to explore what we just learned. The first step should be converting one of our older programs into one that uses *UBO*s. The conversion process will help highlight all the pieces that are different. Then, I have some suggestions for you to really push yourself:
 
