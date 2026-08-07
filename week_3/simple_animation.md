@@ -1,9 +1,10 @@
 # CLOs
+
 * CLO3 - Create a dynamic 3D scene using OpenGL
 
 # Introduction
 
-You have been *very* patient with me when it comes to learning the basics before getting to the *juicy* bits, so thank you. Hopefully, this exploration will begin to scratch that it you have to creating something exciting. We are now going to learn a simple way to animate our scenes.
+You have been *very* patient with me when it comes to learning the basics before getting to the *juicy* bits, so thank you. Hopefully, this exploration will begin to scratch that itch you have to start creating something exciting. We are now going to learn a simple way to animate our scenes.
 
 # It's time to use `currentTime`
 
@@ -25,7 +26,7 @@ We will be using GLM's *translate* function to move our triangle, so we need to 
 
 # Passing the Time
 
-We need some way to get *time* into the shaders so our scene can be rendered. There are multiple ways of doing this. We can precompute the effects of time in the CPU, or we can do it in the shaders themselves. Which we pick depends on how we intend to use time. Since this is not CS457/557 (*Computer Graphics Shaders*), we will mostly be doing stuff in our application code.
+We need some way to get *time* into the shaders, so our scene can be rendered. There are multiple ways of doing this. We can precompute the effects of time in the CPU, or we can do it in the shaders themselves. Which we pick depends on how we intend to use time. Since this is not CS457/557 (*Computer Graphics Shaders*), we will mostly be doing stuff in our application code.
 
 Therefore, in order to *pass the time* to the shader, we will need to apply any time effects to our *Model Matrix* (discussed in greater detail shortly) before passing it into the pipeline. In our last few programs we have been storing our *Model Matrix* data in `mvp`. Since we haven't covered transforms yet, I am just going to give you the code to add to your program with limited explanation. Add the following code around the existing `glm::mat4 mvp = glm::mat4(1.0f);`.
 
@@ -44,7 +45,7 @@ Quickly, let's take a look at what we did. We defined a *cycle* that represents 
 
 Everything else could stay the same as we already had code to fill the uniform variable with our `mvp` variable. The vertex data is still sent as is to the shader, where the *translation* is applied using matrix math. This allows us to use the same vertices to represent multiple objects, but with different positions (more on this later).
 
-You know what? That motion seems very bouncy. I bet we can smooth it out some. Replace the `yOffset` calculation with `0.5f(t * glm::pi<float>())`. This time, when you run it, pay close attention to speed of the triangle at the top and bottom of its animation. It seems smoother doesn't it?
+You know what? That motion seems very bouncy. I bet we can smooth it out some. Replace the `yOffset` calculation with `0.5f(t * glm::pi<float>())`. This time, when you run it, pay close attention to speed of the triangle at the top and bottom of its animation. It seems smoother, doesn't it?
 
 To understand why this is the case, let's look at a `sin` graph.
 
@@ -52,7 +53,7 @@ To understand why this is the case, let's look at a `sin` graph.
 
 Notice how the *slope* of the line decreases as it gets closer to the top and the bottom of the wave? The code we just swapped in harnesses this feature of sin waves to *smooth out* our animation. As you dig deeper into animation, you will discover sin (and cos) waves everywhere!
 
-Speaking of cos, let's us it to add some lateral movement to our triangle! Add the following code and then update translation function call to include `xOffset`.
+Speaking of cos, let's use it to add some lateral movement to our triangle! Add the following code and then update translation function call to include `xOffset`.
 
 ```C++
 float xOffset = 0.5f * cos(t * glm::pi<float>());
@@ -60,10 +61,10 @@ float xOffset = 0.5f * cos(t * glm::pi<float>());
 mvp = glm::translate(mvp, glm::vec3(xOffset, yOffset, 0.0f));
 ```
 
-Build and run this new version of your project. Behold! You now have a orbiting triangle! Take some time and play around with different ways to calculate the `yOffset` and `xOffset`. Some suggestions:
+Build and run this new version of your project. Behold! You now have an orbiting triangle! Take some time and play around with different ways to calculate the `yOffset` and `xOffset`. Some suggestions:
 
 * What happens if you flip the x and y offsets to use cos and sin (respectively)?
-* What happens when you change the constant you multiple the sin/cos result by?
+* What happens when you change the constant you multiply the sin/cos result by?
 * What happens if you multiply `t` by `2` in one of the sin/cos functions?
 * What happens if you divide `t` by `2` in one of the sin/cos functions?
 

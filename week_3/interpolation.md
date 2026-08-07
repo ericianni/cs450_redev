@@ -1,4 +1,5 @@
 # CLOs
+
 * CLO2 - Describe the names and functions of the elements of the graphics pipeline, as well as the input and output of each stage
 
 # Introduction
@@ -35,7 +36,7 @@ We want to start with the same functionality as we had at the end of [Getting Da
 
 We are going to keep things fairly simple for this demonstration, just so you can begin to grasp the concept. In future explorations, we will be interpolating lots of things at once.
 
-One of the easiest things to demonstrate interpolation with is *color*. Do you recall from the last exploration that I mentioned that a common *vertex attribute* is color? We are going to send our vertex shader another set of *vertex attributes*, which will then be passed along to the Rasterizer on the way to the fragement shader. 
+One of the easiest things to demonstrate interpolation with is *color*. Do you recall from the last exploration that I mentioned that a common *vertex attribute* is color? We are going to send our vertex shader another set of *vertex attributes*, which will then be passed along to the Rasterizer on the way to the fragment shader. 
 
 So, near the top of your `.cpp`, below where we declared our vertices, add the following:
 
@@ -78,7 +79,7 @@ In our vertex shader we need to add:
 * an `out` variable to send the color to the fragment shader - `out vec4 fragColor;`
 * assign a value to our new `out` variable in `main` - `fragColor = vec4(color, 1.0f);`
 
-Notice how we use a `vec4` for out `out` variable and then we modify the color by adding a fourth element (`1.0` as the alpha value), because the fragment shader's output needs to be a `vec4`. We could do the modification in either the vertex or fragment shader, but in our situation it doesn't matter where.
+Notice how we use a `vec4` for out `out` variable, and then we modify the color by adding a fourth element (`1.0` as the alpha value), because the fragment shader's output needs to be a `vec4`. We could do the modification in either the vertex or fragment shader, but in our situation it doesn't matter where.
 
  Now, we need to set up our fragment shader to receive this new attribute data:
 
@@ -89,7 +90,7 @@ If you did everything correctly, you should see the following when you build and
 
 ![A triangle with red, blue, and green corners with the space in between blended](../images/week_3/color_interpolation.png)
 
-Again, if you aren't getting the expected output, reach out on the discussion boards and we will help you troubleshoot.
+Again, if you aren't getting the expected output, reach out on the discussion boards, and we will help you troubleshoot.
 
 # Wrapping Up
 
