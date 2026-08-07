@@ -57,11 +57,11 @@
 
 * Performance
   * UBOs
+* Directional and spotlights?
 
 # Week 10
 
 * Physics based rendering
-* UBOs
 * EBOs
 * Cubemaps?
 * Culling?
