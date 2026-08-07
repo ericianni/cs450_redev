@@ -21,9 +21,9 @@ We are all part of a long tapestry of history. Just as nothing we achieve would 
 
 I am sorry, was that a bit much? Sometimes I get carried away in romanticizing all aspects of life. If you prefer something more *practical*, allow me to present a different framing.
 
-Sometimes I find myself struggling to envision a solution to a problem; I can't find a road out, and I begin to think it is impossible. At times like these, I find it helpful to look back at how things were and the barriers that had to be overcome. By examining how prior programmers tackled seemingly insurmountable odds, I am both buoyed and humbled. Humans are infinitly resourceful, and we must never assume we can't *ever*, just can't *yet*.
+Sometimes I find myself struggling to envision a solution to a problem; I can't find a road out, and I begin to think it is impossible. At times like these, I find it helpful to look back at how things were and the barriers that had to be overcome. By examining how prior programmers tackled seemingly insurmountable odds, I am both buoyed and humbled. Humans are infinity resourceful, and we must never assume we can't *ever*, just can't *yet*.
 
-Therefore, please induldge me as I chronocle some key milestones in the history of Computer Graphics. As I laid out in the **Why we are here Module**, my path to this course runs directly through video games, so this is where we will spend most of our time. I apologize in advance.
+Therefore, please indulge me as I chronicle some key milestones in the history of Computer Graphics. As I laid out in the **Why we are here Module**, my path to this course runs directly through video games, so this is where we will spend most of our time. I apologize in advance.
 
 # Key Milestones
 ## 1950s
@@ -65,14 +65,14 @@ That same year saw the first computer-animated film titled *Simulation of Two-Gy
 
 **EMBED SIMULATION VIDEO: https://www.youtube.com/watch?v=GBlQb6Me_1k**
 
-The early 1960s was also the time Pierre Bézier published his work on Bézier curves (yes, he named them after himself). If these sound familiar, it is because they are still used today to mathmatically define smooth curves between defined "control points." He used them for designing cars, but we will use them for creating smooth surfaces in our 3D scenes.[^6]
+The early 1960s was also the time Pierre Bézier published his work on Bézier curves (yes, he named them after himself). If these sound familiar, it is because they are still used today to mathematically define smooth curves between defined "control points." He used them for designing cars, but we will use them for creating smooth surfaces in our 3D scenes.[^6]
 
 Remember Ivan Sutherland? He went onto found Evans & Southerland and developed the *Sword of Damocles*, the world's first head-mounted display. This would be one of many attempts to make real the dream of Virtual Reality (VR). While technologically impressive at the time, when you see it, you realize pretty quickly why it didn't gain mainstream adoption.
 
 ![Sword of Damocles headset beign worn](../images/week_1/swordofdamocles.png)
 <figurecaption>Note the need to suspend the Sword of Damocles from the ceiling due to weight</figurecaption>
 
-Right before the 1960s closed out, Arthur Appel wrote a paper title "Some Techniques for Shading Machine Renderings of Solids."[^7] In this siminal paper, Mr. Appel introduced to the world the concept of **ray-casting**: better known today as **ray-tracing**. The idea was to cast out rays from the "eye" and the first object touched in the scene by each ray would become the pixel painted to the screen. We will cover **ray-tracing** in greater depth later in the course.
+Right before the 1960s closed out, Arthur Appel wrote a paper title "Some Techniques for Shading Machine Renderings of Solids."[^7] In this seminal paper, Mr. Appel introduced to the world the concept of **ray-casting**: better known today as **ray-tracing**. The idea was to cast out rays from the "eye" and the first object touched in the scene by each ray would become the pixel painted to the screen. We will cover **ray-tracing** in greater depth later in the course.
 
 ![Figure from Arthur Appel's paper showing ray-casting](../images/week_1/raycasting.png)
 <figurecaption>Figure from Arthur Appel's paper showing ray-casting</figurecaption>
@@ -87,9 +87,9 @@ By this time, universities were getting into the game and were churning out rese
 * Z-buffer hidden-surface removal (1974) - a method to reduce the amount of rendering required for a scene by removing obscured pixels.[^10]
 * Texture mapping (1974) - a method of taking a 2D texture and "wrapping" it around a 3D object.[^10]
 * Phong reflection model (1975) - the standard method used today for lighting incorporating ambient, diffuse, and specular values.[^11]
-* Bump mapping (1976) - a remixed versiond of texture mapping where a 2D texture is used to store height values to give flat objects the apperience of additional vertices.[^12]
+* Bump mapping (1976) - a remixed version of texture mapping where a 2D texture is used to store height values to give flat objects the appearance of additional vertices.[^12]
 
-Perhaps the most recongnizable thing to come out of Utah is a *teapot*. I know many of you are thinking, "What lunacy is this? What is so special about a *teapot*?" Well, I will accept your apologies once you cast your gaze below.
+Perhaps the most recognizable thing to come out of Utah is a *teapot*. I know many of you are thinking, "What lunacy is this? What is so special about a *teapot*?" Well, I will accept your apologies once you cast your gaze below.
 
 ![The Utah Teapot in four different renderings](../images/week_1/teapot.jpg)  
 <figcaption>The Utah Teapot (aka Newell's Pot) in four different renderings</figcaption>
@@ -98,9 +98,9 @@ This is *the* reference model that all fledgling graphics programs use. Consider
 
 Meanwhile, over the Rockies at Xerox PARC, they were busy inventing the **framebuffer** to use in SuperPaint (1973). That same year, our friends from Evans and Sutherland produced the Shaded Picture System, which was one of the first raster computer system to generate 3D renderings. Both these developments ushered in the age of raster displays, which focused on displaying pixels. 
 
-Up until this point, most of the displays we have been discussing were vector displays. Since raster displays use pixels, they can fall victim to "jagged" images whereas vector displays rely on mathmatical equations to create infantly scalable smooth images. The drawback to vector displays was that they were limited to lines and simple shapes, and couldn't diplay photorealistic colors.
+Up until this point, most of the displays we have been discussing were vector displays. Since raster displays use pixels, they can fall victim to "jagged" images whereas vector displays rely on mathematical equations to create infinitly scalable smooth images. The drawback to vector displays was that they were limited to lines and simple shapes, and couldn't display photorealistic colors.
 
-In 1975, George Lucas founds Industrial Light and Magic (ILM). While their fame steamed (rightly) from their work with practicle effects and sound editing, they also began work in computer graphics. In fact, they snuck in one of the first 3D animations in a feature length film during *Star Wars*. 
+In 1975, George Lucas founds Industrial Light and Magic (ILM). While their fame steamed (rightly) from their work with practical effects and sound editing, they also began work in computer graphics. In fact, they snuck in one of the first 3D animations in a feature length film during *Star Wars*. 
 
 ![Magazine page showing the Deathstar wireframe and the creator Larry Cuba](../images/week_1/deathstar.jpg)  
 <figurecaption>Magazine page showing the Deathstar wireframe and the creator Larry Cuba[^14]</figcaption>  
@@ -113,7 +113,7 @@ Let's wave goodbye to the '70s with *Space Invaders*. Created in 1978, this game
 
 The early 1980s saw the end of the first wave of home video game systems. Atari, riding high off it's success of the late '70s, like Yertle the Turtle, over extended itself and brought about a global recession in video games. Their sad tale ended with the burial of some 800k *E.T. the Extra-Terrestrial* cartridges in a landfill.[^15] Thankfully, from the ashes rose Nintendo's Famicom (NES outside of Japan), which captured the market until the Console Wars of the late 80s.[^16]
 
-Fortunately, computer graphics continued a pace outside of video games. ILM had a big year in 1982 with the movie *Star Trek II: The Wrath of Khan* (editors note: Kirk is *my* captain). They produced the first fully-generated scene in a feature length film during the "Genesis Effect" sequence. The scene utilized fractal landscapes and even had simple particle systems.
+Fortunately, computer graphics continued a pace outside video games. ILM had a big year in 1982 with the movie *Star Trek II: The Wrath of Khan* (editors note: Kirk is *my* captain). They produced the first fully-generated scene in a feature length film during the "Genesis Effect" sequence. The scene utilized fractal landscapes and even had simple particle systems.
 
 **EMBED the YouTube video of the Genesis Effect: https://www.youtube.com/watch?v=Tq_sSxDE32c**  
 
@@ -121,7 +121,7 @@ Not to be outdone, Disney released *TRON* that same year: featuring a *mostly* i
 
 **EMBED the YouTube video of TRON: https://www.youtube.com/watch?v=5UMJHAdEhMI**
 
-Things are starting to pick up now, with multiple major players entering the market. In 1982 (man that was a busy year!) Silicon Graphics Inc. (SGI) was founded. Their computers systems played a massive role in the film industry. Without SGI, there would be no Jurassic Park or Toy Story. 
+Things are starting to pick up now, with multiple major players entering the market. In 1982 (man that was a busy year!) Silicon Graphics Inc. (SGI) was founded. Their computers systems played a massive role in the film industry. Without SGI, there would be no Jurassic Park or Toy Story.
 
 In 1984, with one of the most famous Super Bowl commercials of all time, Apple released the Machintosh (Mac). Unlike the Apple II, this computer had a fully functional GUI (Steve Jobs reportedly ripped it off from work he saw at PARC). The accessibility of the GUI pushed PC adoption and therefore increased the potential user base for PC games.
 
@@ -166,29 +166,29 @@ After a rocky development cycle that saw many of the founders of id Software lea
 <figcaption>Quake in Software Render Mode</figcaption>  
 
  
-1996 also saw the invention of *normal mapping*. This was an improvement over standard bump mapping. While bump maps contain grayscale textures that represent heights, normal maps containg RGB images that store per-pixel normal data. We will soon learn more about *normals*, but sufficite it to say, they are indepensible for how light interacts with objects in a scene. Like bump maps, normal maps allow for very computational efficient effects to add surface detail to flat objects.
+1996 also saw the invention of *normal mapping*. This was an improvement over standard bump mapping. While bump maps contain grayscale textures that represent heights, normal maps containing RGB images that store per-pixel normal data. We will soon learn more about *normals*, but suffice it to say, they are indefensible for how light interacts with objects in a scene. Like bump maps, normal maps allow for very computational efficient effects to add surface detail to flat objects.
 
-The main "competitor" to OpenGL on PCs was introduced by Microsoft in 1996, called Direct3D. Due to Microsoft's market dominance with Windows, Direct3D became nearly industry standard. Games that wished to be released cross-platform (e.g. on the Mac) had to also support OpenGL. The other competitor was Glide, which was proprietory to 3dfx cards, but without the market saturation enjoyed by Microsoft, the standard was doomed to failure.
+The main "competitor" to OpenGL on PCs was introduced by Microsoft in 1996, called Direct3D. Due to Microsoft's market dominance with Windows, Direct3D became nearly industry standard. Games that wished to be released cross-platform (e.g. on the Mac) had to also support OpenGL. The other competitor was Glide, which was proprietary to 3dfx cards, but without the market saturation enjoyed by Microsoft, the standard was doomed to failure.
 
-While 3dfx had first mover advantage when it came to dedicated GPUs, other players quickly entered the market. In 1996 ATI introduced their Rage series of cards, which were followed by their Radeon series in 1999. Also in 1999 NVIDIA released the GeForce 256 and quickly began to dominate the market. In 2000, 3dfx would be purchased by NVIDIA and in 2006 AMD aquired ATI to help in its fight with Intel.
+While 3dfx had first mover advantage when it came to dedicated GPUs, other players quickly entered the market. In 1996 ATI introduced their Rage series of cards, which were followed by their Radeon series in 1999. Also in 1999 NVIDIA released the GeForce 256 and quickly began to dominate the market. In 2000, 3dfx would be purchased by NVIDIA and in 2006 AMD acquired ATI to help in its fight with Intel.
 
 ## 2000s-Present
 
 After the whirlwind of the past few decades, leaps in computer graphics has been fairly steady. Yes, they have continued to improve to the point of real time photorealism, even on consumer grade hardware.
 
-In 2000, DirectX 8.0 (successor to Direct3D) introduced the first programmable shaders: both vertex and pixel shaders. These had to be written in a language very similar to assembly. In 2002, Directx 9.0 made shader programming much easier by introducing High-Level Shader Language (HLSL). This revolution made writing a shader program as simple as writing any other C application. Two years later (2004) OpenGL 2.0 introduced their own shader language: OpenGL Shading Language (GLSL). OpenGL 2.0 also introduced the Vertex and Fragment Shaders, which remain to this day.
+In 2000, DirectX 8.0 (successor to Direct3D) introduced the first programmable shaders: both vertex and pixel shaders. These had to be written in a language very similar to assembly. In 2002, DirectX 9.0 made shader programming much easier by introducing High-Level Shader Language (HLSL). This revolution made writing a shader program as simple as writing any other C application. Two years later (2004) OpenGL 2.0 introduced their own shader language: OpenGL Shading Language (GLSL). OpenGL 2.0 also introduced the Vertex and Fragment Shaders, which remain to this day.
 
-This was the birth of the programable pipeline era of computer graphics. Whereas the fixed pipeline included API calls to manage simple objects and lighting, the programmable pipeline required the developer to handle *all* graphics calculations. While this required a lot more work on behalf of the developer, it opened up an infinite realm of possibilities with how they could design their own graphics techniques.
+This was the birth of the programmable pipeline era of computer graphics. Whereas the fixed pipeline included API calls to manage simple objects and lighting, the programmable pipeline required the developer to handle *all* graphics calculations. While this required a lot more work on behalf of the developer, it opened up an infinite realm of possibilities with how they could design their own graphics techniques.
 
 To compliment the Vertex and Fragment Shaders, OpenGL 3.2 (2009) introduced Geometry Shaders. These shaders could take primitives (points, lines, or triangles) and computationally convert them into more primitives. This allowed for geometry to be procedurally generated, instead of relying solely on static meshes.
 
-In 2010, this concept would be expanded on with Tessellation Shaders in OpenGL 4.0. These shaders actually have two parts (Tessellation Control and Tessellation Evaluation). The value of tessellation is the ability to subdivide geometry in realtime to either reduce or increase object complexity on the fly. One important use case is dynamically reducing the number of vertices in objects that are far away from the viewer where the detail won't be missed, but the computation speed will be greatly improved.
+In 2010, this concept would be expanded on with Tessellation Shaders in OpenGL 4.0. These shaders actually have two parts (Tessellation Control and Tessellation Evaluation). The value of tessellation is the ability to subdivide geometry in real-time to either reduce or increase object complexity on the fly. One important use case is dynamically reducing the number of vertices in objects that are far away from the viewer where the detail won't be missed, but the computation speed will be greatly improved.
 
-The final type of shader OpenGL has introduced is the Compute Shader with OpenGL 4.3 (2012). These are general-purpose shaders that run outside of the graphics pipeline. These are very useful for running calculations to help with particle simulation, phsyics systems, or any other application that can benefit from parallel processing (e.g. machine learning).
+The final type of shader OpenGL has introduced is the Compute Shader with OpenGL 4.3 (2012). These are general-purpose shaders that run outside the graphics pipeline. These are very useful for running calculations to help with particle simulation, physics systems, or any other application that can benefit from parallel processing (e.g. machine learning).
 
-In 2016, the Kronos Group (maintainers of OpenGL) introduced Vulkan, which was redesigned from the ground up. OpenGL uses a high-level state machine to manage the API. This means OpenGL abstracts things like memory allocation and synchronization within the pipeline. Vulkan, on the other hand, has almost zero abstraction, and requires the developer to manage nearly everything explicitly. Developers using Vulkan must handle a lot of manual pipeline set up (hundreds of lines vs dozens), but the reward is blazing fast speeds with very little wasted overhead. Mircosoft's DirectX 12 (2015) was designed with similar considerations. Both Vulkan and DirectX 12 have been adopted by much of the video game industry, leaving OpenGL for less performative tasks, such as prototyping.
+In 2016, the Kronos Group (maintainers of OpenGL) introduced Vulkan, which was redesigned from the ground up. OpenGL uses a high-level state machine to manage the API. This means OpenGL abstracts things like memory allocation and synchronization within the pipeline. Vulkan, on the other hand, has almost zero abstraction, and requires the developer to manage nearly everything explicitly. Developers using Vulkan must handle a lot of manual pipeline set up (hundreds of lines vs dozens), but the reward is blazing fast speeds with very little wasted overhead. Microsoft's DirectX 12 (2015) was designed with similar considerations. Both Vulkan and DirectX 12 have been adopted by much of the video game industry, leaving OpenGL for less performative tasks, such as prototyping.
 
-Today, nearly all computer graphics uses Physcially Based Rendering (PBR). In the past, graphics programmers for both film and video games had to use tricks to render convincing scenes. With the massive processing available to a modern GPU, programmers can actually use real world physics to model how light behaves in a scene and with different materials. This allows for materials to *look* real. For example, a programmer can create semi-translucent materials such as jade that allow light to penetrate a short way below the surface of an object.
+Today, nearly all computer graphics uses Physically Based Rendering (PBR). In the past, graphics programmers for both film and video games had to use tricks to render convincing scenes. With the massive processing available to a modern GPU, programmers can actually use real world physics to model how light behaves in a scene and with different materials. This allows for materials to *look* real. For example, a programmer can create semi-translucent materials such as jade that allow light to penetrate a short way below the surface of an object.
 
 Within the past decade, GPUs have begun to incorporate dedicated Ray Tracing (RT) components. This allows for light sources to send out rays and realistically have them bounce around a scene. This allows for photorealistic scenes as light can "pick up" colors from the objects it bounces off of one object on its way to the next. 
 

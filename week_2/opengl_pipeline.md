@@ -35,7 +35,7 @@ While the Vertex Shader processes a single vertex at a time, the later stages wi
 
 For example, if you send in three vertices using `GL_POINTS`, the GPU will draw three individual points to the screen. If you were to send the same three vertices using `GL_TRIANGLES` the GPU would interpret them all as a unit and draw a triangle to the screen.
 
-This is what we mean when we say "Primitive Assembly"; putting the vertices into groups as specified by the OpenGL API calls. This stage also 
+This is what we mean when we say "Primitive Assembly"; putting the vertices into groups as specified by the OpenGL API calls.
 
 ## Tessellation Shaders
 
@@ -101,7 +101,7 @@ So, why do we still need *Pixel Operations*? Well, the early z-culling only work
 
 ## Framebuffer
 
-This isn't part of our pipeline, but it is the ultimate result so I felt it appropriate to include here. After Pixel Operations, the Frame Buffer is full of color values ready to be sent to the screen.[^2] We do this by calling `glfwSwapBuffers(window);`. This moves the current render buffer to the "back" and moves the just populated buffer to the "front." Now when we do our next rendering pass, we will clear the "back" buffer and start writing new data.
+This isn't part of our pipeline, but it is the ultimate result, so I felt it appropriate to include here. After Pixel Operations, the Frame Buffer is full of color values ready to be sent to the screen.[^2] We do this by calling `glfwSwapBuffers(window);`. This moves the current render buffer to the "back" and moves the just populated buffer to the "front." Now when we do our next rendering pass, we will clear the "back" buffer and start writing new data.
 
 ## Results
 
@@ -109,7 +109,7 @@ Now that we have swapped the frame buffers we can now display our scene! Behold 
 
 ![A pixelated scene consisting of a small blue sphere behind and to the right of a large red sphere](../images/undesignated_images/spheres_20px_pixelated.png)
 
-Isn't it *lovely*!? Wait, you aren't impressed? Sure, it is rather blocky, but that is because each "pixel" in our example is actually 20x20 pixels each. This was for illustrative purposes only, jeepers! The higher the number of pixels the frame buffer can hold, the more detailed the scene will appear. 
+Isn't it *lovely*!? Wait, you aren't impressed? Sure, it is rather blocky, but that is because each "pixel" in our example is actually 20x20 pixels each. This was for illustrative purposes only, jeepers! The higher the number of pixels the frame buffer can hold, the more detailed the scene will appear.
 
 ## Wrapping it all up
 

@@ -4,7 +4,7 @@ It has occurred to me that you may not know what OpenGL actually is. Likely, you
 
 # It's a Specification
 
-At it's heart, OpenGL is a *specification*. As we learned in our [Graphics History](/graphics_history.md) module, OpenGL was developed by Silicon Graphics, Inc. (SGI) in 1991 and is now maintained by the Kronos Group. OpenGL stands for *Open Graphics Library*, and it describes a cross-platform API (application programming interface).
+At its heart, OpenGL is a *specification*. As we learned in our [Graphics History](/graphics_history.md) module, OpenGL was developed by Silicon Graphics, Inc. (SGI) in 1991 and is now maintained by the Kronos Group. OpenGL stands for *Open Graphics Library*, and it describes a cross-platform API (application programming interface).
 
 That sounds very technical, but it really is just a fancy way of laying out the rules for how different platforms, which wish to support OpenGL, must design the "hooks" programmers will use to generate scenes on a computer screen. In other words, it defines a common language the programmers will use to talk about the things OpenGL can do.
 
@@ -24,4 +24,4 @@ Therefore, we need to have libraries to do things like create windows, get keybo
 
 # Conclusion
 
-We aren't going harp on the distinction between OpenGL as a specification vs OpenGL as an API, we are going to be more result focused. That said, it is something you should keep in the back of your mind in case you ever want to develop using something other than C++. I will likely refer to the syntax of the function calls as the OpenGL API, as that is the term I was exposed when learning this material, so I will forgive you for being impercise with your language as well!
+We aren't going harp on the distinction between OpenGL as a specification vs OpenGL as an API, we are going to be more result focused. That said, it is something you should keep in the back of your mind in case you ever want to develop using something other than C++. I will likely refer to the syntax of the function calls as the OpenGL API, as that is the term I was exposed when learning this material, so I will forgive you for being imprecise with your language as well!

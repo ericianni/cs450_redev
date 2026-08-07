@@ -37,9 +37,9 @@ By applying the *Model Matrix* to our objects, we move them from *Object Space* 
 
 ## View Space
 
-Ok, so we have discussed how models have their own *object* space. We then went over how we convert that into *world* space. At this point, our models are nicely placed in our 3D world. What is lacking, is any sense of where *we*, the user, is withing this world.[^1]
+Ok, so we have discussed how models have their own *object* space. We then went over how we convert that into *world* space. At this point, our models are nicely placed in our 3D world. What is lacking, is any sense of where *we*, the user, is within this world.[^1]
 
-We can put ourselves into our scenes using a *camera*. OpenGL has a built in camera, that is centered at the origin (0, 0, 0) and pointing along the negative Z-axis. Having the camera in a fixed location pointing in a fixed direction isn't really helpful.
+We can put ourselves into our scenes using a *camera*. OpenGL has a built-in camera, that is centered at the origin (0, 0, 0) and pointing along the negative Z-axis. Having the camera in a fixed location pointing in a fixed direction isn't really helpful.
 
 Therefore, we need to transform our objects from *World Space* into *View Space*. We will also call this *Eye Space* due to it simulating our eyes in the scene. During this transformation, we will move all the vertices around to reflect the desired orientation of the camera (yes, we move *the world* to point the camera!).
 
@@ -53,7 +53,7 @@ So, now we have all the vertices moved around so they are oriented around our ca
 
 We need a way to tell the computer which vertices of the scene are visible at any given time. "But wait! Didn't we handle that in converting to *View Space*?", you may ask. When doing that conversion, we just moved all the objects in the world and reoriented them in relation to the camera's position. Let's do a thought experiment.
 
-Imagine you are a combat pilot. Let's call you *Maverick*. Now, imagine you have a weapons operator with you called...I don't know...*Goose*. As you focus on flying and what is directly ahead of you, Goose can point out other enemey jets by saying, "Bogie at 6 o'clock!" This is a relative location describing a location *behind* you, not the GPS coordinates of the jet. That is what *View Space* does, converts GPS coordinates into something relative to the user.[^2]
+Imagine you are a combat pilot. Let's call you *Maverick*. Now, imagine you have a weapons operator with you called...I don't know...*Goose*. As you focus on flying and what is directly ahead of you, Goose can point out other enemy jets by saying, "Bogie at 6 o'clock!" This is a relative location describing a location *behind* you, not the GPS coordinates of the jet. That is what *View Space* does, converts GPS coordinates into something relative to the user.[^2]
 
 Let's look at a rough diagram showing part of the process used to determine what is visible.
 
@@ -65,7 +65,7 @@ Let's look at a rough diagram showing part of the process used to determine what
 
 At the top right you will see the *eye* (sometimes called the *camera*). It has an *up* vector, indicating which direction is...uhh...up in relation to the eye. It also has a *look* vector, indicating in which direction the eye is...uhh...looking. In our example, the eye is looking directly at the red cube, which has been placed in our *world space*, but transformed into *view space*.
 
-Out of the eye we can see four lines labled the *view volume*. The edges of this volume create something called the *projection plan*. You can see a mini red cube on the plane, but you cannot see the yellow triangular prism in the plane. This is because it is outside our viewing volume (aka outside our field of vision).
+Out of the eye we can see four lines labeled the *view volume*. The edges of this volume create something called the *projection plan*. You can see a mini red cube on the plane, but you cannot see the yellow triangular prism in the plane. This is because it is outside our viewing volume (aka outside our field of vision).
 
 We will need to calculate something called the *Projection Matrix* (covered later in the course) and apply it to the combined *Model* and *View* matrices. This operation will result in our vertices being moved into *Clip Space* (another name for the *project plane* is the *clipping plane*).
 

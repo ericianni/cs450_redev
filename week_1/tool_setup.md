@@ -1,4 +1,4 @@
-# Introductcion
+# Introduction
 Now that we have gone over the history computer graphics, it is time to get our hands dirty! Before we can put pixels to screen, we need to ensure our development environment is setup correctly. There are lots of ways of using OpenGL: C++, Python, and Java. In this course, we are going to focus on writing applications in C++.
 
 We will be using the following tech stack:
@@ -13,7 +13,7 @@ Over the course of this exploration, we will walk you through how to install all
 
 You are free to make changes to where things are installed, but the choices made for this exploration are designed to make things easy to get working. If you deviate from these instructions you may run into difficulties, which we may not be able to help you fix. Therefore, only strike your own path if you are experienced and capable of troubleshooting.
 
-Warning: Many of the components discussed below are in constant flux, so sometimes version numbers won't line up exactly. If that happens, just reach out to the instructor or look to Ed Discussions for solutions. I will endeavour to keep this page up-to-date, but things *will* slip through the cracks.
+Warning: Many of the components discussed below are in constant flux, so sometimes version numbers won't line up exactly. If that happens, just reach out to the instructor or look to Ed Discussions for solutions. I will endeavor to keep this page up-to-date, but things *will* slip through the cracks.
 
 # Visual Studio Installation
 
@@ -25,27 +25,27 @@ The first step is to go to Azure for Students (https://azure.microsoft.com/en-us
 
 Once you have logged in, you will be taken to the Education Overview page. Find the "Free Software" portion of the dashboard and click "Explore All." This will take you to a screen with a search field into which, you should type "Visual Studio."
 
-You will see multiple versions of Visual Studio and it is very important that you pick the correct one, so please be careful. Click the "Visual Studio Enterprise 2026" option to reveal a sidebar with an option to "View Key" and "Download." 
+You will see multiple versions of Visual Studio, and it is very important that you pick the correct one, so please be careful. Click the "Visual Studio Enterprise 2026" option to reveal a sidebar with an option to "View Key" and "Download."
 
 We will need this key in order to actually run the software, so go ahead and reveal it. I recommend you copy this key into a text file that you can save somewhere safe on your computer. Don't worry, it isn't sensitive like a password, so there is no need to worry about it being saved as plain text.
 
 Once you save your key, go ahead and click the download button. This will prompt you to download the VisualStudioSetup.exe file. This is a fairly small file, and only acts as the installer. After the brief download, go ahead and run the installer.
 
-When the installer is up and running, you will be presented with a dizzing array of options for packages to install. For this course, we only care about "Desktop development with C++." Check this option and click "Install." Unless you have particular needs, my recommendation is to follow all the default installation recommendations. 
+When the installer is up and running, you will be presented with a dizzying array of options for packages to install. For this course, we only care about "Desktop development with C++." Check this option and click "Install." Unless you have particular needs, my recommendation is to follow all the default installation recommendations.
 
-Now, sit back and *wait*. This is a huge install and it will take a long time, no matter how fast your internet.
+Now, sit back and *wait*. This is a huge install, and it will take a long time, no matter how fast your internet.
 
 # Note On Extracting Zip Files
 
-Depending on how your application runs, you may end up extracting the files into folders that have a slightly different structure. By default, Windows will extract a zip file's contents into a folder with the same name as the file itself. This will result in a directory within a directory that share the same name. If, instead, you click the "browse" button, and navigate to the GL folder and extract directly into it, then your files should be extracted in the way these instructions expect. If for any reason your file structure isn't exactly the same, click through one more layer of directories and check to see if the mentioned files are there. You can modify the instructions on the fly if this is the case. If you still have trouble, reach out and we would be happy to help.
+Depending on how your application runs, you may end up extracting the files into folders that have a slightly different structure. By default, Windows will extract a zip file's contents into a folder with the same name as the file itself. This will result in a directory within a directory that share the same name. If, instead, you click the "browse" button, and navigate to the GL folder and extract directly into it, then your files should be extracted in the way these instructions expect. If for any reason your file structure isn't exactly the same, click through one more layer of directories and check to see if the mentioned files are there. You can modify the instructions on the fly if this is the case. If you still have trouble, reach out, and we would be happy to help.
 
 # GLFW
 
 While the VS behemoth downloads, we can use our time to get the rest of the frameworks we will need. Let's start with GLFW.
 
-OpenGL handles a lot for us, but since it is cross platform compatable we need to have platform specific code for things like creating windows and utilizing input devices. GLFW provides the C++ code needed for these crucial tasks.
+OpenGL handles a lot for us, but since it is cross-platform compatible we need to have platform specific code for things like creating windows and utilizing input devices. GLFW provides the C++ code needed for these crucial tasks.
 
-We need a place to store all these frameworks and I highly recommend that you create a a folder called "GL" on your C drive (or wherever you will be working). It is a really bad idea to install these things on a virtual drive; trust me.
+We need a place to store all these frameworks and I highly recommend that you create a folder called "GL" on your C drive (or wherever you will be working). It is a really bad idea to install these things on a virtual drive; trust me.
 
 Go to the GLFW homepage (https://www.glfw.org/) and click the "Download" tab at the top. I am going to assume you have a 64-bit computer, so click the button "64-bit Windows binaries" to initiate the download. This should be fairly quick, and once download extract the contents into the GL folder you created.
 
@@ -53,19 +53,19 @@ You should now have a folder in your GL directory called something like "glfw-3.
 
 # GLEW
 
-I am pretty sure VS is still downloading, so let's grab some pieces we need. Now, we are going to aquire GLEW. This is a very technical library that basically preloads the function pointers from the graphics drivers so we can actually use them in our applications.
+I am pretty sure VS is still downloading, so let's grab some pieces we need. Now, we are going to acquire GLEW. This is a very technical library that basically preloads the function pointers from the graphics drivers so we can actually use them in our applications.
 
 Go to the GLEW website (https://glew.sourceforge.net/) and click the "Windows 32-bit and 64-bit" binaries link. Again, extract the contents into the GL folder. Rename this new folder to "GLEW".
 
 # GLM
 
-Before the programmable pipeline, OpenGL relied on a lot of built-in math functions to handle things like rotations. Now, I am not a monster and I am not going to make you write your own matrix math functions; we are going to use GLM, which contains all the graphics maths we will need.
+Before the programmable pipeline, OpenGL relied on a lot of built-in math functions to handle things like rotations. Now, I am not a monster, and I am not going to make you write your own matrix math functions; we are going to use GLM, which contains all the graphics math we will need.
 
 Navigate to the repo containing GLM (https://github.com/g-truc/glm). To download, click the green "<> Code" button and select "Download ZIP". I bet you know what I am going to say now! Extract the file into the GL folder and rename it "GLM".
 
 # SOIL 2
 
-Just like we needed GLFW to manage system calls, we need SOIL 2 to make loading textures easier. 
+Just like we needed GLFW to manage system calls, we need SOIL 2 to make loading textures easier.
 
 Go to the SOIL 2 repo (https://github.com/SpartanJ/SOIL2), and just like with GLM, download all the code as a zip. Again, unzip the contents into the GL folder and rename the new directory to "SOIL2".
 
@@ -79,7 +79,7 @@ Now it is time to dig out your favorite terminal application and navigate to the
 
 Once you have run this command, a new folder will appear in your SOIL2 directory: "make". Click through and then into the "windows" folder contained therein. Now, hopefully, VS 2026 has finished installing, but if it hasn't, we will need to wait. We need VS 2026 to open the "SOIL2.sln" project file. 
 
-When you are able, open the "SOIL2.sln" file, which should open VS 2026. You will likely be shown a screen stating that "Some projects are missing components or targeting outdated toolsets..." Click "Retarget all" and then "Apply." This is necessary to convert the VS2022 settings to the new VS2026 IDE we are using.
+When you are able, open the "SOIL2.sln" file, which should open VS 2026. You will likely be shown a screen stating that "Some projects are missing components or targeting outdated tool sets..." Click "Retarget all" and then "Apply." This is necessary to convert the VS2022 settings to the new VS2026 IDE we are using.
 
 On the right, you will see the Solution Explorer. Right-click on the "soil2-static-lib" project and select "Build." Go ahead and close VS 2026, we are done with this project.
 
@@ -91,7 +91,7 @@ We now have everything we need to set up Visual Studio for OpenGL development. U
 
 In the GL folder, create a new directory and call it "OpenGL_Template". In this new directory, create two more: "lib" and "include". We will be filling this with files from the downloaded frameworks. 
 
-Find the glew32.dll file located in GL>GLEW>bin>Release>x64 filder and copy it into our new template directory.
+Find the glew32.dll file located in GL>GLEW>bin>Release>x64 folder and copy it into our new template directory.
 
 In the "lib" folder we need to copy and paste the following files:
 * glew32.lib - found in GL>GLEW>lib>Release>x64
@@ -156,7 +156,7 @@ Also under "Linker", click "Input" and then "Additional Dependencies". Click thr
 
 Now, we hit "apply".
 
-Now we need to add glew32.dll to the project. Right click on the "OpenGL Template" in the Solution Explorer and click "Add" and then "Existing Item..." Navigate to where we saved this file in the "OpenGL Template" folder (next to the "include" and "lib" folders) and add it.
+Now we need to add glew32.dll to the project. Right-click on the "OpenGL Template" in the Solution Explorer and click "Add" and then "Existing Item..." Navigate to where we saved this file in the "OpenGL Template" folder (next to the "include" and "lib" folders) and add it.
 
 Now, right-click on the file in the Solution Explorer and select "Properties". Again, ensure that "All Configurations" is selected. We need to change the "Item Type" to "Copy File". Hit "Apply" and this should bring up "Copy File" under "Configuration Properties". Click this and ensure that "Destination Directories" reads "$(OutDir)". Now we can click "OK".
 

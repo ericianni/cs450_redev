@@ -37,32 +37,34 @@ If you picked "Left-Handed" you would be correct!
 OpenGL uses the right-handed configuration, so we are going to stick with that in this course, but it may interest you all to learn how other software works.
 
 The following vendors use the right-handed configuration:
+
 * Maya - 3D modeling and animation software
 * Houdini - 3D modeling, animation, and VFX software
 * Minecraft - uhh...its Minecraft
 * Blender - open source 3D animation software
-* Autocad - 3D design software
+* AutoCAD - 3D design software
 * GODOT - open source game engine
 * Source - Valve's game engine
 * NASA - North American Space Agency (they put people into space)
 
 The following vendors use the left-handed configuration:
+
 * Unity - commercial game engine
-* Unreal Engine - the worlds most popular game engine
+* Unreal Engine - the world's most popular game engine
 * ZBrush - 3D modeling software
 
 I will be honest, it is a bit frustrating that the most popular game engines use left-handed configurations where pretty much everyone else agreed that right-handed was better. I mean, come on, who can argue with NASA? Anyone want to take a guess as to why Unreal Engine uses left-handed?
 
-**HIDE ANSWER**
-It is because DirectX uses left-handed coordinates and Unreal was developed to target Microsoft platforms from the start.
+**HIDE ANSWER: It is because DirectX uses left-handed coordinates and Unreal was developed to target Microsoft platforms from the start.**
 
 Now, who wants to be even more confused? If you raised your hand, you are my type of person. If you would rather not be confused...uhh...maybe just read this next part twice?
 
 There is *another* wrinkle to handedness when it comes to coordinates. Remember how I said that the X axis will always point to the right? That was a lie. Different vendors orient the axis differently.
 
-For example, NASA, which, despite this, is a great orginization, decided to buck all the others and point the X-axis *up*! So if you are trying to make head-or-tails of NASA coordinates, you will need to point your thumb up, your index finger toward you, and your middle finger to the right. Go ahead and try, but I am not paying any medical bills for strains! Luckily, NASA seems to be the only major player with this crazy configuration.
+For example, NASA, which, despite this, is a great organization, decided to buck all the others and point the X-axis *up*! So if you are trying to make head-or-tails of NASA coordinates, you will need to point your thumb up, your index finger toward you, and your middle finger to the right. Go ahead and try, but I am not paying any medical bills for strains! Luckily, NASA seems to be the only major player with this crazy configuration.
 
 The following groups have the Y-axis point up:
+
 * Unity
 * ZBrush
 * Maya
@@ -73,12 +75,14 @@ The following groups have the Y-axis point up:
 Notice how there is a mix of both left-handed and right-handed vendors with the Y-axis pointing up? Yes, it is super confusing.
 
 Likewise, the Z-axis up vendors also are split between left-handed and right-handed configurations:
+
 * Unreal Engine
 * Blender
 * Source
-* Autocad
+* AutoCAD
 
-It is very important you understand the coordinate systems of the software you use. It may be hepful to create a cheatsheet you keep on your guest so you can quickly check which direction the axis point in each system. Fortunately, if you are working in Unreal Engine, they have been making efforts to allow workflows that utilize different configurations because so many vendors don't use UE's unique configuration (left-handed *and* Z-up).
+It is very important you understand the coordinate systems of the software you use. It may be helpful to create a cheat sheet you keep on your guest so you can quickly check which direction the axis point in each system. Fortunately, if you are working in Unreal Engine, they have been making efforts to allow workflows that utilize different configurations because so many vendors don't use UE's unique configuration (left-handed *and* Z-up).
 
 # Conclusion
+
 Knowing which system of coordinates you are looking at is *super* important. It can be the difference of rendering your objects correctly or inside-out! For OpenGL and this class, we will be exclusively using the *right-handed* configuration with the Y-axis pointing *up*. This means that our z-axis will always be pointing out of the screen at us (menacing, I know).
